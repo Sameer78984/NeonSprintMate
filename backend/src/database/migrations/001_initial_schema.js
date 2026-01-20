@@ -26,7 +26,6 @@ export async function up(knex) {
   });
 
   // 3. Membership (User-Team Relationship) Table
-  // Named 'membership' to match instructions exactly
   await knex.schema.createTable("membership", (table) => {
     table.increments("id").primary();
     table.integer("team_id").unsigned().notNullable();

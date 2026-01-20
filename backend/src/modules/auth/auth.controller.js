@@ -1,65 +1,62 @@
-/**
- * Dummy Controller for Testing
- * These functions simulate the responses for /auth endpoints.
- */
+// backend/src/modules/auth/auth.controller.js
+import bcrypt from "bcryptjs";
+import passport from "passport";
+import knex from "../../config/db.js";
 
-// POST /api/auth/register
 export const register = async (req, res) => {
-  try {
-    const { username, email, password } = req.body;
+  const { username, email, password, name } = req.body;
 
-    // Simulate successful registration
-    return res.status(201).json({
-      message: "Test: User registered successfully",
-      user: { username, email },
-      note: "Bcrypt hashing and Neon DB storage will be implemented here.",
-    });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
+  // Hash password using bcryptjs
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
+  const [newUser] = await knex("users")
+    .insert({
+      username,
+      email,
+      password: hashedPassword,
+      name, // Captured for better UX
+    })
+    .returning(["id", "username", "email", "name", "created_at"]);
+
+  return res.status(201).json({
+    message: "Account created successfully",
+    user: newUser,
+  });
 };
 
-// POST /api/auth/login
-export const login = async (req, res) => {
-  try {
-    const { email } = req.body;
-
-    // Authenticate using Passport's local strategy logic manually for this dummy controller
-    // In a real app with passport.authenticate('local'), this is handled by the strategy.
-    // Here we manually call req.login to establish the session.
-    const user = { id: "dummy-id-123", email, username: "test_user" };
-
-    req.login(user, (err) => {
-      if (err) {
-        return res.status(500).json({ error: "Session creation failed" });
-      }
+export const login = (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) return next(err);
+    if (!user) {
+      return res
+        .status(401)
+        .json({ message: info.message || "Invalid credentials" });
+    }
+    req.logIn(user, (err) => {
+      if (err) return next(err);
       return res.status(200).json({
-        message: "Test: Login successful",
-        user,
-        note: "Session established via Passport.",
+        message: "Welcome back!",
+        user: {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          name: user.name,
+        },
       });
     });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
+  })(req, res, next);
 };
 
-// POST /api/auth/logout
-export const logout = (req, res) => {
-  return res.status(200).json({
-    message: "Test: Logged out successfully",
-    note: "Passport session.destroy() will be called here.",
+export const logout = (req, res, next) => {
+  req.logout((err) => {
+    if (err) return next(err);
+    res.status(200).json({ message: "Logged out successfully" });
   });
 };
 
-// GET /api/auth/me
 export const getMe = (req, res) => {
-  return res.status(200).json({
-    message: "Test: Current user fetched",
-    user: {
-      username: "test_user",
-      email: "test@example.com",
-    },
-    note: "This will normally return req.user from Passport.",
-  });
+  if (!req.isAuthenticated())
+    return res.status(401).json({ message: "Not authenticated" });
+  return res.status(200).json({ user: req.user });
 };

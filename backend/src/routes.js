@@ -1,6 +1,6 @@
 import { Router } from "express";
 import authRoutes from "./modules/auth/auth.routes.js";
-import { isAuthenticated } from "./middleware/auth.js";
+import { isAuthenticated } from "./middleware/authGuard.js";
 import teamRoutes from "./modules/teams/teams.routes.js";
 import taskRoutes from "./modules/tasks/tasks.routes.js";
 
