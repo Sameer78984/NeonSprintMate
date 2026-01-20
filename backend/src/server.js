@@ -11,18 +11,61 @@ import router from "./routes.js";
 import errorHandler from "./middleware/errorHandler.js";
 import passport from "./config/passport.js";
 import knex from "./config/db.js";
+import { arc } from "./lib/arcjet.js";
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
+
+app.set("trust proxy", 1); // Trust first proxy if behind one (e.g., Heroku, Vercel, etc.)
 
 // 1. Security & Utility Middleware
 app.use(helmet()); // Basic security headers
-app.use(cors()); // Enable Cross-Origin Resource Sharing
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    credentials: true, // Required for cookies to work
+  }),
+);
 app.use(morgan("dev")); // Request logging for better DX
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(async (req, res, next) => {
+  try {
+    const decision = await arc.protect(req, {
+      requested: 1, // each incoming request counts as 1
+    });
+    if (decision.isDenied()) {
+      if (decision.reason.isRateLimit()) {
+        res
+          .status(429)
+          .json({ error: "Too Many Requests - Rate limit exceeded" });
+      } else if (decision.reason.isBot()) {
+        res.status(403).json({ error: "Forbidden - Bot access denied" });
+      } else {
+        res.status(403).json({ error: "Forbidden - Access denied" });
+      }
+      return;
+    }
+
+    // check for spoofed bots
+    if (
+      decision.results.some(
+        (result) => result.reason.isBot() && result.reason.isSpoofed(),
+      )
+    ) {
+      res.status(403).json({ error: "Forbidden - Spoofed Bot access denied" });
+      return;
+    }
+
+    next();
+  } catch (err) {
+    console.log("Arcjet Error: ", err);
+    next(err);
+  }
+});
 
 /**
  * 2. Session Store Switch & Fallback logic
@@ -58,7 +101,7 @@ if (isProd || forceDbSession) {
 app.use(
   session({
     store: sessionStore,
-    secret: process.env.SESSION_SECRET || "sprintmate_dev_secret",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
