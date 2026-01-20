@@ -1,10 +1,13 @@
+// backend/src/modules/auth/auth.routes.js
 import { Router } from "express";
 import * as authController from "./auth.controller.js";
 import { registerSchema, loginSchema } from "./auth.validator.js";
 import { validateRequest } from "../../middleware/validate.js";
+import { isAuthenticated } from "../../middleware/authGuard.js";
 
 const router = Router();
 
+// Public routes
 router.post(
   "/register",
   registerSchema,
@@ -13,8 +16,9 @@ router.post(
 );
 
 router.post("/login", loginSchema, validateRequest, authController.login);
-router.post("/logout", authController.logout);
-// Private: Get current user info for frontend persistence
-router.get("/me", authController.getMe);
+
+// Protected routes
+router.post("/logout", isAuthenticated, authController.logout);
+router.get("/me", isAuthenticated, authController.getMe);
 
 export default router;
