@@ -1,0 +1,44 @@
+# --- General / OS ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
+error.log
+npm-debug.log*
+
+# --- Environment & Secrets ---
+# Crucial for Neon and Arcjet keys
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# --- Dependencies ---
+# Covers both root (if any), /frontend, and /backend
+node_modules/
+jspm_packages/
+
+# --- Backend Specific ---
+# Knex and Express artifacts
+backend/node_modules/
+backend/.env
+dist/
+build/
+
+# --- Frontend Specific (Vite + React) ---
+# Vite build output and local config
+frontend/node_modules/
+frontend/.env
+frontend/dist/
+frontend/build/
+frontend/stats.html
+
+# --- Testing ---
+coverage/
+.nyc_output
+
+# --- Miscellaneous ---
+.npm
+.eslintcache
