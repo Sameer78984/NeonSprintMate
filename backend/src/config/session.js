@@ -28,7 +28,7 @@ const getSessionStore = () => {
 
 export const sessionConfig = session({
   store: getSessionStore(),
-  secret: process.env.SESSION_SECRET || "sprintmate_dev_secret",
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
