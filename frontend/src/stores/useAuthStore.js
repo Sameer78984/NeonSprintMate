@@ -1,11 +1,11 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import axios from "../lib/axios";
+import { useTaskStore } from "./useTaskStore";
 
 export const useAuthStore = create(
   persist(
     (set) => ({
-      // Removed 'get' here to fix the "defined but never used" error
       user: null,
       isAuthenticated: false,
       loading: false,
@@ -49,11 +49,21 @@ export const useAuthStore = create(
       },
 
       logout: async () => {
+        // 1. Immediately clear local state so the UI redirects
+        set({ user: null, isAuthenticated: false, error: null });
+
         try {
+          // 2. Attempt to notify the backend to clear cookies/sessions
           await axios.post("/auth/logout");
-          set({ user: null, isAuthenticated: false, error: null });
         } catch (error) {
-          console.error("Logout error:", error);
+          // 3. We catch the 401 silently because the local session is already dead
+          console.warn(
+            "Server-side logout failed or session already expired:",
+            error.message,
+          );
+        } finally {
+          // 4. Clear other stores like tasks
+          useTaskStore.getState().clearTasks();
         }
       },
     }),
