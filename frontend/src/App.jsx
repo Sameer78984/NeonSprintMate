@@ -9,8 +9,8 @@ import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import DashboardLayout from "./features/dashboard/components/DashboardLayout";
-import TaskBoard from "./pages/TaskBoard";
-import TeamSettings from "./features/dashboard/components/TeamSettings";
+import TaskBoard from "./features/tasks/components/TaskBoard";
+import TeamSettings from "./features/teams/components/TeamSettings";
 import Toast from "./components/Toast";
 
 const ProtectedRoute = ({ children }) => {
