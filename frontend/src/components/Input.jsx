@@ -1,10 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-/**
- * Global Input Component for NeonSprintMate
- * Supports icons, error states, and neon focus effects.
- */
 const Input = ({
   label,
   icon: Icon,
@@ -12,34 +8,43 @@ const Input = ({
   placeholder,
   value,
   onChange,
-  error,
+  error, // Text to display
+  isErrorField, // Boolean to trigger red border
   required = false,
   className = "",
   ...props
 }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, x: -10 }}
-      animate={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
       className={`flex flex-col space-y-2 w-full ${className}`}
     >
-      {/* Monospace Label for Terminal Vibe */}
       {label && (
-        <label className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 ml-4 font-bold font-mono">
+        <label
+          className={`text-[10px] uppercase tracking-[0.2em] ml-4 font-bold font-mono transition-colors duration-300 ${
+            isErrorField ? "text-red-500" : "text-zinc-500"
+          }`}
+        >
           {label}{" "}
           {required && <span className="text-neon-cyan opacity-50">*</span>}
         </label>
       )}
 
       <div className="relative group">
-        {/* Leading Icon */}
         {Icon && (
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-300 group-focus-within:text-neon-cyan text-zinc-600">
+          <div
+            className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-300 ${
+              isErrorField
+                ? "text-red-500"
+                : "text-zinc-600 group-focus-within:text-neon-cyan"
+            }`}
+          >
             <Icon className="h-5 w-5" />
           </div>
         )}
 
-        {/* The Glass Input Field */}
+        {/* The Input Field: Handles the Red Border & Glow */}
         <input
           type={type}
           value={value}
@@ -52,24 +57,28 @@ const Input = ({
             placeholder:text-zinc-800 focus:outline-none
             ${Icon ? "pl-12" : "pl-6"}
             ${
-              error
-                ? "border-red-500/50 focus:border-red-500 neon-glow-red"
-                : "border-white/10 focus:border-neon-cyan/50 focus:ring-1 focus:ring-neon-cyan/10"
+              isErrorField
+                ? "border-red-500/50 shadow-[0_0_20px_rgba(239,68,68,0.2)]"
+                : "border-white/10 focus:border-neon-cyan/50"
             }
           `}
           {...props}
         />
 
-        {/* Animated Focus Border (Bottom Line) */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[1px] w-0 group-focus-within:w-1/2 bg-neon-cyan transition-all duration-500 opacity-50" />
+        {/* Animated Bottom Line: Switches color on error */}
+        <div
+          className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[1px] w-0 group-focus-within:w-1/2 transition-all duration-500 opacity-50 ${
+            isErrorField ? "bg-red-500" : "bg-neon-cyan"
+          }`}
+        />
       </div>
 
-      {/* Error Message Protocol */}
+      {/* Static Error Message */}
       {error && (
         <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-[9px] text-red-500 uppercase font-mono tracking-tighter ml-4 mt-1"
+          className="text-[9px] text-red-500 uppercase font-mono tracking-tighter ml-4 mt-1 italic"
         >
           ! Alert: {error}
         </motion.span>
