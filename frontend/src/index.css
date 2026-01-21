@@ -1,2 +1,37 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+@theme {
+  /* Custom Neon Palette */
+  --color-neon-cyan: #22d3ee;
+  --color-neon-purple: #a855f7;
+  --color-deep-black: #020202;
+  
+  /* FIX: In v4, if you name a variable --animate-xxxx, 
+     Tailwind automatically creates the utility class 'animate-xxxx'.
+  */
+  --animate-grid-move: gridMove 40s linear infinite;
+  --animate-pulse-slow: pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes gridMove {
+    from { background-position: 0 0; }
+    to { background-position: 0 40px; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-20px) rotate(1deg); }
+  }
+}
+
+/* Custom Utilities for Glassmorphism */
+@utility glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+@utility neon-glow-cyan {
+  box-shadow: 0 0 30px -5px var(--color-neon-cyan);
+}
