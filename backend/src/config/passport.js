@@ -10,14 +10,24 @@ passport.use(
       try {
         // 1. Find user in Neon DB
         const user = await knex("users").where({ email }).first();
+
+        // Detailed check: Email existence
         if (!user) {
-          return done(null, false, { message: "Incorrect email." });
+          return done(null, false, {
+            message: "Email not registered. Please sign up.",
+            field: "email", // Tactical identifier for frontend vibration
+          });
         }
 
         // 2. Compare hashed password
         const isMatch = await bcrypt.compare(password, user.password);
+
+        // Detailed check: Password accuracy
         if (!isMatch) {
-          return done(null, false, { message: "Incorrect password." });
+          return done(null, false, {
+            message: "Invalid credentials.",
+            field: "password", // Tactical identifier for frontend vibration
+          });
         }
 
         return done(null, user);

@@ -5,18 +5,28 @@ const errorHandler = (err, req, res, next) => {
   // Default error values
   let statusCode = err.statusCode || 500;
   let message = err.message || "Internal Server Error";
+  let field = err.field || null; // Capture field-specific data
 
-  // Specific Error Handling (e.g., Neon/Postgres errors)
+  // Handle Unique Violations (Postgres code 23505)
   if (err.code === "23505") {
-    // Unique violation
     statusCode = 409;
-    message = "Resource already exists.";
+    if (err.detail.includes("email")) {
+      message = "Email already registered.";
+      field = "email";
+    } else if (err.detail.includes("username")) {
+      message = "Username already taken.";
+      field = "username";
+    } else {
+      message = "Resource already exists.";
+    }
   }
 
+  // Response must use 'error' key to match useAuthStore logic
   res.status(statusCode).json({
+    error: message,
+    field, // Vital for triggering the shake animation
     status: "error",
     statusCode,
-    message,
     // Only show stack trace in development mode for security
     stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
   });
