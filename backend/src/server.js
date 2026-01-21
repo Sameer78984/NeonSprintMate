@@ -42,6 +42,9 @@ app.use(passport.session());
 // 4. API Routes
 app.use("/api", router);
 
+// 5. Health Check Route
+app.get("/", (req, res) => res.send("API is running"));
+
 // 5. Error Handling
 app.use((req, res, next) => {
   res.status(404).json({ error: "Route Not Found" });
