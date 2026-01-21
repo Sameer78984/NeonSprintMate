@@ -10,7 +10,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import DashboardLayout from "./features/dashboard/components/DashboardLayout";
 import TaskBoard from "./pages/TaskBoard";
-import TeamSettings from "./pages/TeamSettings";
+import TeamSettings from "./features/dashboard/components/TeamSettings";
 import Toast from "./components/Toast";
 
 const ProtectedRoute = ({ children }) => {
