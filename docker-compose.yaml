@@ -1,17 +1,9 @@
-version: '3.8'
-
 services:
   backend:
-    build: ./backend
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    env_file: backend/.env
     ports:
       - "5000:5000"
-    environment:
-      - NODE_ENV=production
-      - DATABASE_URL=${DATABASE_URL}
-      - ARCJET_KEY=${ARCJET_KEY}
-    networks:
-      - sprintmate-network
-
-networks:
-  sprintmate-network:
-    driver: bridge
+    restart: always
