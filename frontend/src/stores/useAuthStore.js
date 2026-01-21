@@ -10,6 +10,7 @@ export const useAuthStore = create(
       isAuthenticated: false,
       loading: false,
       error: null,
+      errorField: null,
 
       checkAuth: async () => {
         set({ loading: true });
@@ -22,47 +23,74 @@ export const useAuthStore = create(
         }
       },
 
-      register: async (userData) => {
-        set({ loading: true, error: null });
-        try {
-          const res = await axios.post("/auth/register", userData);
-          set({ user: res.data.user, isAuthenticated: true, loading: false });
-          return { success: true };
-        } catch (error) {
-          const message = error.response?.data?.error || "Registration failed";
-          set({ error: message, loading: false });
-          return { success: false, message };
-        }
-      },
+      clearAuthErrors: () => set({ error: null, errorField: null }),
 
       login: async (credentials) => {
         set({ loading: true, error: null });
         try {
           const res = await axios.post("/auth/login", credentials);
-          set({ user: res.data.user, isAuthenticated: true, loading: false });
+          set({
+            user: res.data.user,
+            isAuthenticated: true,
+            loading: false,
+            errorField: null,
+          });
           return { success: true };
         } catch (error) {
-          const message = error.response?.data?.error || "Login failed";
-          set({ error: message, loading: false, isAuthenticated: false });
-          return { success: false, message };
+          // --- ROBUST ERROR EXTRACTION ---
+          // 1. Check for 'error' key (Custom Handler)
+          // 2. Check for 'message' key (Standard Frameworks)
+          // 3. Check if 'data' is just a string
+          // 4. Fallback to "Login failed"
+          const data = error.response?.data;
+          const errorMessage =
+            data?.error ||
+            data?.message ||
+            (typeof data === "string" ? data : "Login failed");
+
+          const errorField = data?.field || null;
+
+          set({ error: errorMessage, errorField, loading: false });
+          return { success: false, error: errorMessage, field: errorField };
+        }
+      },
+
+      register: async (userData) => {
+        set({ loading: true, error: null });
+        try {
+          const res = await axios.post("/auth/register", userData);
+          set({
+            user: res.data.user,
+            isAuthenticated: true,
+            loading: false,
+            errorField: null,
+          });
+          return { success: true };
+        } catch (error) {
+          const data = error.response?.data;
+          const errorMessage =
+            data?.error ||
+            data?.message ||
+            (typeof data === "string" ? data : "Registration failed");
+          const errorField = data?.field || null;
+
+          set({ error: errorMessage, errorField, loading: false });
+          return { success: false, error: errorMessage, field: errorField };
         }
       },
 
       logout: async () => {
-        // 1. Immediately clear local state so the UI redirects
-        set({ user: null, isAuthenticated: false, error: null });
-
+        set({
+          user: null,
+          isAuthenticated: false,
+          error: null,
+          errorField: null,
+        });
         try {
-          // 2. Attempt to notify the backend to clear cookies/sessions
           await axios.post("/auth/logout");
         } catch (error) {
-          // 3. We catch the 401 silently because the local session is already dead
-          console.warn(
-            "Server-side logout failed or session already expired:",
-            error.message,
-          );
+          console.warn("Logout error:", error.message);
         } finally {
-          // 4. Clear other stores like tasks
           useTaskStore.getState().clearTasks();
         }
       },
