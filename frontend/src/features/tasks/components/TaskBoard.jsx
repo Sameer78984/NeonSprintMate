@@ -1,137 +1,173 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { useTaskStore } from "../../../stores/useTaskStore"; // Note: Adjusted path
-import { useTeamStore } from "../../../stores/useTeamStore"; // New Import
-import Button from "../../../components/Button"; // Note: Adjusted path
+import { useTaskStore } from "../../../stores/useTaskStore";
+import { useTeamStore } from "../../../stores/useTeamStore";
+import Button from "../../../components/Button";
 import {
   PlusIcon,
-  EllipsisHorizontalIcon,
   ClockIcon,
   FireIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
 
+import MatrixFilters from "../../dashboard/components/MatrixFilters";
+import TaskActionMenu from "../../dashboard/components/TaskActionMenu";
 import NewTaskModal from "../../tasks/components/CreateTaskModal";
 import CreateTeamModal from "../../teams/components/CreateTeamModal";
+import EditTaskModal from "../../tasks/components/EditTaskModal";
 
 const TaskBoard = () => {
-  const { tasks, loading: tasksLoading } = useTaskStore();
+  // 1. Destructure fetchTasks and clearTasks from the store
+  const {
+    tasks,
+    loading: tasksLoading,
+    fetchTasks,
+    clearTasks,
+  } = useTaskStore();
   const { currentTeam, fetchTeams, loading: teamsLoading } = useTeamStore();
 
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isTeamModalOpen, setIsTeamModalOpen] = useState(false);
 
-  // Sync teams on mount
+  // Edit Modal State
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+
+  // Initial Team Sync
   useEffect(() => {
     fetchTeams();
   }, [fetchTeams]);
 
+  // 2. CRITICAL FIX: Fetch tasks whenever the currentTeam changes or page refreshes
+  useEffect(() => {
+    if (currentTeam?.id) {
+      fetchTasks(currentTeam.id);
+    } else {
+      // Clean up the board if no team is selected
+      clearTasks();
+    }
+  }, [currentTeam?.id, fetchTasks, clearTasks]);
+
+  // Client-side Filtering
+  const filteredTasks = useMemo(() => {
+    return tasks.filter((task) => {
+      const matchesSearch = task.title
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      const matchesStatus =
+        statusFilter === "all" || task.status === statusFilter;
+      return matchesSearch && matchesStatus;
+    });
+  }, [tasks, searchQuery, statusFilter]);
+
+  // Handler to open the full edit modal
+  const handleTaskClick = (task) => {
+    setSelectedTask(task);
+    setIsEditModalOpen(true);
+  };
+
   return (
     <div className="space-y-10">
-      {/* --- Matrix Header --- */}
-      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
-        <div>
-          <h2 className="text-4xl font-black tracking-tighter uppercase italic text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-500">
-            Task_Matrix
-          </h2>
-          <div className="flex items-center gap-2 mt-2">
-            <UserGroupIcon className="h-4 w-4 text-neon-cyan" />
-            <p className="text-zinc-500 text-[10px] font-mono uppercase tracking-[0.3em]">
-              Active_Unit:{" "}
-              <span className="text-neon-cyan">
-                {currentTeam ? currentTeam.name : "NO_UNIT_LINKED"}
-              </span>
-            </p>
+      {/* Header Section */}
+      <header className="space-y-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+          <div>
+            <h2 className="text-4xl font-black tracking-tighter uppercase italic text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-500">
+              Task_Matrix
+            </h2>
+            <div className="flex items-center gap-2 mt-2">
+              <UserGroupIcon className="h-4 w-4 text-neon-cyan" />
+              <p className="text-zinc-500 text-[10px] font-mono uppercase tracking-[0.3em]">
+                Active_Unit:{" "}
+                <span className="text-neon-cyan">
+                  {currentTeam?.name || "UNLINKED"}
+                </span>
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-4">
+            <Button variant="outline" onClick={() => setIsTeamModalOpen(true)}>
+              Unit_Mod
+            </Button>
+            <Button
+              variant="cyan"
+              onClick={() => setIsTaskModalOpen(true)}
+              disabled={!currentTeam}
+            >
+              New_Entry
+            </Button>
           </div>
         </div>
 
-        <div className="flex gap-4 w-full sm:w-auto">
-          {/* Create Team Button */}
-          <Button
-            variant="outline"
-            onClick={() => setIsTeamModalOpen(true)}
-            className="flex-1 sm:flex-none"
-          >
-            <UserGroupIcon className="h-4 w-4 mr-2" />{" "}
-            {currentTeam ? "New Unit" : "Create Unit"}
-          </Button>
-
-          {/* Create Task Button (Disabled if no team) */}
-          <Button
-            variant="cyan"
-            className="flex-1 sm:flex-none px-8"
-            onClick={() => setIsTaskModalOpen(true)}
-            disabled={!currentTeam} // Blocks the 400 error!
-            title={!currentTeam ? "Create a team first" : "Add Task"}
-          >
-            <PlusIcon className="h-4 w-4 mr-2" /> New_Entry
-          </Button>
-        </div>
+        {/* Search and Filters */}
+        <MatrixFilters
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          statusFilter={statusFilter}
+          setStatusFilter={setStatusFilter}
+        />
       </header>
 
-      {/* --- Task Grid --- */}
+      {/* Task Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {(tasksLoading || teamsLoading) && tasks.length === 0 ? (
+          // Loading Skeleton / State
           <div className="col-span-full h-64 flex flex-col items-center justify-center space-y-4">
             <span className="loading loading-ring loading-lg text-neon-cyan"></span>
             <p className="text-[10px] font-mono uppercase tracking-widest text-zinc-600">
               Syncing_Neural_Network...
             </p>
           </div>
-        ) : tasks.length === 0 ? (
-          <div className="col-span-full py-20 glass-panel rounded-[2.5rem] flex flex-col items-center border-dashed border-white/10 text-center p-6">
-            <p className="text-zinc-500 font-mono text-xs uppercase tracking-widest mb-4">
-              {currentTeam ? "No Active Tasks in Matrix" : "Unit Link Required"}
-            </p>
-            {!currentTeam && (
-              <Button variant="purple" onClick={() => setIsTeamModalOpen(true)}>
-                Initialize First Team
-              </Button>
-            )}
-          </div>
         ) : (
-          tasks.map((task) => (
+          filteredTasks.map((task) => (
             <motion.div
               key={task.id}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              whileHover={{ y: -5 }}
-              className="glass-panel p-8 rounded-[2.5rem] group hover:border-neon-cyan/40 transition-all duration-500 bg-black/40 relative overflow-hidden"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -5, borderColor: "rgba(6, 182, 212, 0.4)" }}
+              onClick={() => handleTaskClick(task)}
+              className="glass-panel p-8 rounded-[2.5rem] bg-black/40 border border-white/5 group transition-all duration-500 cursor-pointer relative overflow-hidden"
             >
-              <div className="absolute top-0 right-10 h-1 w-20 bg-neon-cyan opacity-20 blur-sm group-hover:opacity-60 transition-opacity" />
+              {/* Ambient Glow */}
+              <div className="absolute top-0 right-10 h-1 w-20 bg-neon-cyan opacity-0 blur-sm group-hover:opacity-40 transition-opacity" />
 
-              <div className="flex justify-between items-start mb-6">
+              <div className="flex justify-between mb-6">
                 <span
-                  className={`text-[9px] font-mono px-3 py-1 rounded-full border uppercase tracking-tighter ${
+                  className={`text-[9px] font-mono px-3 py-1 rounded-full border uppercase ${
                     task.status === "done"
-                      ? "border-neon-cyan/20 bg-neon-cyan/5 text-neon-cyan"
-                      : "border-zinc-700 bg-zinc-900 text-zinc-500"
+                      ? "border-neon-cyan text-neon-cyan bg-neon-cyan/5"
+                      : "border-zinc-700 text-zinc-500"
                   }`}
                 >
-                  {task.status || "In_Queue"}
+                  {task.status}
                 </span>
-                <button className="text-zinc-600 hover:text-white transition-colors">
-                  <EllipsisHorizontalIcon className="h-6 w-6" />
-                </button>
+
+                {/* Stop Propagation to prevent opening Edit Modal when clicking menu */}
+                <div onClick={(e) => e.stopPropagation()}>
+                  <TaskActionMenu task={task} />
+                </div>
               </div>
 
               <h3 className="text-xl font-bold mb-3 group-hover:text-neon-cyan transition-colors truncate">
                 {task.title}
               </h3>
-              <p className="text-zinc-500 text-sm font-light leading-relaxed mb-8 line-clamp-3">
-                {task.description}
+
+              <p className="text-zinc-500 text-sm line-clamp-3 mb-6 font-light leading-relaxed">
+                {task.description || "No description provided."}
               </p>
 
-              <div className="pt-6 border-t border-white/5 flex justify-between items-center">
-                <div className="flex items-center gap-2 text-zinc-600">
-                  <ClockIcon className="h-4 w-4" />
-                  <span className="text-[9px] font-mono uppercase">Open</span>
+              <div className="pt-6 border-t border-white/5 flex justify-between items-center text-zinc-600">
+                <div className="flex items-center gap-2 font-mono text-[9px] uppercase">
+                  <ClockIcon className="h-4 w-4" /> Status: {task.status}
                 </div>
                 {task.priority === "high" && (
-                  <div className="flex items-center gap-2 text-neon-purple opacity-70">
-                    <FireIcon className="h-4 w-4" />
-                    <span className="text-[9px] font-mono uppercase font-bold">
-                      High_Priority
+                  <div className="flex items-center gap-2 text-neon-purple opacity-80">
+                    <FireIcon className="h-4 w-4 animate-pulse" />
+                    <span className="text-[9px] font-mono font-bold">
+                      PRIORITY
                     </span>
                   </div>
                 )}
@@ -141,11 +177,18 @@ const TaskBoard = () => {
         )}
       </div>
 
-      {/* --- Modals --- */}
+      {/* Modals */}
       <NewTaskModal
         isOpen={isTaskModalOpen}
         onClose={() => setIsTaskModalOpen(false)}
       />
+
+      <EditTaskModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        task={selectedTask}
+      />
+
       <CreateTeamModal
         isOpen={isTeamModalOpen}
         onClose={() => setIsTeamModalOpen(false)}
