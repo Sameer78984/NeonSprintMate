@@ -55,4 +55,4 @@ const Toast = ({ message, type }) => {
   );
 };
 
-export default Toast;
+export { Toast };

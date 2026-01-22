@@ -5,26 +5,22 @@ import { useAuthStore } from "./stores/useAuthStore";
 import { useToastStore } from "./stores/useToastStore";
 
 // Components
-import LandingPage from "./pages/LandingPage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import DashboardLayout from "./features/dashboard/components/DashboardLayout";
-import TaskBoard from "./features/tasks/components/TaskBoard";
-import TeamSettings from "./features/teams/components/TeamSettings";
-import Toast from "./components/Toast";
+import { LandingPage } from "./features/landing/pages/LandingPage";
+import { LoginPage } from "./features/auth/pages/LoginPage";
+import { RegisterPage } from "./features/auth/pages/RegisterPage";
+import { DashboardLayout } from "./features/dashboard/components/DashboardLayout";
+import { TaskBoard } from "./features/tasks/components/TaskBoard";
+import { TeamSettings } from "./features/teams/components/TeamSettings";
+import { Toast } from "./components/Toast";
+import { ProtectedRoute } from "./features/auth/components/ProtectedRoute";
 
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuthStore();
-  if (loading)
-    return (
-      <div className="h-screen bg-black flex items-center justify-center text-neon-cyan font-mono">
-        INITIALIZING...
-      </div>
-    );
-  return isAuthenticated ? children : <Navigate to="/login" replace />;
-};
-
-function App() {
+/**
+ * Main App Component
+ * 
+ * Sets up routing, authentication check, and global toast notifications.
+ * All routes are defined here with protected routes wrapped in ProtectedRoute.
+ */
+export function App() {
   const { checkAuth } = useAuthStore();
   const toasts = useToastStore((state) => state.toasts); // Corrected selector
 
@@ -66,4 +62,3 @@ function App() {
   );
 }
 
-export default App;

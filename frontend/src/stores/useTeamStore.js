@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import axios from "../lib/axios";
+import { axiosInstance as axios } from "../lib/axios";
 import { useTaskStore } from "./useTaskStore";
 
 export const useTeamStore = create(
@@ -8,7 +8,7 @@ export const useTeamStore = create(
     (set, get) => ({
       teams: [],
       currentTeam: null,
-      members: [], // [NEW] Store for team members
+      members: [],
       loading: false,
       error: null,
 
@@ -19,18 +19,18 @@ export const useTeamStore = create(
           const teamsList = res.data.data;
           set({ teams: teamsList, loading: false });
 
+          // Auto-select first team if none selected
           if (teamsList.length > 0 && !get().currentTeam) {
             const firstTeam = teamsList[0];
             set({ currentTeam: firstTeam });
             useTaskStore.getState().fetchTasks(firstTeam.id);
-            get().fetchMembers(); // [NEW] Fetch members for auto-selected team
+            get().fetchMembers();
           }
         } catch (error) {
           set({ error: "Failed to sync neural units", loading: false });
         }
       },
 
-      // [NEW] Fetch Members
       fetchMembers: async () => {
         const team = get().currentTeam;
         if (!team) return;
@@ -45,7 +45,6 @@ export const useTeamStore = create(
         }
       },
 
-      // [NEW] Invite Member (By Email)
       addMember: async (email) => {
         const team = get().currentTeam;
         if (!team) return { success: false, error: "No active unit" };
@@ -53,7 +52,7 @@ export const useTeamStore = create(
         set({ loading: true });
         try {
           await axios.post(`/teams/${team.id}/members`, { email });
-          await get().fetchMembers(); // Refresh list immediately
+          await get().fetchMembers();
           set({ loading: false });
           return { success: true };
         } catch (error) {
@@ -76,7 +75,7 @@ export const useTeamStore = create(
           }));
 
           useTaskStore.getState().clearTasks();
-          get().fetchMembers(); // Fetch the single member (you) for the new team
+          get().fetchMembers();
           return { success: true };
         } catch (error) {
           const msg =
@@ -89,11 +88,15 @@ export const useTeamStore = create(
       selectTeam: (team) => {
         set({ currentTeam: team });
         useTaskStore.getState().fetchTasks(team.id);
-        get().fetchMembers(); // Fetch members when switching teams
+        get().fetchMembers();
       },
 
-      clearTeams: () =>
-        set({ teams: [], members: [], currentTeam: null, error: null }),
+      // [UPDATED] Clean Sweep Action
+      // Called by useAuthStore.logout() to wipe browser memory
+      clearTeam: () => {
+        set({ teams: [], members: [], currentTeam: null, error: null });
+        localStorage.removeItem("team-storage"); // <--- CRITICAL FIX
+      },
     }),
     {
       name: "team-storage",

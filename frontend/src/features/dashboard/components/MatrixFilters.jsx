@@ -1,19 +1,25 @@
-import React from "react";
 import { MagnifyingGlassIcon, FunnelIcon } from "@heroicons/react/24/outline";
-import NeonSelect from "../../../components/NeonSelect";
+import { NeonSelect } from "../../../components/NeonSelect";
+import { TASK_STATUS_OPTIONS } from "../../tasks/utils/constants";
 
-const MatrixFilters = ({
+/**
+ * MatrixFilters Component
+ * 
+ * Search and status filter controls for the task board.
+ * 
+ * @param {Object} props - Component props
+ * @param {string} props.searchQuery - Current search query
+ * @param {Function} props.setSearchQuery - Function to update search query
+ * @param {string} props.statusFilter - Current status filter value
+ * @param {Function} props.setStatusFilter - Function to update status filter
+ * @returns {JSX.Element} Filter controls component
+ */
+export const MatrixFilters = ({
   searchQuery,
   setSearchQuery,
   statusFilter,
   setStatusFilter,
 }) => {
-  const statusOptions = [
-    { label: "ALL_STATUS", value: "all" },
-    { label: "TODO", value: "todo" },
-    { label: "IN_PROGRESS", value: "in_progress" },
-    { label: "COMPLETED", value: "done" },
-  ];
 
   return (
     <div className="flex flex-col md:flex-row gap-4 items-end">
@@ -32,7 +38,7 @@ const MatrixFilters = ({
 
       <div className="w-full md:w-64">
         <NeonSelect
-          options={statusOptions}
+          options={TASK_STATUS_OPTIONS}
           value={statusFilter}
           onChange={setStatusFilter}
           icon={FunnelIcon}

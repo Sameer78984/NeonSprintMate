@@ -1,7 +1,8 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import axios from "../lib/axios";
+import { axiosInstance as axios } from "../lib/axios";
 import { useTaskStore } from "./useTaskStore";
+import { useTeamStore } from "./useTeamStore"; // <--- [NEW] Import Team Store
 
 export const useAuthStore = create(
   persist(
@@ -37,11 +38,6 @@ export const useAuthStore = create(
           });
           return { success: true };
         } catch (error) {
-          // --- ROBUST ERROR EXTRACTION ---
-          // 1. Check for 'error' key (Custom Handler)
-          // 2. Check for 'message' key (Standard Frameworks)
-          // 3. Check if 'data' is just a string
-          // 4. Fallback to "Login failed"
           const data = error.response?.data;
           const errorMessage =
             data?.error ||
@@ -79,19 +75,33 @@ export const useAuthStore = create(
         }
       },
 
+      // --- FINAL LOGOUT ACTION (CLEAN SWEEP) ---
       logout: async () => {
-        set({
-          user: null,
-          isAuthenticated: false,
-          error: null,
-          errorField: null,
-        });
         try {
+          // 1. Tell Backend to destroy session (removes cookie)
           await axios.post("/auth/logout");
         } catch (error) {
-          console.warn("Logout error:", error.message);
+          console.warn("Logout backend error:", error.message);
         } finally {
+          // 2. Wipe Zustand State immediately
+          set({
+            user: null,
+            isAuthenticated: false,
+            error: null,
+            errorField: null,
+          });
+
+          // 3. Trigger Cleaners in other stores
           useTaskStore.getState().clearTasks();
+          useTeamStore.getState().clearTeam(); // <--- [NEW] Wipe Team Data
+
+          // 4. CRITICAL: Manually remove ALL persisted storage keys
+          localStorage.removeItem("auth-storage");
+          localStorage.removeItem("task-storage");
+          localStorage.removeItem("team-storage"); // <--- [NEW] Wipe Team Persistence
+
+          // 5. Force a Hard Browser Refresh/Redirect
+          window.location.href = "/login";
         }
       },
     }),

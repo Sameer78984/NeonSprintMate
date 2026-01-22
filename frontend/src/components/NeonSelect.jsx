@@ -96,4 +96,4 @@ const NeonSelect = ({
   );
 };
 
-export default NeonSelect;
+export { NeonSelect };

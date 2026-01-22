@@ -1,11 +1,17 @@
-import React from "react";
 import { motion } from "framer-motion";
-import LoginForm from "../features/auth/components/Login.Form"; // Matches your filename with dot
+import { LoginForm } from "../components/LoginForm";
 
-const LoginPage = () => {
+/**
+ * LoginPage Component
+ * 
+ * Page wrapper for the login form with ambient background effects.
+ * 
+ * @returns {JSX.Element} Login page component
+ */
+export const LoginPage = () => {
   return (
     <div className="min-h-screen bg-deep-black text-white flex items-center justify-center relative overflow-hidden p-4 font-sans">
-      {/* --- Ambient Background Architecture --- */}
+      {/* Ambient Background Architecture */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute top-[-10%] right-[-10%] w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-neon-cyan/15 rounded-full blur-[100px] md:blur-[150px] animate-pulse-slow" />
         <div
@@ -29,5 +35,3 @@ const LoginPage = () => {
     </div>
   );
 };
-
-export default LoginPage;
