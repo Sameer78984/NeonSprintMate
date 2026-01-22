@@ -71,4 +71,4 @@ const TaskActionMenu = ({ task }) => {
   );
 };
 
-export default TaskActionMenu;
+export { TaskActionMenu };
