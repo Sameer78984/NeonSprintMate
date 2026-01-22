@@ -35,5 +35,6 @@ export const sessionConfig = session({
     httpOnly: true, // Required: Protects against XSS
     secure: isProd, // Required: HTTPS only in production
     maxAge: 24 * 60 * 60 * 1000,
+    sameSite: "none",
   },
 });
