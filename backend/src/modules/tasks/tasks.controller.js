@@ -10,14 +10,14 @@ export const getAllTasks = async (req, res, next) => {
       .first();
 
     if (!isMember)
-      return res
-        .status(403)
-        .json({ error: "Unauthorized: Team membership required" });
+      return res.status(403).json({ error: "Unauthorized" });
 
     const tasks = await knex("tasks")
       .where({ team_id })
-      .select("id", "title", "status", "priority", "assigned_to", "created_at") // Performance: Select specific fields
+      // ADDED "description" HERE
+      .select("id", "title", "description", "status", "priority", "assigned_to", "created_at") 
       .orderBy("created_at", "desc");
+      
     res.status(200).json({ data: tasks });
   } catch (error) {
     next(error);
