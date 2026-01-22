@@ -1,0 +1,23 @@
+**/node_modules
+**/dist
+**/build
+**/.vite
+**/.cache
+
+.git
+.github
+.vscode
+.idea
+
+**/*.log
+npm-debug.log*
+
+# Environment files (do not bake secrets into images)
+.env
+.env.*
+backend/.env
+frontend/.env
+
+# OS junk
+.DS_Store
+Thumbs.db
