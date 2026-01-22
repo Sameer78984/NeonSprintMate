@@ -15,7 +15,7 @@ router.use(isAuthenticated);
 
 router.get("/", getTasksSchema, validateRequest, taskController.getAllTasks);
 router.post("/", createTaskSchema, validateRequest, taskController.createTask);
-router.patch(
+router.put(
   "/:id",
   updateTaskSchema,
   validateRequest,

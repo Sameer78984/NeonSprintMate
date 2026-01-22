@@ -32,8 +32,25 @@ export const getTasksSchema = [
 
 export const updateTaskSchema = [
   param("id").isInt().withMessage("Task ID must be an integer"),
-  body("title").optional().trim().notEmpty().escape(),
-  body("status").optional().isIn(["todo", "in_progress", "done"]),
+  body("title")
+    .optional()
+    .trim()
+    .notEmpty()
+    .withMessage("Title cannot be empty")
+    .escape(),
+  body("description").optional().trim().escape(),
+  body("status")
+    .optional()
+    .isIn(["todo", "in_progress", "done"])
+    .withMessage("Invalid status"),
+  body("priority")
+    .optional()
+    .isIn(["low", "medium", "high"])
+    .withMessage("Invalid priority"),
+  body("assigned_to")
+    .optional({ nullable: true })
+    .isInt()
+    .withMessage("User ID must be an integer"),
 ];
 
 export const assignTaskSchema = [
