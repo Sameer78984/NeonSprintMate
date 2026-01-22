@@ -1,15 +1,12 @@
 services:
   # ------------------------------------------------------------------
-  # Backend Service (Node.js/Express)
-  # Context is root (.) because your Dockerfile copies 'backend/package.json'
+  # Backend Service
   # ------------------------------------------------------------------
   backend:
     build:
-      # Use backend folder as build context (smaller, faster builds)
-      context: ./backend
-      dockerfile: Dockerfile
-    # NOTE: This file is gitignored; create it from backend/.env.example
-    env_file: ./backend/.env
+      context: .                  
+      dockerfile: backend/Dockerfile 
+    env_file: backend/.env
     ports:
       - "5000:5000"
     restart: always
@@ -21,15 +18,14 @@ services:
       start_period: 15s
 
   # ------------------------------------------------------------------
-  # Frontend Service (React + Nginx)
-  # Context is ./frontend because the Dockerfile expects to copy package.json directly
+  # Frontend Service
   # ------------------------------------------------------------------
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "5173:80"  # Access app at http://localhost:5173
+      - "5173:80"
     restart: always
     depends_on:
       backend:
