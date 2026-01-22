@@ -22,7 +22,7 @@ router.put(
   taskController.updateTask,
 );
 router.delete("/:id", taskController.deleteTask);
-router.post(
+router.patch(
   "/:id/assign",
   assignTaskSchema,
   validateRequest,

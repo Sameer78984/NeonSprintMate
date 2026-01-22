@@ -1,13 +1,12 @@
 import { create } from "zustand";
 import axios from "../lib/axios";
-import { useTeamStore } from "./useTeamStore"; // Import the Team Store
+import { useTeamStore } from "./useTeamStore";
 
 export const useTaskStore = create((set, get) => ({
   tasks: [],
   loading: false,
   error: null,
 
-  // Fetch tasks for the specific team ID provided
   fetchTasks: async (teamId) => {
     if (!teamId) return;
     set({ loading: true, error: null });
@@ -31,18 +30,12 @@ export const useTaskStore = create((set, get) => ({
     }
 
     try {
-      // PREPARE PAYLOAD
-      const payload = {
-        ...taskData,
-        team_id: currentTeam.id,
-      };
+      const payload = { ...taskData, team_id: currentTeam.id };
 
-      // FIX: If assigned_to is an empty string ("Unassigned"),
-      // delete it so the backend doesn't complain about types.
+      // Sanitization: Ensure assigned_to is a number or removed if empty
       if (!payload.assigned_to || payload.assigned_to === "") {
         delete payload.assigned_to;
       } else {
-        // Ensure it is sent as a number if it exists
         payload.assigned_to = Number(payload.assigned_to);
       }
 
@@ -65,6 +58,39 @@ export const useTaskStore = create((set, get) => ({
     }
   },
 
+  // [NEW] Full Task Update Action
+  updateTask: async (taskId, updatedData) => {
+    const previousTasks = get().tasks;
+    set({ loading: true, error: null });
+
+    // Optimistic UI Update
+    set((state) => ({
+      tasks: state.tasks.map((task) =>
+        task.id === taskId ? { ...task, ...updatedData } : task,
+      ),
+    }));
+
+    try {
+      const payload = { ...updatedData };
+
+      // Sanitization for assigned_to
+      if (payload.assigned_to === "" || payload.assigned_to === null) {
+        payload.assigned_to = null;
+      } else if (payload.assigned_to) {
+        payload.assigned_to = Number(payload.assigned_to);
+      }
+
+      const res = await axios.put(`/tasks/${taskId}`, payload);
+      set({ loading: false });
+      return { success: true, data: res.data.data };
+    } catch (error) {
+      // Rollback on failure
+      set({ tasks: previousTasks, loading: false });
+      const errorMessage = error.response?.data?.error || "Update Failed";
+      return { success: false, error: errorMessage };
+    }
+  },
+
   updateTaskStatus: async (taskId, newStatus) => {
     const previousTasks = get().tasks;
     set((state) => ({
@@ -78,6 +104,22 @@ export const useTaskStore = create((set, get) => ({
     } catch (error) {
       set({ tasks: previousTasks });
       console.error("Server update failed:", error);
+    }
+  },
+
+  deleteTask: async (taskId) => {
+    const previousTasks = get().tasks;
+    set((state) => ({
+      tasks: state.tasks.filter((task) => task.id !== taskId),
+    }));
+
+    try {
+      await axios.delete(`/tasks/${taskId}`);
+      return { success: true };
+    } catch (error) {
+      console.log("There was an error in deleteTask, ", error);
+      set({ tasks: previousTasks });
+      return { success: false, error: "Failed to delete task" };
     }
   },
 
