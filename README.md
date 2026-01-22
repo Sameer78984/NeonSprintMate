@@ -1,74 +1,423 @@
-# 🏁 NeonSprintMate: Full-Stack Productivity Orchestrator
+<div align="center">
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Status-Backend_Complete-success?style=for-the-badge" alt="Status Backend Complete" />
-  <img src="https://img.shields.io/badge/Frontend-React_Ready-blue?style=for-the-badge" alt="Frontend React Ready" />
-</p>
+# ⚡ NeonSprintMate
 
----
+### 🚀 **Full-Stack Team Task Management System**
 
-## 🌟 The Vision
+*A high-performance, production-ready productivity orchestrator built with modern web technologies*
 
-**NeonSprintMate** is a high-performance project management suite designed to bridge the gap between complex task tracking and intuitive user experience. Built with a **decoupled architecture**, it ensures that the backend remains a secure, high-speed engine while the frontend delivers a fluid, reactive interface.
+[![React](https://img.shields.io/badge/React-19.2.0-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://react.dev/)
+[![Node.js](https://img.shields.io/badge/Node.js-20+-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Express](https://img.shields.io/badge/Express-5.2.1-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![Vite](https://img.shields.io/badge/Vite-7.2.4-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.1.18-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
----
+[![Status](https://img.shields.io/badge/Status-Production_Ready-success?style=for-the-badge)](https://github.com)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com)
 
-## 🏗️ System Architecture
-
-NeonSprintMate is powered by a modern **PERN Stack** enhanced with specialized security and state management tools.
-
-### 🖥️ Frontend (In Progress)
-
-- **Framework**: React.js with Next.js
-- **Styling**: Tailwind CSS & DaisyUI (Theming & Components)
-- **State Management**: Zustand (Minimalist, high-performance store)
-- **Icons**: Lucide React
-
-### ⚙️ Backend (Complete & Verified)
-
-- **Engine**: Node.js & Express.js
-- **Database**: Neon PostgreSQL (Serverless Relational Storage)
-- **Security**: Passport.js Sessions & Arcjet WAF
-- **ORM**: Knex.js for strict schema migrations
+</div>
 
 ---
 
-## 📂 Repository Structure
+## 📋 Table of Contents
 
-```text
-.
-├── backend/           # Node.js API, Knex migrations, & Auth logic
-│   └── README.md      # Technical API documentation & Setup
-├── frontend/          # React + Zustand Dashboard (Initial Setup)
-│   └── README.md      # UI components & State documentation
-└── docs/              # System diagrams and project planning
+- [🌟 Overview](#-overview)
+- [✨ Features](#-features)
+- [🏗️ Architecture](#️-architecture)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [📦 Project Structure](#-project-structure)
+- [🚀 Quick Start](#-quick-start)
+- [📚 Documentation](#-documentation)
+- [🔒 Security](#-security)
+- [🎯 Roadmap](#-roadmap)
+- [🤝 Contributing](#-contributing)
+
+---
+
+## 🌟 Overview
+
+**NeonSprintMate** is an enterprise-grade team task management application designed for modern development teams. It combines a robust, secure backend API with a beautiful, responsive frontend interface to deliver a seamless productivity experience.
+
+### 🎯 **Key Highlights**
+
+- ✅ **Full-Stack Implementation** - Complete PERN stack application
+- ✅ **Production-Ready** - Security-hardened with industry best practices
+- ✅ **Feature-Complete** - All assessment requirements met + bonus features
+- ✅ **Modern Architecture** - Modular, scalable, and maintainable codebase
+- ✅ **Beautiful UI** - Neon-themed, responsive design with smooth animations
+
+---
+
+## ✨ Features
+
+### 🔐 **Authentication & Security**
+- Secure user registration and login
+- Passport.js session-based authentication
+- PostgreSQL session storage with memory fallback
+- HTTP-only cookies for enhanced security
+- Role-based access control (RBAC)
+- Input validation and sanitization
+- Arcjet WAF protection
+
+### 👥 **Team Management**
+- Create and manage teams
+- Invite members via email
+- Role-based permissions (Admin/Member)
+- Team member roster view
+- Auto-assignment of team creator as admin
+
+### 📋 **Task Management**
+- Create, update, and delete tasks
+- Assign tasks to team members
+- Status tracking (Todo, In Progress, Done)
+- Priority levels (Low, Medium, High)
+- Due date support with reminders
+- Advanced filtering (by status, assignee, search)
+- Role-based task deletion (creators/admins only)
+
+### 🎨 **User Interface**
+- Modern neon-themed design
+- Fully responsive (mobile, tablet, desktop)
+- Smooth animations with Framer Motion
+- Real-time toast notifications
+- Modal-based task creation/editing
+- Interactive dashboard with live updates
+
+### 🚀 **Developer Experience**
+- Hot module replacement (HMR)
+- TypeScript-ready structure
+- Comprehensive error handling
+- Modular feature-based architecture
+- Reusable component library
+- Custom hooks for business logic
+
+---
+
+## 🏗️ Architecture
+
+### **System Architecture**
 
 ```
+┌─────────────────────────────────────────────────────────────┐
+│                        CLIENT LAYER                          │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │   React 19   │  │  Zustand     │  │  React Router│      │
+│  │   + Vite     │  │  State Mgmt  │  │  Navigation  │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+└─────────────────────────────────────────────────────────────┘
+                            ↕ HTTPS
+┌─────────────────────────────────────────────────────────────┐
+│                      API GATEWAY LAYER                      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │   Express    │  │   Passport   │  │   Arcjet     │      │
+│  │   REST API   │  │   Sessions   │  │   WAF        │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+└─────────────────────────────────────────────────────────────┘
+                            ↕
+┌─────────────────────────────────────────────────────────────┐
+│                      BUSINESS LOGIC LAYER                   │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │    Auth      │  │    Teams     │  │    Tasks     │      │
+│  │  Controller  │  │  Controller  │  │  Controller  │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+└─────────────────────────────────────────────────────────────┘
+                            ↕
+┌─────────────────────────────────────────────────────────────┐
+│                      DATA LAYER                             │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │   Knex.js    │  │  PostgreSQL  │  │  Sessions    │      │
+│  │   ORM        │  │  (Neon)      │  │  Store       │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+└─────────────────────────────────────────────────────────────┘
+```
 
-## 🚀 Project Roadmap
+### **Database Schema**
 
-### Phase 1: Core Engine 🟢
-
-- [x] **Relational Schema**: Implemented Users, Teams, and Tasks in Neon.
-- [x] **Security Hardening**: Session persistence and RBAC middleware.
-- [x] **API Endpoints**: Verified CRUD operations for work items.
-
-### Phase 2: Reactive UI 🟡
-
-- [ ] **Zustand Stores**: Centralized state for Auth and Task tracking.
-- [ ] **DaisyUI Theming**: Dynamic Light/Dark mode implementation using Tailwind CSS.
-- [ ] **Kanban Board**: Interactive drag-and-drop task management interface.
-
-### Phase 3: Deployment ⚪
-
-- [ ] **Monitoring**: Implementation of real-time error tracking and performance logs.
+```
+┌──────────┐      ┌──────────┐      ┌──────────┐
+│  Users   │      │  Teams   │      │  Tasks   │
+├──────────┤      ├──────────┤      ├──────────┤
+│ id (PK)  │      │ id (PK)  │      │ id (PK)  │
+│ username │      │ name     │      │ title    │
+│ email    │◄─────┤ created_by│◄────┤ team_id  │
+│ password │      │ desc     │      │ assigned │
+│ name     │      └──────────┘      │ status   │
+└────┬─────┘            │            │ priority │
+     │                  │            │ due_date │
+     │            ┌─────▼─────┐     └──────────┘
+     └───────────►│ Membership│
+                  ├───────────┤
+                  │ id (PK)   │
+                  │ team_id   │
+                  │ user_id   │
+                  │ role      │
+                  └───────────┘
+```
 
 ---
 
-## 🚦 Quick Start
+## 🛠️ Tech Stack
 
-1. **Clone & Install**:
+### **Frontend**
+| Technology | Version | Purpose |
+|:----------|:--------|:--------|
+| **React** | 19.2.0 | UI Framework |
+| **Vite** | 7.2.4 | Build Tool & Dev Server |
+| **Tailwind CSS** | 4.1.18 | Utility-First CSS |
+| **Framer Motion** | 12.27.3 | Animation Library |
+| **Zustand** | 5.0.10 | State Management |
+| **React Router** | 7.12.0 | Client-Side Routing |
+| **Axios** | 1.13.2 | HTTP Client |
+| **DaisyUI** | 5.5.14 | Component Library |
+
+### **Backend**
+| Technology | Version | Purpose |
+|:----------|:--------|:--------|
+| **Node.js** | 20+ | Runtime Environment |
+| **Express** | 5.2.1 | Web Framework |
+| **PostgreSQL** | 16 | Relational Database |
+| **Knex.js** | 3.1.0 | SQL Query Builder |
+| **Passport.js** | 0.7.0 | Authentication |
+| **Express-Validator** | 7.3.1 | Input Validation |
+| **Bcrypt.js** | 3.0.3 | Password Hashing |
+| **Arcjet** | 1.0.0-beta.17 | Web Application Firewall |
+
+---
+
+## 📦 Project Structure
+
+```
+NeonSprintMate/
+├── 📁 frontend/                 # React Frontend Application
+│   ├── 📁 src/
+│   │   ├── 📁 features/        # Feature-based modules
+│   │   │   ├── 📁 auth/         # Authentication feature
+│   │   │   ├── 📁 dashboard/    # Dashboard components
+│   │   │   ├── 📁 landing/      # Landing page
+│   │   │   ├── 📁 tasks/        # Task management
+│   │   │   └── 📁 teams/        # Team management
+│   │   ├── 📁 components/       # Shared UI components
+│   │   ├── 📁 stores/           # Zustand state stores
+│   │   ├── 📁 lib/              # Utilities & configs
+│   │   └── 📁 utils/            # Helper functions
+│   ├── package.json
+│   └── vite.config.js
+│
+├── 📁 backend/                  # Node.js Backend API
+│   ├── 📁 src/
+│   │   ├── 📁 modules/          # Feature modules
+│   │   │   ├── 📁 auth/         # Auth routes & logic
+│   │   │   ├── 📁 teams/        # Team management
+│   │   │   └── 📁 tasks/        # Task management
+│   │   ├── 📁 config/           # Configuration files
+│   │   ├── 📁 database/         # Migrations & seeds
+│   │   ├── 📁 middleware/       # Express middleware
+│   │   └── server.js            # Entry point
+│   ├── package.json
+│   └── knexfile.js
+│
+├── 📄 README.md                 # This file
+├── 📄 LICENSE                   # MIT License
+└── 📄 docker-compose.yaml       # Docker configuration
+```
+
+---
+
+## 🚀 Quick Start
+
+### **Prerequisites**
+
+- **Node.js** 20.x or higher
+- **npm** 9.x or higher
+- **PostgreSQL** database (Neon PostgreSQL recommended)
+- **Git** for version control
+
+### **Installation**
+
+1. **Clone the repository**
    ```bash
-   git clone https://github.com/Sameer78984/NeonSprintMate
-   npm install
+   git clone https://github.com/yourusername/NeonSprintMate.git
+   cd NeonSprintMate
    ```
+
+2. **Backend Setup**
+   ```bash
+   cd backend
+   npm install
+   
+   # Create .env file
+   cp .env.example .env
+   # Edit .env with your database credentials
+   
+   # Run migrations
+   npx knex migrate:latest
+   
+   # Start development server
+   npm run dev
+   ```
+
+3. **Frontend Setup**
+   ```bash
+   cd frontend
+   npm install
+   
+   # Create .env file
+   echo "VITE_API_URL=http://localhost:5000/api" > .env
+   
+   # Start development server
+   npm run dev
+   ```
+
+4. **Access the Application**
+   - Frontend: http://localhost:5173
+   - Backend API: http://localhost:5000/api
+
+### **Environment Variables**
+
+#### **Backend (.env)**
+```env
+PORT=5000
+NODE_ENV=development
+FRONTEND_URL=http://localhost:5173
+
+# Database
+DATABASE_URL=postgres://user:pass@host/db?sslmode=require
+
+# Security
+SESSION_SECRET=your-super-secret-session-key-here
+ARCJET_KEY=your-arcjet-key
+ARCJET_ENV=development
+USE_DB_SESSION=true
+```
+
+#### **Frontend (.env)**
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+
+---
+
+## 📚 Documentation
+
+### **Detailed Documentation**
+
+- 📖 [Frontend Documentation](./frontend/README.md) - Complete frontend guide
+- 📖 [Backend Documentation](./backend/README.md) - Complete backend guide
+- 📊 [Audit Report](./AUDIT_REPORT.md) - Requirements compliance report
+
+### **API Documentation**
+
+#### **Authentication Endpoints**
+```
+POST   /api/auth/register    - Register new user
+POST   /api/auth/login       - User login
+POST   /api/auth/logout      - User logout
+GET    /api/auth/me          - Get current user
+```
+
+#### **Team Endpoints**
+```
+GET    /api/teams            - Get user's teams
+POST   /api/teams            - Create team
+PUT    /api/teams/:id        - Update team (admin only)
+DELETE /api/teams/:id        - Delete team (admin only)
+GET    /api/teams/:id/members - Get team members
+POST   /api/teams/:id/members - Add member (admin only)
+```
+
+#### **Task Endpoints**
+```
+GET    /api/tasks?team_id=X  - Get tasks for team
+POST   /api/tasks            - Create task
+PUT    /api/tasks/:id        - Update task
+DELETE /api/tasks/:id        - Delete task (creator/admin only)
+PATCH  /api/tasks/:id/assign - Assign task
+```
+
+---
+
+## 🔒 Security
+
+### **Implemented Security Measures**
+
+- ✅ **Password Hashing** - Bcrypt with salt rounds
+- ✅ **Session Security** - HTTP-only cookies, secure flag in production
+- ✅ **Input Validation** - Express-validator with sanitization
+- ✅ **SQL Injection Prevention** - Parameterized queries via Knex
+- ✅ **XSS Protection** - Helmet.js security headers
+- ✅ **CSRF Protection** - SameSite cookie attribute
+- ✅ **Rate Limiting** - Arcjet WAF integration
+- ✅ **Role-Based Access** - RBAC for teams and tasks
+- ✅ **Authentication Middleware** - Protected routes
+
+---
+
+## 🎯 Roadmap
+
+### **✅ Completed**
+- [x] Full authentication system
+- [x] Team management with RBAC
+- [x] Task CRUD operations
+- [x] Advanced filtering system
+- [x] Responsive UI design
+- [x] Due date reminders
+- [x] Email-based member invites
+
+### **🚧 In Progress**
+- [ ] Real-time notifications
+- [ ] Task comments system
+- [ ] File attachments
+- [ ] Advanced analytics dashboard
+
+### **📋 Planned**
+- [ ] Mobile applications (React Native)
+- [ ] WebSocket integration
+- [ ] Advanced reporting
+- [ ] Integration with external tools
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### **Code Style**
+
+- Follow ESLint configuration
+- Use meaningful variable names
+- Add JSDoc comments for complex functions
+- Write descriptive commit messages
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👨‍💻 Author
+
+**Sameer**
+
+- GitHub: [@Sameer78984](https://github.com/Sameer78984)
+
+---
+
+<div align="center">
+
+### ⭐ **Star this repo if you find it helpful!** ⭐
+
+**Built with ❤️ using React, Node.js, and PostgreSQL**
+
+[⬆ Back to Top](#-neonsprintmate)
+
+</div>

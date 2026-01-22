@@ -91,17 +91,40 @@ export const updateTask = async (req, res, next) => {
   }
 };
 
-// 4. Delete Task
+// 4. Delete Task (Role-Based Access: Only creator or team admin can delete)
 export const deleteTask = async (req, res, next) => {
   try {
     const { id } = req.params;
+    
+    // Validate task ID
+    if (!id || isNaN(Number(id))) {
+      return res.status(400).json({ error: "Invalid task ID" });
+    }
+
     const task = await knex("tasks").where({ id }).first();
     if (!task) return res.status(404).json({ error: "Task not found" });
 
+    // Validate user authentication
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    // Check if user is a team member
     const isMember = await knex("membership")
       .where({ team_id: task.team_id, user_id: req.user.id })
       .first();
     if (!isMember) return res.status(403).json({ error: "Unauthorized" });
+
+    // Role-based access: Only task creator or team admin can delete
+    // Use Number() to ensure type-safe comparison (handles string/number from DB)
+    const isCreator = Number(task.created_by) === Number(req.user.id);
+    const isAdmin = isMember.role === "admin";
+
+    if (!isCreator && !isAdmin) {
+      return res.status(403).json({
+        error: "Only task creators or team admins can delete tasks",
+      });
+    }
 
     await knex("tasks").where({ id }).del();
     res.status(200).json({ message: "Task deleted successfully" });

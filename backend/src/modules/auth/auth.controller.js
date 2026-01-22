@@ -26,16 +26,40 @@ export const register = async (req, res) => {
 };
 
 export const login = (req, res, next) => {
-  passport.authenticate("local", (err, user, info) => {
+  passport.authenticate("local", async (err, user, info) => {
     if (err) return next(err);
     if (!user) {
       return res
         .status(401)
         .json({ message: info.message || "Invalid credentials" });
     }
-    req.logIn(user, (err) => {
+    req.logIn(user, async (err) => {
       if (err) return next(err);
-      return res.status(200).json({
+      
+      // Validate user object has required properties
+      if (!user.id) {
+        return res.status(500).json({ 
+          message: "Authentication error: Invalid user data" 
+        });
+      }
+      
+      // Bonus Feature: Check for due date reminders on login
+      let reminders = [];
+      try {
+        const { checkDueDateReminders } = await import("../tasks/tasks.reminder.js");
+        // Ensure user.id is valid before calling reminder check
+        if (user.id && Number(user.id)) {
+          reminders = await checkDueDateReminders(Number(user.id));
+        }
+      } catch (error) {
+        // Silently fail if reminder check fails (non-critical)
+        console.warn("Reminder check failed:", error.message);
+        // Ensure reminders remains an empty array on error
+        reminders = [];
+      }
+      
+      // Build response object
+      const response = {
         message: "Welcome back!",
         user: {
           id: user.id,
@@ -43,7 +67,14 @@ export const login = (req, res, next) => {
           email: user.email,
           name: user.name,
         },
-      });
+      };
+      
+      // Only include reminders if array is not empty
+      if (Array.isArray(reminders) && reminders.length > 0) {
+        response.reminders = reminders;
+      }
+      
+      return res.status(200).json(response);
     });
   })(req, res, next);
 };

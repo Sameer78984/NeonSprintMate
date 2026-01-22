@@ -32,6 +32,7 @@ export const TaskBoard = () => {
   const [selectedTask, setSelectedTask] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [assigneeFilter, setAssigneeFilter] = useState("all");
 
   // Initial Team Sync
   useEffect(() => {
@@ -48,8 +49,8 @@ export const TaskBoard = () => {
     }
   }, [currentTeam?.id, fetchTasks, clearTasks]);
 
-  // Use custom hook for filtering
-  const filteredTasks = useTaskFilters(tasks, searchQuery, statusFilter);
+  // Use custom hook for filtering (includes assignee filter)
+  const filteredTasks = useTaskFilters(tasks, searchQuery, statusFilter, assigneeFilter);
 
   /**
    * Handler to open the full edit modal when a task card is clicked
@@ -74,6 +75,8 @@ export const TaskBoard = () => {
           setSearchQuery={setSearchQuery}
           statusFilter={statusFilter}
           setStatusFilter={setStatusFilter}
+          assigneeFilter={assigneeFilter}
+          setAssigneeFilter={setAssigneeFilter}
         />
       </header>
 
