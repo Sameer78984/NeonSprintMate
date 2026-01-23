@@ -28,7 +28,7 @@ const NeonSelect = ({
   return (
     <div className="space-y-2 w-full relative" ref={containerRef}>
       {label && (
-        <label className="text-[10px] uppercase tracking-[0.2em] ml-4 font-bold font-mono text-zinc-500">
+        <label className="text-xs ml-4 font-medium text-gray-300 transition-colors">
           {label}
         </label>
       )}

@@ -12,12 +12,11 @@ export const LandingStatusBar = () => {
       <div className="flex items-center gap-3 md:gap-6">
         <span className="flex items-center gap-2">
           <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-ping" />
-          <span className="hidden xs:inline">Node:</span> Stable
+          <span className="hidden xs:inline">System Status:</span> Operational
         </span>
-        <span className="hidden sm:inline">Sync Latency: 14ms</span>
       </div>
       <div className="truncate pl-4">
-        Clearance: Level 1 // Protocol: v4.2
+        v1.0.0
       </div>
     </div>
   );

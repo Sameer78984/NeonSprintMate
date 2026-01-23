@@ -29,9 +29,9 @@ export const TeamInviteSection = ({
           <UserPlusIcon className="h-6 w-6 text-neon-purple" />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-white">Recruit Operative</h3>
+          <h3 className="text-lg font-bold text-white">Invite Member</h3>
           <p className="text-xs text-zinc-500">
-            Add existing users to this unit via email.
+            Add existing users to this team via email.
           </p>
         </div>
       </div>
@@ -40,7 +40,7 @@ export const TeamInviteSection = ({
         <div className="flex-1">
           <Input
             icon={EnvelopeIcon}
-            placeholder="operative@nexus.sys"
+            placeholder="user@example.com"
             value={inviteEmail}
             onChange={(e) => setInviteEmail(e.target.value)}
             required

@@ -64,14 +64,14 @@ export const EditTaskModal = ({ isOpen, onClose, task }) => {
       >
         <ModalHeader
           icon={PencilSquareIcon}
-          title="Edit_Objective"
+          title="Edit Task"
           onClose={onClose}
           color="purple"
         />
 
         <div className="space-y-6">
           <Input
-            label="Objective Title"
+            label="Task Title"
             value={formData.title}
             onChange={(e) =>
               setFormData({ ...formData, title: e.target.value })
@@ -89,7 +89,7 @@ export const EditTaskModal = ({ isOpen, onClose, task }) => {
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })
               }
-              placeholder="Enter objective parameters..."
+              placeholder="Enter task description..."
             />
           </div>
 
@@ -104,7 +104,7 @@ export const EditTaskModal = ({ isOpen, onClose, task }) => {
               icon={ArrowPathIcon}
             />
             <NeonSelect
-              label="Assigned Operative"
+              label="Assign Member"
               options={memberOptions}
               value={formData.assigned_to}
               onChange={(val) =>
@@ -122,7 +122,7 @@ export const EditTaskModal = ({ isOpen, onClose, task }) => {
             onClick={onClose}
             className="flex-1"
           >
-            Discard
+            Cancel
           </Button>
           <Button
             type="submit"
@@ -130,7 +130,7 @@ export const EditTaskModal = ({ isOpen, onClose, task }) => {
             loading={loading}
             className="flex-1"
           >
-            Update Node
+            Save Changes
           </Button>
         </div>
       </form>

@@ -22,8 +22,8 @@ const Input = ({
     >
       {label && (
         <label
-          className={`text-[10px] uppercase tracking-[0.2em] ml-4 font-bold font-mono transition-colors duration-300 ${
-            isErrorField ? "text-red-500" : "text-zinc-500"
+          className={`text-xs ml-4 font-medium transition-colors duration-300 ${
+            isErrorField ? "text-red-500" : "text-gray-300"
           }`}
         >
           {label}{" "}

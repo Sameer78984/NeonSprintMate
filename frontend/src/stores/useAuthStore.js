@@ -9,18 +9,19 @@ export const useAuthStore = create(
     (set) => ({
       user: null,
       isAuthenticated: false,
+      isCheckingAuth: true, // [NEW] Track initial auth check
       loading: false,
       error: null,
       errorField: null,
 
       checkAuth: async () => {
-        set({ loading: true });
+        set({ isCheckingAuth: true });
         try {
           const res = await axios.get("/auth/me");
-          set({ user: res.data.user, isAuthenticated: true, loading: false });
+          set({ user: res.data.user, isAuthenticated: true, isCheckingAuth: false });
         } catch (error) {
           console.log("There was an error in checkAuth, ", error);
-          set({ user: null, isAuthenticated: false, loading: false });
+          set({ user: null, isAuthenticated: false, isCheckingAuth: false });
         }
       },
 

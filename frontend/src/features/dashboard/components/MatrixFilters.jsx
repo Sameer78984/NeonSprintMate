@@ -30,7 +30,7 @@ export const MatrixFilters = ({
   // Build assignee options including "All" and "Unassigned"
   // Safely handle undefined/null members array
   const assigneeOptions = [
-    { label: "ALL_OPERATIVES", value: "all" },
+    { label: "All Members", value: "all" },
     { label: "UNASSIGNED", value: "unassigned" },
     ...(Array.isArray(members) 
       ? members
@@ -50,7 +50,7 @@ export const MatrixFilters = ({
         </div>
         <input
           type="text"
-          placeholder="Search Matrix for Objectives..."
+          placeholder="Search Tasks..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full bg-black/40 border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-sm glass-panel focus:border-neon-cyan/50 focus:outline-none text-white placeholder:text-zinc-700 transition-all"
