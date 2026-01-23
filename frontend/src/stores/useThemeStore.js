@@ -31,6 +31,9 @@ export const useThemeStore = create(
       snowSpeed: 1, // Multiplier
       snowAmount: 50, // Count
       
+      // Welcome Flow
+      hasSeenWelcome: false,
+      
       setMode: (mode) => set({ mode }),
       setDensity: (density) => set({ density }),
       setPrimaryColor: (color) => set({ primaryColor: color }),
@@ -51,6 +54,7 @@ export const useThemeStore = create(
       setRainAmount: (amount) => set({ rainAmount: amount }),
       setSnowSpeed: (speed) => set({ snowSpeed: speed }),
       setSnowAmount: (amount) => set({ snowAmount: amount }),
+      setHasSeenWelcome: (hasSeen) => set({ hasSeenWelcome: hasSeen }),
     }),
     {
       name: "theme-storage",

@@ -84,6 +84,14 @@
 - Real-time toast notifications
 - Modal-based task creation/editing
 - Interactive dashboard with live updates
+- Theme customization (Light/Dark mode + Color accents)
+
+### 🎇 **Visuals & UX**
+- **Dynamic Theming** - 5+ Color themes (Cyan, Purple, Pink, Lime, Orange)
+- **Interactive Backgrounds** - Cyber Rain, Snow, Aurora, and more
+- **Micro-Interactions** - "Shake-on-error" inputs, hover glows
+- **Password Visibility** - Toggleable password masking
+- **Glassmorphism** - Modern glass UI across the application
 
 ### 🚀 **Developer Experience**
 - Hot module replacement (HMR)

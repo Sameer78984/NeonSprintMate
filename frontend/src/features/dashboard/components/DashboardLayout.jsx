@@ -21,9 +21,9 @@ export const DashboardLayout = () => {
   const { user, logout } = useAuthStore();
 
   return (
-    <div className="h-screen bg-transparent text-white flex overflow-hidden font-sans transition-colors duration-500">
+    <div className="h-screen bg-transparent text-base-content flex overflow-hidden font-sans transition-colors duration-500">
       <aside 
-        className={`hidden md:flex flex-col glass-panel border-r border-white/5 relative z-20 transition-all duration-300 ${
+        className={`hidden md:flex flex-col glass-panel border-r border-base-content/5 relative z-20 transition-all duration-300 ${
           isSidebarCollapsed ? "w-20" : "w-72"
         }`}
       >

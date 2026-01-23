@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { XMarkIcon, PaintBrushIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon, PaintBrushIcon, SunIcon, MoonIcon } from "@heroicons/react/24/outline";
 import { useThemeStore } from "../../../stores/useThemeStore";
 
 export const ThemeSettingsModal = ({ isOpen, onClose }) => {
@@ -9,7 +9,8 @@ export const ThemeSettingsModal = ({ isOpen, onClose }) => {
     rainAmount, setRainAmount,
     snowSpeed, setSnowSpeed,
     snowAmount, setSnowAmount,
-    enableParticles, setEnableParticles
+    enableParticles, setEnableParticles,
+    mode, setMode
   } = useThemeStore();
 
   if (!isOpen) return null;
@@ -29,22 +30,31 @@ export const ThemeSettingsModal = ({ isOpen, onClose }) => {
            initial={{ scale: 0.9, opacity: 0 }}
            animate={{ scale: 1, opacity: 1 }}
            exit={{ scale: 0.9, opacity: 0 }}
-           className="relative w-full max-w-lg bg-zinc-900 border border-neon-cyan/30 rounded-2xl p-6 shadow-[0_0_30px_rgba(6,182,212,0.2)] max-h-[90vh] overflow-y-auto"
+           className="relative w-full max-w-lg bg-base-100 border border-primary/30 rounded-2xl p-6 shadow-[0_0_30px_rgba(var(--color-primary),0.2)] max-h-[90vh] overflow-y-auto"
         >
-            <div className="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+            <div className="flex justify-between items-center mb-6 border-b border-base-content/10 pb-4">
                 <div className="flex items-center gap-3">
-                    <PaintBrushIcon className="h-6 w-6 text-neon-cyan" />
-                    <h2 className="text-xl font-bold text-white">Theme Details</h2>
+                    <PaintBrushIcon className="h-6 w-6 text-primary" />
+                    <h2 className="text-xl font-bold text-base-content">Theme Details</h2>
                 </div>
-                <button onClick={onClose} className="text-zinc-400 hover:text-white transition-colors">
-                    <XMarkIcon className="h-6 w-6" />
-                </button>
+                <div className="flex items-center gap-2">
+                    <button
+                        onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-base-200 hover:bg-base-300 text-base-content/80 transition-colors mr-2"
+                    >
+                        {mode === 'light' ? <MoonIcon className="h-4 w-4" /> : <SunIcon className="h-4 w-4" />}
+                        <span className="text-xs font-bold">{mode === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
+                    </button>
+                    <button onClick={onClose} className="text-base-content/60 hover:text-base-content transition-colors">
+                        <XMarkIcon className="h-6 w-6" />
+                    </button>
+                </div>
             </div>
 
             <div className="space-y-8">
                 {/* Background Style Selector */}
                 <div className="space-y-3">
-                    <label className="text-sm font-medium text-zinc-400 uppercase tracking-wider">Environment</label>
+                    <label className="text-sm font-medium text-base-content/60 uppercase tracking-wider">Environment</label>
                     <div className="grid grid-cols-2 gap-2">
                         {['grid', 'aurora', 'nebula', 'cyber_rain', 'snow', 'cherry_blossoms', 'fireflies', 'matrix', 'minimal'].map((style) => (
                            <button
@@ -52,8 +62,8 @@ export const ThemeSettingsModal = ({ isOpen, onClose }) => {
                              onClick={() => setBgStyle(style)}
                              className={`px-4 py-3 rounded-xl border text-sm font-semibold transition-all ${
                                  bgStyle === style 
-                                 ? "border-neon-cyan bg-neon-cyan/20 text-white shadow-[0_0_10px_rgba(6,182,212,0.3)]" 
-                                 : "border-white/10 bg-white/5 text-zinc-400 hover:bg-white/10"
+                                 ? "border-primary bg-primary/20 text-base-content shadow-[0_0_10px_rgba(var(--color-primary),0.3)]" 
+                                 : "border-base-content/10 bg-base-content/5 text-base-content/60 hover:bg-base-content/10"
                              }`}
                            >
                                {style.replace('_', ' ').toUpperCase()}
@@ -64,11 +74,11 @@ export const ThemeSettingsModal = ({ isOpen, onClose }) => {
 
                 {/* Rain Controls */}
                 {bgStyle === 'cyber_rain' && (
-                    <div className="space-y-4 p-4 rounded-xl bg-white/5 border border-white/5">
-                        <label className="text-sm font-bold text-neon-cyan uppercase">Rain Config</label>
+                    <div className="space-y-4 p-4 rounded-xl bg-base-content/5 border border-base-content/5">
+                        <label className="text-sm font-bold text-primary uppercase">Rain Config</label>
                         
                         <div className="space-y-2">
-                            <div className="flex justify-between text-xs text-zinc-400">
+                            <div className="flex justify-between text-xs text-base-content/60">
                                 <span>Speed (x{rainSpeed})</span>
                             </div>
                             <input 
@@ -78,12 +88,12 @@ export const ThemeSettingsModal = ({ isOpen, onClose }) => {
                                 step="0.5"
                                 value={rainSpeed}
                                 onChange={(e) => setRainSpeed(Number(e.target.value))}
-                                className="w-full accent-neon-cyan"
+                                className="w-full accent-primary"
                             />
                         </div>
 
                         <div className="space-y-2">
-                            <div className="flex justify-between text-xs text-zinc-400">
+                            <div className="flex justify-between text-xs text-base-content/60">
                                 <span>Density ({rainAmount})</span>
                             </div>
                             <input 
@@ -93,7 +103,7 @@ export const ThemeSettingsModal = ({ isOpen, onClose }) => {
                                 step="10"
                                 value={rainAmount}
                                 onChange={(e) => setRainAmount(Number(e.target.value))}
-                                className="w-full accent-neon-cyan"
+                                className="w-full accent-primary"
                             />
                         </div>
                     </div>
@@ -101,11 +111,11 @@ export const ThemeSettingsModal = ({ isOpen, onClose }) => {
 
                 {/* Snow Controls */}
                 {bgStyle === 'snow' && (
-                    <div className="space-y-4 p-4 rounded-xl bg-white/5 border border-white/5">
-                         <label className="text-sm font-bold text-white uppercase">Snow Config</label>
+                    <div className="space-y-4 p-4 rounded-xl bg-base-content/5 border border-base-content/5">
+                         <label className="text-sm font-bold text-base-content uppercase">Snow Config</label>
                         
                         <div className="space-y-2">
-                            <div className="flex justify-between text-xs text-zinc-400">
+                            <div className="flex justify-between text-xs text-base-content/60">
                                 <span>Speed (x{snowSpeed})</span>
                             </div>
                             <input 
@@ -115,12 +125,12 @@ export const ThemeSettingsModal = ({ isOpen, onClose }) => {
                                 step="0.5"
                                 value={snowSpeed}
                                 onChange={(e) => setSnowSpeed(Number(e.target.value))}
-                                className="w-full accent-white"
+                                className="w-full accent-base-content"
                             />
                         </div>
 
                         <div className="space-y-2">
-                            <div className="flex justify-between text-xs text-zinc-400">
+                            <div className="flex justify-between text-xs text-base-content/60">
                                 <span>Flurries ({snowAmount})</span>
                             </div>
                             <input 
@@ -130,22 +140,22 @@ export const ThemeSettingsModal = ({ isOpen, onClose }) => {
                                 step="10"
                                 value={snowAmount}
                                 onChange={(e) => setSnowAmount(Number(e.target.value))}
-                                className="w-full accent-white"
+                                className="w-full accent-base-content"
                             />
                         </div>
                     </div>
                 )}
                 
                 {/* Global Particles */}
-                <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10">
+                <div className="flex items-center justify-between p-4 rounded-xl bg-base-content/5 border border-base-content/10">
                     <div>
-                        <div className="text-sm font-medium text-white">Interactive Particles</div>
-                        <div className="text-xs text-zinc-500">Enable mouse-reactive dust</div>
+                        <div className="text-sm font-medium text-base-content">Interactive Particles</div>
+                        <div className="text-xs text-base-content/60">Enable mouse-reactive dust</div>
                     </div>
                     <button 
                         onClick={() => setEnableParticles(!enableParticles)}
                         className={`w-12 h-6 rounded-full transition-colors relative ${
-                            enableParticles ? "bg-neon-cyan" : "bg-zinc-700"
+                            enableParticles ? "bg-primary" : "bg-base-content/30"
                         }`}
                     >
                          <div className={`absolute top-1 left-1 bg-white w-4 h-4 rounded-full transition-transform ${

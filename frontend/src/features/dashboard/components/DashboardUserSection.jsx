@@ -23,23 +23,23 @@ export const DashboardUserSection = ({ user, logout, isCollapsed }) => {
   };
 
   return (
-    <div className={`p-6 border-t border-white/5 ${isCollapsed ? "flex flex-col items-center" : ""}`}>
+    <div className={`p-6 border-t border-base-content/5 ${isCollapsed ? "flex flex-col items-center" : ""}`}>
       <Link 
         to="/dashboard/profile" 
-        className={`flex items-center gap-4 mb-6 px-2 hover:bg-white/5 rounded-xl transition-colors p-2 -mx-2 group ${
+        className={`flex items-center gap-4 mb-6 px-2 hover:bg-base-content/5 rounded-xl transition-colors p-2 -mx-2 group ${
           isCollapsed ? "justify-center" : ""
         }`}
         title={isCollapsed ? "Profile" : ""}
       >
         <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-neon-cyan to-neon-purple p-[2px] flex-shrink-0 group-hover:scale-110 transition-transform">
-          <div className="h-full w-full rounded-full bg-black flex items-center justify-center">
-            <UserCircleIcon className="h-6 w-6 text-zinc-400 group-hover:text-neon-cyan transition-colors" />
+          <div className="h-full w-full rounded-full bg-base-300 flex items-center justify-center">
+            <UserCircleIcon className="h-6 w-6 text-base-content/50 group-hover:text-neon-cyan transition-colors" />
           </div>
         </div>
         {!isCollapsed && (
           <div className="truncate">
-            <p className="text-[10px] font-black uppercase truncate text-white group-hover:text-neon-cyan transition-colors">{user?.name || "User"}</p>
-            <p className="text-[8px] text-zinc-500 tracking-wider font-mono truncate lowercase">{user?.email}</p>
+            <p className="text-[10px] font-black uppercase truncate text-base-content group-hover:text-neon-cyan transition-colors">{user?.name || "User"}</p>
+            <p className="text-[8px] text-base-content/50 tracking-wider font-mono truncate lowercase">{user?.email}</p>
           </div>
         )}
       </Link>
