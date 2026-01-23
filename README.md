@@ -14,7 +14,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.1.18-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
 [![Status](https://img.shields.io/badge/Status-Production_Ready-success?style=for-the-badge)](https://github.com)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+[![License](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)](LICENSE)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com)
 
 </div>
@@ -406,9 +406,16 @@ Contributions are welcome! Please follow these steps:
 
 ---
 
-## 📄 License
+## 📄 License & Usage (PROPRIETARY)
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+**Copyright (c) 2026 Sameer - All Rights Reserved**
+
+This software is **Source Available** for educational and reference purposes only.
+- ❌ **Commercial Use:** STRICTLY FORBIDDEN
+- ❌ **Modification:** STRICTLY FORBIDDEN
+- ❌ **Distribution:** STRICTLY FORBIDDEN
+
+No license is granted to use this software in any commercial or production environment. See the [LICENSE](LICENSE) file for the full legal terms.
 
 ---
 

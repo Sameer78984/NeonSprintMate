@@ -1,21 +1,25 @@
-MIT License
-
+PROPRIETARY LICENSE
 Copyright (c) 2026 Sameer
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. Definitions
+   "Software" refers to the code, documentation, and assets contained within this repository (NeonSprintMate).
+   "Author" refers to the copyright holder, Sameer.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+2. License Grant (Source Available Only)
+   Permission is hereby granted, free of charge, to any person obtaining a copy of this Software, to view, read, and study the source code for EDUCATIONAL and REFERENCE purposes only.
+
+3. Restrictions (STRICTLY FORBIDDEN)
+   a. Commercial Use: The Software may NOT be used for any commercial purpose, including but not limited to business logic, production environments, or revenue-generating activities.
+   b. Modification: You may NOT modify, alter, or create derivative works of the Software.
+   c. Distribution: You may NOT redistribute, sublicense, or sell copies of the Software in any form.
+   d. Private Business Use: You may NOT use this Software privately for any business operations or internal tools.
+
+4. No Warranty
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+5. Reservation of Rights
+   All rights not expressly granted under this license are reserved by the Author.
+
+NO LICENSE IS GRANTED TO USE THIS SOFTWARE IN ANY COMMERCIAL OR PRODUCTION ENVIRONMENT.
