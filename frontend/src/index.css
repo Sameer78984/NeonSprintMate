@@ -55,6 +55,26 @@ body {
   background-color: rgba(0, 0, 0, 0.05) !important;
 }
 
+/* Force Input/Select/Textarea Text Color in Light Mode */
+[data-theme="light"] input,
+[data-theme="light"] textarea,
+[data-theme="light"] select {
+  color: #0f172a !important;
+  /* Zinc 900 */
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea::placeholder {
+  color: #64748b !important;
+  /* Zinc 500 */
+}
+
+/* Force base content text to be dark in light mode */
+[data-theme="light"] .text-base-content {
+  color: #0f172a !important;
+}
+
 /* READABILITY BOOST (GLOBAL) */
 [data-theme="dark"] .text-zinc-500 {
   color: #a1a1aa !important;
@@ -259,3 +279,16 @@ select:focus {
 @utility neon-glow-orange {
   box-shadow: 0 0 var(--neon-shadow-blur, 30px) var(--neon-shadow-spread, -5px) var(--color-neon-orange);
 }
+
+/* BUTTON THEME OVERRIDES (Robust) */
+[data-theme="light"] .button-inner-core {
+  background-color: #ffffff !important;
+  opacity: 0.9;
+}
+
+[data-theme="light"] .button-text {
+  color: #0f172a !important;
+  /* Zinc 900 */
+}
+
+/* Exception for Outline Buttons if needed, but text-base-content handles it */

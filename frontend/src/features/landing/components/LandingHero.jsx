@@ -51,7 +51,7 @@ export const LandingHero = ({ isAuthenticated }) => {
         >
           <div className="absolute inset-0 bg-gradient-to-r from-neon-cyan to-neon-purple blur-md opacity-60 group-hover:opacity-100 transition-opacity animate-pulse-slow" />
           <div className="absolute inset-[2px] bg-base-300 dark:bg-black rounded-full z-0" />
-          <span className="relative z-10 flex items-center gap-3 text-base-content dark:text-white">
+          <span className="relative z-10 flex items-center gap-3 text-red-500 dark:text-white">
             {isAuthenticated
               ? "GO TO DASHBOARD"
               : "GET STARTED"}

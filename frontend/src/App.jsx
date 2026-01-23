@@ -69,6 +69,14 @@ export function App() {
   useEffect(() => {
     const root = document.documentElement;
     root.setAttribute("data-theme", mode);
+    
+    // CRITICAL: Toggle 'dark' class for Tailwind 'dark:' modifiers to work correctly
+    if (mode === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+
     root.setAttribute("data-card-style", cardStyle);
     
     // Dynamic Scaling

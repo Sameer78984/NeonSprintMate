@@ -144,13 +144,14 @@ export const TaskBoard = () => {
                      </Button>
                 </div>
 
-                <div className="flex bg-black/40 p-1 rounded-xl border border-white/5">
+                {/* View Toggles - Fixed Light Mode Background */}
+                <div className="flex bg-base-100/50 p-1 rounded-xl border border-base-content/10">
               <button
                 onClick={() => setViewMode("list")}
                 className={`p-2 rounded-lg transition-all duration-300 ${
                   viewMode === "list"
                     ? "bg-neon-cyan/10 text-neon-cyan"
-                    : "text-zinc-500 hover:text-white"
+                    : "text-zinc-500 hover:text-base-content"
                 }`}
                 title="List View"
               >
@@ -161,7 +162,7 @@ export const TaskBoard = () => {
                 className={`p-2 rounded-lg transition-all duration-300 ${
                   viewMode === "board"
                     ? "bg-neon-purple/10 text-neon-purple"
-                    : "text-zinc-500 hover:text-white"
+                    : "text-zinc-500 hover:text-base-content"
                 }`}
                 title="Board View"
               >

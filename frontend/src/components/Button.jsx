@@ -59,10 +59,10 @@ const Button = ({
       )}
 
       {/* Solid Inner Core (The "Glass" effect) */}
-      <div className="absolute inset-[1px] bg-base-300 dark:bg-black rounded-[15px] z-0" />
+      <div className="absolute inset-[1px] bg-white dark:bg-black rounded-[15px] z-0" />
 
       {/* Content Container */}
-      <span className="relative z-10 flex items-center gap-3 text-[10px] font-black tracking-[0.3em] uppercase text-base-content dark:text-white">
+      <span className={`relative z-10 flex items-center gap-3 text-[10px] font-black tracking-[0.3em] uppercase transition-colors ${variant === 'outline' ? 'text-zinc-900 dark:text-white' : 'text-zinc-900 dark:text-white'}`}>
         {loading ? (
           <>
             <span className="loading loading-spinner loading-xs text-white"></span>
