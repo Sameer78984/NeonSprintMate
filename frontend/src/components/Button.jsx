@@ -44,7 +44,7 @@ const Button = ({
       className={`
         group relative inline-flex items-center justify-center 
         px-8 py-4 rounded-2xl overflow-hidden transition-all duration-300
-        disabled:opacity-50 disabled:cursor-not-allowed
+        disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer
         ${className}
       `}
     >

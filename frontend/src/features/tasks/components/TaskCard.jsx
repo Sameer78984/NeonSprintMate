@@ -26,13 +26,13 @@ export const TaskCard = ({ task, onClick }) => {
 
       <div className="flex justify-between mb-6">
         <span
-          className={`text-[9px] font-mono px-3 py-1 rounded-full border uppercase transition-colors duration-300 ${
-             task.status === "done" ? "border-neon-green text-neon-green bg-neon-green/5 shadow-[0_0_10px_var(--color-neon-green)]" :
-             task.status === "in_progress" ? "border-neon-yellow text-neon-yellow bg-neon-yellow/5 shadow-[0_0_10px_var(--color-neon-yellow)]" :
-             "border-neon-red text-neon-red bg-neon-red/5 shadow-[0_0_5px_var(--color-neon-red)]"
+          className={`text-[10px] sm:text-xs font-bold px-5 py-2 min-w-[90px] text-center rounded-xl border-2 uppercase tracking-wider transition-all duration-300 ${
+             task.status === "done" ? "border-neon-green/30 text-neon-green bg-neon-green/10 shadow-[0_0_15px_rgba(var(--color-neon-green),0.2)]" :
+             task.status === "in_progress" ? "border-neon-yellow/30 text-neon-yellow bg-neon-yellow/10 shadow-[0_0_15px_rgba(var(--color-neon-yellow),0.2)]" :
+             "border-base-content/20 text-base-content/70 bg-base-content/5"
           }`}
         >
-          {task.status.replace("_", " ")}
+          {task.status === "todo" ? "Backlog" : task.status === "in_progress" ? "Active" : "Completed"}
         </span>
 
         {/* Stop Propagation to prevent opening Edit Modal when clicking menu */}

@@ -41,7 +41,7 @@ const NeonSelect = ({
             isOpen
               ? "border-primary shadow-[0_0_15px_rgba(var(--color-primary),0.3)]"
               : "border-base-content/10"
-          } rounded-2xl py-4 pl-12 pr-4 text-sm glass-panel flex items-center justify-between text-left transition-all duration-300 group`}
+          } rounded-2xl py-4 pl-12 pr-4 text-sm glass-panel flex items-center justify-between text-left transition-all duration-300 cursor-pointer group`}
         >
           <div className="flex items-center gap-3">
             <div

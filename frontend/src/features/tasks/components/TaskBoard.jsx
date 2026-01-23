@@ -38,7 +38,7 @@ export const TaskBoard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [assigneeFilter, setAssigneeFilter] = useState("all");
-  const [viewMode, setViewMode] = useState("list"); 
+  const [viewMode, setViewMode] = useState("board"); 
 
   // Local Order Persistence
   const [taskOrder, setTaskOrder] = useState(() => {

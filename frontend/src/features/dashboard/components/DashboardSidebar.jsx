@@ -31,7 +31,7 @@ export const DashboardSidebar = ({ isCollapsed, onToggle }) => {
     <>
       <div className={`p-6 flex items-center gap-3 ${isCollapsed ? "justify-center" : "justify-between"}`}>
         {!isCollapsed && (
-             <h1 className="text-lg font-black tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary flex-1 min-w-0">
+             <h1 className="text-sm font-black tracking-widest uppercase text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary flex-1 whitespace-nowrap overflow-hidden text-ellipsis">
                NeonSprintMate
              </h1>
         )}

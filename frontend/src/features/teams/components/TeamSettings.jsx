@@ -53,7 +53,7 @@ export const TeamSettings = () => {
     <div className="space-y-10 max-w-4xl mx-auto">
       {/* Header */}
       <div>
-        <h2 className="text-4xl font-black tracking-tighter uppercase italic text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-white">
+        <h2 className="text-4xl font-black tracking-tighter uppercase italic text-transparent bg-clip-text bg-gradient-to-r from-primary to-base-content/60">
           Team_Nexus
         </h2>
         <p className="text-zinc-500 text-[10px] font-mono uppercase mt-2 tracking-[0.3em]">

@@ -8,6 +8,11 @@
   --glass-bg: rgba(255, 255, 255, 0.03);
 }
 
+/* Force Font Family Override */
+body {
+  font-family: var(--font-family, "Inter", sans-serif) !important;
+}
+
 :root[data-theme="light"] {
   --bg-primary: #ffffff;
   --text-primary: #0f172a;
@@ -127,6 +132,24 @@ textarea::placeholder {
       transform: translateY(-20px) rotate(1deg);
     }
   }
+
+  /* Force Tailwind Utilities to use our Dynamic Variable */
+  --font-sans: var(--font-family),
+  ui-sans-serif,
+  system-ui,
+  sans-serif;
+  --font-mono: var(--font-family),
+  ui-monospace,
+  SFMono-Regular,
+  monospace;
+  --font-display: var(--font-family),
+  ui-sans-serif,
+  system-ui,
+  sans-serif;
+  --font-serif: var(--font-family),
+  ui-serif,
+  Georgia,
+  serif;
 }
 
 /* CARD STYLES */

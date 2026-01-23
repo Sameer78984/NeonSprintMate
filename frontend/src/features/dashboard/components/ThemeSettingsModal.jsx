@@ -56,11 +56,11 @@ export const ThemeSettingsModal = ({ isOpen, onClose }) => {
                 <div className="space-y-3">
                     <label className="text-sm font-medium text-base-content/60 uppercase tracking-wider">Environment</label>
                     <div className="grid grid-cols-2 gap-2">
-                        {['grid', 'aurora', 'nebula', 'cyber_rain', 'snow', 'cherry_blossoms', 'fireflies', 'matrix', 'minimal'].map((style) => (
+                         {['grid', 'aurora', 'nebula', 'cyber_rain', 'snow', 'cherry_blossoms', 'fireflies', 'matrix', 'minimal'].map((style) => (
                            <button
                              key={style}
                              onClick={() => setBgStyle(style)}
-                             className={`px-4 py-3 rounded-xl border text-sm font-semibold transition-all ${
+                             className={`px-4 py-3 rounded-xl border text-sm font-semibold transition-all cursor-pointer ${
                                  bgStyle === style 
                                  ? "border-primary bg-primary/20 text-base-content shadow-[0_0_10px_rgba(var(--color-primary),0.3)]" 
                                  : "border-base-content/10 bg-base-content/5 text-base-content/60 hover:bg-base-content/10"

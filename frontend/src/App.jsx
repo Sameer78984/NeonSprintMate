@@ -97,7 +97,25 @@ export function App() {
         root.style.color = customTextColor;
     }
     
-    root.style.fontFamily = fontFamily;
+    root.style.setProperty("--font-family", fontFamily);
+    
+    root.style.setProperty("--font-family", fontFamily);
+
+    // Dynamic Google Font Loading
+    if (fontFamily && !["Inter, sans-serif", "'Roboto Mono', monospace", "serif", "'Orbitron', sans-serif"].includes(fontFamily)) {
+        const fontName = fontFamily.split(",")[0].replace(/['"]/g, "");
+        const linkId = "custom-google-font";
+        let link = document.getElementById(linkId);
+        
+        if (!link) {
+            link = document.createElement("link");
+            link.id = linkId;
+            link.rel = "stylesheet";
+            document.head.appendChild(link);
+        }
+        
+        link.href = `https://fonts.googleapis.com/css2?family=${fontName.replace(/ /g, "+")}:wght@300;400;500;700;900&display=swap`;
+    }
     
   }, [mode, density, primaryColor, cardStyle, shadowIntensity, fontFamily, customTextColor, textShadow, textShadowColor]);
 
