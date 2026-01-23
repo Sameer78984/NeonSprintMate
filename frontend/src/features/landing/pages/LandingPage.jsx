@@ -27,7 +27,7 @@ export const LandingPage = () => {
   const { isAuthenticated } = useAuthStore();
 
   return (
-    <div className="h-full bg-transparent text-white selection:bg-neon-cyan/30 overflow-x-hidden relative font-sans">
+    <div className="h-full bg-transparent text-base-content selection:bg-neon-cyan/30 overflow-x-hidden relative font-sans">
       <LandingStatusBar />
       <LandingHeader isAuthenticated={isAuthenticated} />
 

@@ -22,7 +22,7 @@ const Button = ({
     lime: "from-neon-lime to-green-600 shadow-[0_0_20px_rgba(132,204,22,0.2)]",
     orange:
       "from-neon-orange to-amber-600 shadow-[0_0_20px_rgba(249,115,22,0.2)]",
-    outline: "border border-white/10 hover:bg-white/5", // Added basic outline variant
+    outline: "border border-base-content/10 hover:bg-base-content/5", // Added basic outline variant
   };
 
   const glowColors = {
@@ -31,7 +31,7 @@ const Button = ({
     pink: "bg-neon-pink",
     lime: "bg-neon-lime",
     orange: "bg-neon-orange",
-    outline: "bg-white",
+    outline: "bg-base-content",
   };
 
   return (
@@ -59,10 +59,10 @@ const Button = ({
       )}
 
       {/* Solid Inner Core (The "Glass" effect) */}
-      <div className="absolute inset-[1px] bg-black rounded-[15px] z-0" />
+      <div className="absolute inset-[1px] bg-base-300 dark:bg-black rounded-[15px] z-0" />
 
       {/* Content Container */}
-      <span className="relative z-10 flex items-center gap-3 text-[10px] font-black tracking-[0.3em] uppercase text-white">
+      <span className="relative z-10 flex items-center gap-3 text-[10px] font-black tracking-[0.3em] uppercase text-base-content dark:text-white">
         {loading ? (
           <>
             <span className="loading loading-spinner loading-xs text-white"></span>

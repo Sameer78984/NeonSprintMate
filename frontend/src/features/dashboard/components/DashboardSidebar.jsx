@@ -31,13 +31,13 @@ export const DashboardSidebar = ({ isCollapsed, onToggle }) => {
     <>
       <div className={`p-6 flex items-center gap-3 ${isCollapsed ? "justify-center" : "justify-between"}`}>
         {!isCollapsed && (
-             <h1 className="text-lg font-black tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-purple flex-1 min-w-0">
+             <h1 className="text-lg font-black tracking-[0.2em] uppercase text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary flex-1 min-w-0">
                NeonSprintMate
              </h1>
         )}
         <button 
           onClick={onToggle}
-          className="p-2 rounded-xl bg-black/50 border border-neon-cyan text-neon-cyan shadow-[0_0_15px_rgba(6,182,212,0.5)] hover:shadow-[0_0_25px_var(--color-neon-cyan)] hover:bg-neon-cyan/10 transition-all duration-300 flex-shrink-0"
+          className="p-2 rounded-xl bg-black/50 border border-primary text-primary shadow-[0_0_15px_rgba(var(--color-primary),0.5)] hover:shadow-[0_0_25px_rgba(var(--color-primary),1)] hover:bg-primary/10 transition-all duration-300 flex-shrink-0"
         >
           {isCollapsed ? <ChevronRightIcon className="h-5 w-5" /> : <ChevronLeftIcon className="h-5 w-5" />}
         </button>
@@ -52,12 +52,12 @@ export const DashboardSidebar = ({ isCollapsed, onToggle }) => {
               to={item.path}
               className={`flex items-center gap-4 px-4 py-4 rounded-2xl transition-all duration-300 group ${
                 isActive
-                  ? "bg-neon-cyan/10 text-neon-cyan border border-neon-cyan/20"
-                  : "text-zinc-500 hover:text-white hover:bg-white/5"
+                  ? "bg-primary/10 text-primary border border-primary/20"
+                  : "text-base-content/60 hover:text-primary hover:bg-base-content/5"
               } ${isCollapsed ? "justify-center" : ""}`}
               title={isCollapsed ? item.name : ""}
             >
-              <item.icon className={`h-6 w-6 flex-shrink-0 ${isActive ? "text-neon-cyan" : "group-hover:text-white"}`} />
+              <item.icon className={`h-6 w-6 flex-shrink-0 ${isActive ? "text-primary" : "group-hover:text-primary"}`} />
               {!isCollapsed && (
                 <span className="text-xs font-bold tracking-widest uppercase whitespace-nowrap">{item.name}</span>
               )}

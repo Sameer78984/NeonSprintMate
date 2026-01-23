@@ -22,7 +22,7 @@ export const LandingHero = ({ isAuthenticated }) => {
     >
       <motion.div
         variants={itemVariants}
-        className="inline-block px-4 py-1.5 rounded-full border border-neon-cyan/30 bg-neon-cyan/5 text-neon-cyan text-[9px] md:text-[10px] font-bold mb-6 md:mb-8 tracking-[0.3em] md:tracking-[0.4em] uppercase neon-glow-cyan"
+        className="inline-block px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 text-primary text-[9px] md:text-[10px] font-bold mb-6 md:mb-8 tracking-[0.3em] md:tracking-[0.4em] uppercase neon-glow-cyan"
       >
         Unified Collaboration Platform
       </motion.div>
@@ -39,11 +39,9 @@ export const LandingHero = ({ isAuthenticated }) => {
 
       <motion.p
         variants={itemVariants}
-        className="text-zinc-500 text-base md:text-xl lg:text-2xl mb-10 md:mb-12 max-w-2xl mx-auto font-light leading-relaxed"
+        className="text-base-content/70 text-base md:text-xl lg:text-2xl mb-10 md:mb-12 max-w-2xl mx-auto font-light leading-relaxed"
       >
-        NeonSprintMate transforms fragmented workflows into a seamless, high-performance
-        system. Engineered for teams that prioritize speed over
-        everything.
+        Your all-in-one workspace for high-velocity teams. Manage tasks, track time with Pomodoro, collaborate in real-time, and customize your environment to match your flow.
       </motion.p>
 
       <motion.div variants={itemVariants}>
@@ -52,8 +50,8 @@ export const LandingHero = ({ isAuthenticated }) => {
           className="group relative inline-flex items-center justify-center px-8 md:px-12 py-4 md:py-5 text-[10px] md:text-xs font-black tracking-[0.2em] md:tracking-[0.3em] text-white transition-all duration-300 rounded-full overflow-hidden shadow-[0_0_20px_rgba(34,211,238,0.2)]"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-neon-cyan to-neon-purple blur-md opacity-60 group-hover:opacity-100 transition-opacity animate-pulse-slow" />
-          <div className="absolute inset-[2px] bg-black rounded-full z-0" />
-          <span className="relative z-10 flex items-center gap-3">
+          <div className="absolute inset-[2px] bg-base-300 dark:bg-black rounded-full z-0" />
+          <span className="relative z-10 flex items-center gap-3 text-base-content dark:text-white">
             {isAuthenticated
               ? "GO TO DASHBOARD"
               : "GET STARTED"}

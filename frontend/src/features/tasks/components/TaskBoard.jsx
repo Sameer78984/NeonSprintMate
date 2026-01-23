@@ -11,6 +11,7 @@ import { TaskGrid } from "./TaskGrid";
 import { TaskKanban } from "./TaskKanban";
 import { useTaskFilters } from "../hooks/useTaskFilters";
 import { Squares2X2Icon, TableCellsIcon } from "@heroicons/react/24/outline";
+import { Button } from "../../../components/Button";
 import { PomodoroWidget } from "../../dashboard/components/PomodoroWidget";
 import { NotesWidget } from "../../dashboard/components/NotesWidget";
 import { StatsWidget } from "../../dashboard/components/StatsWidget";
@@ -125,12 +126,25 @@ export const TaskBoard = () => {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <TaskBoardHeader
               currentTeam={currentTeam}
-              onCreateTeam={() => setIsTeamModalOpen(true)}
-              onCreateTask={() => setIsTaskModalOpen(true)}
             />
             
-            {/* View Switcher */}
-            <div className="flex bg-black/40 p-1 rounded-xl border border-white/5 self-start md:self-auto">
+            {/* Actions & View Switcher */}
+            <div className="flex items-center gap-4 self-start md:self-auto">
+                <div className="flex gap-3">
+                     <Button variant="outline" onClick={() => setIsTeamModalOpen(true)} className="px-6 py-2 text-xs">
+                        New Team
+                     </Button>
+                     <Button
+                        variant="cyan"
+                        onClick={() => setIsTaskModalOpen(true)}
+                        disabled={!currentTeam}
+                        className="px-6 py-2 text-xs"
+                     >
+                        New Task
+                     </Button>
+                </div>
+
+                <div className="flex bg-black/40 p-1 rounded-xl border border-white/5">
               <button
                 onClick={() => setViewMode("list")}
                 className={`p-2 rounded-lg transition-all duration-300 ${
@@ -155,6 +169,7 @@ export const TaskBoard = () => {
               </button>
             </div>
           </div>
+        </div>
 
           {/* Productivity Widgets Area */}
           {(showPomodoro || showStats || showNotes) && (

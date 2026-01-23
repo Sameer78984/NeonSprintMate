@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { useAuthStore } from "./stores/useAuthStore";
 import { useToastStore } from "./stores/useToastStore";
@@ -18,6 +18,7 @@ import { Toast } from "./components/Toast";
 import { NeonGlobalLoader } from "./components/NeonGlobalLoader";
 import { ProtectedRoute } from "./features/auth/components/ProtectedRoute";
 import { GlobalBackground } from "./components/GlobalBackground";
+import { WelcomePage } from "./features/welcome/pages/WelcomePage";
 
 /**
  * Main App Component
@@ -48,8 +49,18 @@ export function App() {
     fontFamily, 
     customTextColor,
     textShadow,
-    textShadowColor 
+    textShadowColor,
+    hasSeenWelcome 
   } = useThemeStore();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!hasSeenWelcome && location.pathname !== "/welcome") {
+      navigate("/welcome");
+    }
+  }, [hasSeenWelcome, location.pathname, navigate]);
 
   useEffect(() => {
     checkAuth();
@@ -99,6 +110,7 @@ export function App() {
     <>
       <GlobalBackground />
       <Routes>
+        <Route path="/welcome" element={<WelcomePage />} />
         <Route path="/" element={<LandingPage />} />
         <Route 
           path="/login" 

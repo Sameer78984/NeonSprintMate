@@ -35,22 +35,22 @@ export const TaskColumn = ({ id, title, tasks, onTaskClick }) => {
       case "done":
         return "border-neon-green/50 bg-neon-green/10 text-neon-green";
       default:
-        return "border-zinc-700 bg-zinc-900/50";
+        return "border-base-content/20 bg-base-content/5";
     }
   };
 
   return (
-    <div className="flex flex-col h-full min-w-[300px] w-full bg-black/40 rounded-2xl border border-white/5 p-4">
+    <div className="flex flex-col h-full min-w-[300px] w-full bg-base-100/50 rounded-2xl border border-base-content/5 p-4">
       {/* Column Header */}
       <div
         className={`flex items-center justify-between p-4 mb-4 rounded-xl border-l-4 ${getStatusColor(
           id
         )}`}
       >
-        <h3 className="font-bold uppercase tracking-widest text-sm text-white">
+        <h3 className="font-bold uppercase tracking-widest text-sm text-base-content">
           {title}
         </h3>
-        <span className="text-xs font-mono text-zinc-500 bg-black/60 px-2 py-1 rounded">
+        <span className="text-xs font-mono text-base-content/60 bg-base-100/50 px-2 py-1 rounded">
           {tasks.length}
         </span>
       </div>

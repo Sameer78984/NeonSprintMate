@@ -10,7 +10,9 @@ export const GlobalBackground = () => {
     rainAmount,
     rainSpeed,
     snowAmount,
-    snowSpeed
+
+    snowSpeed,
+    mode 
   } = useThemeStore();
   const canvasRef = useRef(null);
 
@@ -82,7 +84,7 @@ export const GlobalBackground = () => {
     switch(bgStyle) {
         case "grid":
             return (
-                <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] bg-center opacity-20 [mask-image:linear-gradient(to_bottom,transparent,black,transparent)] animate-grid-move" 
+                <div className={`absolute inset-0 bg-[url('/grid-pattern.svg')] bg-center opacity-20 [mask-image:linear-gradient(to_bottom,transparent,black,transparent)] animate-grid-move ${mode === 'light' ? 'text-black' : 'text-white'}`} 
                      style={{ animationDuration: `${40 / bgAnimationSpeed}s` }} />
             );
         case "aurora":
@@ -136,8 +138,9 @@ export const GlobalBackground = () => {
                         return (
                             <div
                                 key={i}
-                                className="absolute bg-white rounded-full opacity-60"
+                                className="absolute rounded-full opacity-80"
                                 style={{
+                                    backgroundColor: mode === 'light' ? '#94a3b8' : 'white', // Slate-400 for light mode
                                     width: `${size}px`,
                                     height: `${size}px`,
                                     left: `${left}%`,
@@ -179,8 +182,8 @@ export const GlobalBackground = () => {
                                     animationDelay: `${delay}s`
                                 }}
                             >
-                                <svg width="12" height="12" viewBox="0 0 12 12" className="opacity-60">
-                                    <path d="M6 0 L7 4 L9 2 L7 6 L12 6 L7 7 L9 10 L6 7 L3 10 L5 7 L0 6 L5 6 L3 2 L5 4 Z" fill="#ffc0cb" />
+                                <svg width="12" height="12" viewBox="0 0 12 12" className="opacity-90">
+                                    <path d="M6 0 L7 4 L9 2 L7 6 L12 6 L7 7 L9 10 L6 7 L3 10 L5 7 L0 6 L5 6 L3 2 L5 4 Z" fill={mode === 'light' ? '#be185d' : '#f472b6'} />
                                 </svg>
                             </div>
                         );

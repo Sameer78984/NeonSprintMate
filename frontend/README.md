@@ -80,6 +80,17 @@ The NeonSprintMate frontend is a **feature-based, modular React application** bu
   - Responsive design
   - Smooth scroll animations
 
+- **Theme & Customization**
+  - **Color Themes**: 5+ accent color options
+  - **Appearance Modes**: Fully supported Light & Dark modes
+  - **Dynamic Backgrounds**: Configurable particle effects (Rain, Snow, Nebula)
+  - **UI Density**: Adjustable interface scaling
+
+- **UX Enhancements**
+  - **Input Micro-interactions**: Tactile shake feedback on typing
+  - **Password Toggle**: integrated visibility controls
+  - **Visual Feedback**: Dynamic border glows and active state indicators
+
 ---
 
 ## 🏗️ Architecture
