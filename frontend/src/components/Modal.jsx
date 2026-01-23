@@ -57,7 +57,7 @@ export const Modal = ({
             style={{ zIndex: contentZIndex }}
           >
             <div
-              className={`w-full ${maxWidth} bg-deep-black border border-white/10 rounded-[2.5rem] shadow-2xl overflow-hidden pointer-events-auto relative`}
+              className={`w-full ${maxWidth} bg-deep-black border border-white/10 rounded-[2.5rem] shadow-2xl pointer-events-auto relative`}
             >
               <div
                 className={`absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r ${accentGradients[accentColor]} animate-pulse`}

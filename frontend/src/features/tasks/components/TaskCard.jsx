@@ -21,18 +21,18 @@ export const TaskCard = ({ task, onClick }) => {
       onClick={onClick}
       className="glass-panel p-8 rounded-[2.5rem] bg-black/40 border border-white/5 group transition-all duration-500 cursor-pointer relative overflow-hidden"
     >
-      {/* Ambient Glow */}
-      <div className="absolute top-0 right-10 h-1 w-20 bg-neon-cyan opacity-0 blur-sm group-hover:opacity-40 transition-opacity" />
+      <div className="absolute top-0 right-10 h-1 w-20 opacity-0 blur-sm group-hover:opacity-100 transition-opacity duration-500" 
+           style={{ backgroundColor: task.status === 'done' ? 'var(--color-neon-green)' : task.status === 'in_progress' ? 'var(--color-neon-yellow)' : 'var(--color-neon-red)' }} />
 
       <div className="flex justify-between mb-6">
         <span
-          className={`text-[9px] font-mono px-3 py-1 rounded-full border uppercase ${
-            task.status === "done"
-              ? "border-neon-cyan text-neon-cyan bg-neon-cyan/5"
-              : "border-zinc-700 text-zinc-500"
+          className={`text-[9px] font-mono px-3 py-1 rounded-full border uppercase transition-colors duration-300 ${
+             task.status === "done" ? "border-neon-green text-neon-green bg-neon-green/5 shadow-[0_0_10px_var(--color-neon-green)]" :
+             task.status === "in_progress" ? "border-neon-yellow text-neon-yellow bg-neon-yellow/5 shadow-[0_0_10px_var(--color-neon-yellow)]" :
+             "border-neon-red text-neon-red bg-neon-red/5 shadow-[0_0_5px_var(--color-neon-red)]"
           }`}
         >
-          {task.status}
+          {task.status.replace("_", " ")}
         </span>
 
         {/* Stop Propagation to prevent opening Edit Modal when clicking menu */}

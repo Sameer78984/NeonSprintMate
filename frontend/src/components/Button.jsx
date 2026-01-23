@@ -18,11 +18,20 @@ const Button = ({
     cyan: "from-neon-cyan to-blue-600 shadow-[0_0_20px_rgba(34,211,238,0.2)]",
     purple:
       "from-neon-purple to-indigo-600 shadow-[0_0_20px_rgba(168,85,247,0.2)]",
+    pink: "from-neon-pink to-rose-600 shadow-[0_0_20px_rgba(244,63,94,0.2)]",
+    lime: "from-neon-lime to-green-600 shadow-[0_0_20px_rgba(132,204,22,0.2)]",
+    orange:
+      "from-neon-orange to-amber-600 shadow-[0_0_20px_rgba(249,115,22,0.2)]",
+    outline: "border border-white/10 hover:bg-white/5", // Added basic outline variant
   };
 
   const glowColors = {
     cyan: "bg-neon-cyan",
     purple: "bg-neon-purple",
+    pink: "bg-neon-pink",
+    lime: "bg-neon-lime",
+    orange: "bg-neon-orange",
+    outline: "bg-white",
   };
 
   return (
@@ -40,12 +49,14 @@ const Button = ({
       `}
     >
       {/* Background Glow Layer */}
-      <div
-        className={`
+      {variant !== "outline" && (
+        <div
+          className={`
         absolute inset-0 opacity-60 group-hover:opacity-100 transition-opacity blur-md
         bg-gradient-to-r ${variants[variant]}
       `}
-      />
+        />
+      )}
 
       {/* Solid Inner Core (The "Glass" effect) */}
       <div className="absolute inset-[1px] bg-black rounded-[15px] z-0" />

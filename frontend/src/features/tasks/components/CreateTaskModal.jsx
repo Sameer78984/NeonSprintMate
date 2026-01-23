@@ -44,15 +44,15 @@ export const CreateTaskModal = ({ isOpen, onClose }) => {
       <div className="p-10">
         <ModalHeader
           icon={SparklesIcon}
-          title="Initialize_Task"
+          title="Create Task"
           onClose={onClose}
           color="cyan"
         />
 
         <form onSubmit={(e) => handleSubmit(e, null)} className="space-y-8">
           <Input
-            label="Objective Title"
-            placeholder="Enter node identifier..."
+            label="Task Title"
+            placeholder="Enter task title..."
             value={formData.title}
             onChange={(e) =>
               setFormData({ ...formData, title: e.target.value })
@@ -61,8 +61,8 @@ export const CreateTaskModal = ({ isOpen, onClose }) => {
           />
 
           <NeonSelect
-            label="Assign Operative"
-            placeholder="Link Operative to Node"
+            label="Assign Member"
+            placeholder="Assign to..."
             options={memberOptions}
             value={formData.assigned_to}
             onChange={(val) =>
@@ -78,7 +78,7 @@ export const CreateTaskModal = ({ isOpen, onClose }) => {
               onClick={onClose}
               className="flex-1"
             >
-              Abort
+              Cancel
             </Button>
             <Button
               type="submit"
@@ -86,7 +86,7 @@ export const CreateTaskModal = ({ isOpen, onClose }) => {
               loading={loading}
               className="flex-1 shadow-[0_0_20px_rgba(6,182,212,0.2)]"
             >
-              Deploy Task
+              Create Task
             </Button>
           </div>
         </form>

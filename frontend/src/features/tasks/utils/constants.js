@@ -4,10 +4,10 @@
  * Available status options for task filtering and selection.
  */
 export const TASK_STATUS_OPTIONS = [
-  { label: "ALL_STATUS", value: "all" },
-  { label: "TODO", value: "todo" },
-  { label: "IN_PROGRESS", value: "in_progress" },
-  { label: "COMPLETED", value: "done" },
+  { label: "All Status", value: "all" },
+  { label: "Todo", value: "todo" },
+  { label: "In Progress", value: "in_progress" },
+  { label: "Completed", value: "done" },
 ];
 
 /**

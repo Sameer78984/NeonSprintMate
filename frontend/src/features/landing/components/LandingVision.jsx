@@ -18,11 +18,11 @@ export const LandingVision = () => {
       <div className="bg-[#050505] p-10 md:p-16 rounded-[1.9rem] md:rounded-[2.9rem] text-center border border-white/5">
         <h2 className="text-2xl md:text-5xl font-bold mb-6 md:mb-8 tracking-tight">
           Built for the{" "}
-          <span className="text-zinc-500 italic">Next Epoch</span>
+          <span className="text-zinc-500 italic">Future of Work</span>
         </h2>
         <p className="text-zinc-500 leading-relaxed font-light text-sm md:text-lg">
-          Traditional management tools are built for the past. SprintMate is
-          engineered for the future of decentralized development and rapid
+          Traditional management tools are built for the past. NeonSprintMate is
+          engineered for the future of agile development and rapid
           coordination.
         </p>
       </div>

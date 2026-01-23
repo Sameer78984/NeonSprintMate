@@ -6,8 +6,9 @@ import { XMarkIcon, ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline
  * Navigation items configuration for the mobile menu
  */
 const navItems = [
-  { name: "Task Matrix", path: "/dashboard" },
-  { name: "Team Nexus", path: "/dashboard/teams" },
+  { name: "Tasks", path: "/dashboard" },
+  { name: "Teams", path: "/dashboard/teams" },
+  { name: "Settings", path: "/dashboard/settings" },
 ];
 
 /**
@@ -21,7 +22,7 @@ const navItems = [
  * @param {Function} props.logout - Logout handler function
  * @returns {JSX.Element} Mobile menu component
  */
-export const DashboardMobileMenu = ({ isOpen, onClose, logout }) => {
+export const DashboardMobileMenu = ({ isOpen, onClose, logout, user }) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -33,7 +34,7 @@ export const DashboardMobileMenu = ({ isOpen, onClose, logout }) => {
         >
           <div className="p-6 flex justify-between items-center border-b border-white/5">
             <span className="text-[10px] font-mono text-zinc-500 tracking-widest uppercase">
-              System_Menu
+              Menu
             </span>
             <button onClick={onClose} className="p-2 text-white">
               <XMarkIcon className="h-6 w-6" />
@@ -51,12 +52,34 @@ export const DashboardMobileMenu = ({ isOpen, onClose, logout }) => {
               </Link>
             ))}
           </div>
+          
+          {/* Mobile User Info */}
+          <div className="px-6 mb-4">
+             <Link 
+                to="/dashboard/profile"
+                onClick={onClose}
+                className="flex items-center gap-4 p-4 border border-white/10 rounded-2xl bg-white/5 active:bg-white/10 transition-colors"
+             >
+                <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-neon-cyan to-neon-purple p-[2px]">
+                  <div className="h-full w-full rounded-full bg-black flex items-center justify-center">
+                    <span className="text-xs font-bold text-white">
+                      {user?.name?.charAt(0) || "U"}
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-white uppercase">{user?.name || "User"}</p>
+                  <p className="text-[10px] text-zinc-500 font-mono lowercase">{user?.email}</p>
+                </div>
+             </Link>
+          </div>
+
           <div className="p-8 border-t border-white/5">
             <button
               onClick={logout}
               className="text-red-500 font-mono text-xs uppercase tracking-[0.3em] flex items-center gap-2"
             >
-              <ArrowLeftOnRectangleIcon className="h-4 w-4" /> Close_Link
+              <ArrowLeftOnRectangleIcon className="h-4 w-4" /> Logout
             </button>
           </div>
         </motion.div>
