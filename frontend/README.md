@@ -592,3 +592,9 @@ const { toasts, addToast, removeToast } = useToastStore();
 [⬆ Back to Top](#-neonsprintmate-frontend)
 
 </div>
+
+## 📄 License
+
+**Proprietary Software** - Copyright (c) 2026 Sameer.
+Strictly forbidden for commercial use, modification, or distribution.
+See the root [LICENSE](../../LICENSE) file for details.

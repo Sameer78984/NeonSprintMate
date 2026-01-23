@@ -733,3 +733,9 @@ expire          TIMESTAMP NOT NULL
 [⬆ Back to Top](#️-neonsprintmate-backend)
 
 </div>
+
+## 📄 License
+
+**Proprietary Software** - Copyright (c) 2026 Sameer.
+Strictly forbidden for commercial use, modification, or distribution.
+See the root [LICENSE](../../LICENSE) file for details.
