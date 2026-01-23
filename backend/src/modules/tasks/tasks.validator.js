@@ -9,7 +9,7 @@ export const createTaskSchema = [
   body("team_id").isInt().withMessage("Team ID must be an integer"),
   body("status")
     .optional()
-    .isIn(["todo", "in_progress", "done"])
+    .isIn(["todo", "in_progress", "in-progress", "done"])
     .withMessage("Invalid status value"),
   body("priority")
     .optional()
@@ -41,7 +41,7 @@ export const updateTaskSchema = [
   body("description").optional().trim().escape(),
   body("status")
     .optional()
-    .isIn(["todo", "in_progress", "done"])
+    .isIn(["todo", "in_progress", "in-progress", "done"])
     .withMessage("Invalid status"),
   body("priority")
     .optional()
