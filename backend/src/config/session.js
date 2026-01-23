@@ -3,7 +3,6 @@ import connectPgSimple from "connect-pg-simple";
 import knex from "./db.js";
 
 const PostgresStore = connectPgSimple(session);
-const isProd = process.env.NODE_ENV !== "development";
 const forceDbSession = process.env.USE_DB_SESSION === "true";
 
 const getSessionStore = () => {
@@ -35,6 +34,6 @@ export const sessionConfig = session({
     httpOnly: true, // Required: Protects against XSS
     secure: isProd, // true in Prod (HTTPS), false in Dev (HTTP)
     maxAge: 24 * 60 * 60 * 1000,
-    sameSite: isProd ? "none" : "lax", // 'None' for Prod (cross-site), 'Lax' for Dev (localhost)
+    sameSite: "lax",
   },
 });
