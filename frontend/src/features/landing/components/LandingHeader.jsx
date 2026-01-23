@@ -9,11 +9,16 @@ export const LandingHeader = ({ isAuthenticated }) => {
   
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-deep-black/80 backdrop-blur-xl">
-        <div className="container mx-auto px-6 h-20 flex items-center justify-between">
+      <header className="fixed top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 rounded-2xl border border-white/10 bg-black/60 backdrop-blur-xl shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300">
+        <div className="px-6 h-16 flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="text-2xl font-black italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan via-white to-neon-purple hover:opacity-80 transition-opacity">
-            NEONSPRINTMATE
+          <Link to="/" className="group flex items-center gap-2">
+             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center text-white font-black italic shadow-[0_0_15px_rgba(6,182,212,0.5)] group-hover:shadow-[0_0_25px_rgba(217,70,239,0.5)] transition-all">
+                N
+             </div>
+             <span className="text-lg font-black tracking-widest text-white uppercase group-hover:text-neon-cyan transition-colors">
+               NeonSprint
+             </span>
           </Link>
           
           {/* Actions */}
@@ -21,7 +26,7 @@ export const LandingHeader = ({ isAuthenticated }) => {
             {/* Theme Customizer */}
             <button
               onClick={() => setIsSettingsOpen(true)}
-              className="p-2 rounded-xl border border-white/10 hover:bg-white/5 hover:border-neon-cyan/30 transition-all text-zinc-400 hover:text-neon-cyan"
+              className="p-2 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all"
               title="Customize Theme"
             >
               <AdjustmentsHorizontalIcon className="h-5 w-5" />
@@ -29,20 +34,19 @@ export const LandingHeader = ({ isAuthenticated }) => {
             
             {isAuthenticated ? (
                <Link to="/dashboard">
-                  <Button variant="cyan" size="sm">
-                    ENTER DASHBOARD
+                  <Button variant="cyan" className="!py-2 !px-6 !text-[10px]">
+                    DASHBOARD
                   </Button>
                </Link>
             ) : (
               <>
-                <Link to="/login" className="hidden md:block text-xs font-bold text-zinc-400 hover:text-white uppercase tracking-widest transition-colors">
+                <Link to="/login" className="text-[10px] font-bold text-zinc-400 hover:text-white uppercase tracking-widest transition-colors mr-2">
                   Login
                 </Link>
                 <Link to="/register">
-                  <Button variant="purple" size="sm" className="hidden md:flex">
+                  <Button variant="purple" className="!py-2 !px-4 !text-[10px] hidden sm:inline-flex">
                     GET ACCESS
                   </Button>
-                   {/* Mobile only icon/text handled by button or specific mobile menu if needed, but keeping simple for now */}
                 </Link>
               </>
             )}
@@ -52,7 +56,8 @@ export const LandingHeader = ({ isAuthenticated }) => {
 
       <ThemeSettingsModal 
         isOpen={isSettingsOpen} 
-        onClose={() => setIsSettingsOpen(false)} 
+        onClose={() => setIsSettingsOpen(false)}
+        showPreview={false}
       />
     </>
   );

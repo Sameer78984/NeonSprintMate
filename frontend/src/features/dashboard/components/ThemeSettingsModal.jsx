@@ -2,15 +2,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { XMarkIcon, PaintBrushIcon, SunIcon, MoonIcon } from "@heroicons/react/24/outline";
 import { useThemeStore } from "../../../stores/useThemeStore";
 
-export const ThemeSettingsModal = ({ isOpen, onClose }) => {
+export const ThemeSettingsModal = ({ isOpen, onClose, showPreview = true }) => {
   const {
     bgStyle, setBgStyle,
     rainSpeed, setRainSpeed,
     rainAmount, setRainAmount,
-    snowSpeed, setSnowSpeed,
-    snowAmount, setSnowAmount,
     enableParticles, setEnableParticles,
-    mode, setMode
+    mode, setMode,
+    density, setDensity
   } = useThemeStore();
 
   if (!isOpen) return null;
@@ -51,12 +50,46 @@ export const ThemeSettingsModal = ({ isOpen, onClose }) => {
                 </div>
             </div>
 
+            {/* Theme Preview Section - Conditionally Rendered */}
+            {showPreview && (
+                <div className="mb-6 p-4 rounded-2xl bg-base-100 border border-base-content/5 relative overflow-hidden group">
+                   <div className="absolute top-0 right-0 p-2 opacity-50">
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-base-content/40">Preview</span>
+                   </div>
+                   
+                   {/* Mock Mini Dashboard Card */}
+                   <div className="flex gap-4 items-center mb-4">
+                      <div className="h-10 w-10 rounded-xl bg-primary flex items-center justify-center text-white shadow-[0_0_15px_rgba(var(--color-primary),0.4)]">
+                         <PaintBrushIcon className="h-5 w-5" />
+                      </div>
+                      <div>
+                         <h3 className="text-lg font-bold text-base-content leading-tight">Neon Theme</h3>
+                         <p className="text-xs text-base-content/60 font-mono">Status: Active</p>
+                      </div>
+                   </div>
+                   
+                   <div className="space-y-2">
+                      <div className="h-2 w-3/4 bg-base-content/10 rounded-full" />
+                      <div className="h-2 w-1/2 bg-base-content/10 rounded-full" />
+                   </div>
+                   
+                   <div className="mt-4 flex gap-2">
+                      <button className="px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-bold shadow-[0_0_10px_rgba(var(--color-primary),0.3)]">
+                         Action
+                      </button>
+                      <button className="px-3 py-1.5 rounded-lg border border-base-content/10 text-base-content/60 text-xs font-bold hover:text-base-content hover:bg-base-content/5 transition-colors">
+                         Cancel
+                      </button>
+                   </div>
+                </div>
+            )}
+
             <div className="space-y-8">
                 {/* Background Style Selector */}
                 <div className="space-y-3">
                     <label className="text-sm font-medium text-base-content/60 uppercase tracking-wider">Environment</label>
                     <div className="grid grid-cols-2 gap-2">
-                         {['grid', 'aurora', 'nebula', 'cyber_rain', 'snow', 'cherry_blossoms', 'fireflies', 'matrix', 'minimal'].map((style) => (
+                         {['grid', 'aurora', 'nebula', 'cyber_rain', 'fireflies', 'matrix', 'minimal'].map((style) => (
                            <button
                              key={style}
                              onClick={() => setBgStyle(style)}
@@ -70,6 +103,25 @@ export const ThemeSettingsModal = ({ isOpen, onClose }) => {
                            </button> 
                         ))}
                     </div>
+                </div>
+
+                {/* Font Size Control */}
+                <div className="space-y-4 p-4 rounded-xl bg-base-content/5 border border-base-content/5">
+                     <label className="text-sm font-bold text-base-content uppercase">Interface Scale</label>
+                     <div className="space-y-2">
+                         <div className="flex justify-between text-xs text-base-content/60">
+                             <span>Size ({Math.round(density * 100)}%)</span>
+                         </div>
+                         <input 
+                             type="range" 
+                             min="0.8" 
+                             max="1.2" 
+                             step="0.05"
+                             value={density}
+                             onChange={(e) => setDensity(Number(e.target.value))}
+                             className="w-full accent-primary"
+                         />
+                     </div>
                 </div>
 
                 {/* Rain Controls */}
@@ -104,43 +156,6 @@ export const ThemeSettingsModal = ({ isOpen, onClose }) => {
                                 value={rainAmount}
                                 onChange={(e) => setRainAmount(Number(e.target.value))}
                                 className="w-full accent-primary"
-                            />
-                        </div>
-                    </div>
-                )}
-
-                {/* Snow Controls */}
-                {bgStyle === 'snow' && (
-                    <div className="space-y-4 p-4 rounded-xl bg-base-content/5 border border-base-content/5">
-                         <label className="text-sm font-bold text-base-content uppercase">Snow Config</label>
-                        
-                        <div className="space-y-2">
-                            <div className="flex justify-between text-xs text-base-content/60">
-                                <span>Speed (x{snowSpeed})</span>
-                            </div>
-                            <input 
-                                type="range" 
-                                min="0.5" 
-                                max="3" 
-                                step="0.5"
-                                value={snowSpeed}
-                                onChange={(e) => setSnowSpeed(Number(e.target.value))}
-                                className="w-full accent-base-content"
-                            />
-                        </div>
-
-                        <div className="space-y-2">
-                            <div className="flex justify-between text-xs text-base-content/60">
-                                <span>Flurries ({snowAmount})</span>
-                            </div>
-                            <input 
-                                type="range" 
-                                min="20" 
-                                max="200" 
-                                step="10"
-                                value={snowAmount}
-                                onChange={(e) => setSnowAmount(Number(e.target.value))}
-                                className="w-full accent-base-content"
                             />
                         </div>
                     </div>
