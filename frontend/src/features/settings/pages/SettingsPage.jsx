@@ -19,7 +19,7 @@ export const SettingsPage = () => {
   return (
     <div className="space-y-12 max-w-4xl mx-auto pb-20">
       <header>
-        <h1 className="text-4xl font-black tracking-tighter uppercase italic text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-cyan mb-2">
+        <h1 className="text-4xl font-black tracking-tighter uppercase italic text-transparent bg-clip-text bg-gradient-to-r from-primary to-base-content/60 mb-2">
           Settings
         </h1>
         <p className="text-zinc-500 font-light">
@@ -36,97 +36,119 @@ export const SettingsPage = () => {
         
         {/* Colors & Accents */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-4">
-                <label className="text-xs uppercase tracking-widest text-zinc-500 font-bold">Neon Accent</label>
-                <div className="flex flex-wrap gap-3">
+            <div className="space-y-6">
+                <div className="flex justify-between items-center">
+                    <label className="text-xs uppercase tracking-widest text-zinc-500 font-bold">Neon Accent & Palette</label>
+                    <label className="flex items-center gap-2 cursor-pointer group">
+                        <span className="text-[10px] font-mono text-zinc-500 group-hover:text-primary transition-colors">CUSTOM PICKER</span>
+                        <input 
+                            type="checkbox" 
+                            className="toggle toggle-xs toggle-primary" 
+                            checked={!!customTextColor} // Using this as a proxy for "custom mode" visually or just separate logic
+                            onChange={(e) => {
+                                if (!e.target.checked) setPrimaryColor('#06b6d4'); // Reset or keep current
+                            }}
+                        />
+                    </label>
+                </div>
+
+                {/* Expanded Color Grid */}
+                <div className="grid grid-cols-6 gap-3">
                      {[
-                       "#06b6d4", "#d946ef", "#f43f5e", "#84cc16", 
-                       "#fbbf24", "#f97316", "#3b82f6", "#ffffff",
-                       "#dc2626", "#10b981", "#8b5cf6", "#0ea5e9"
+                       "#06b6d4", "#0ea5e9", "#3b82f6", "#6366f1", "#8b5cf6", "#d946ef",
+                       "#f43f5e", "#e11d48", "#f97316", "#f59e0b", "#eab308", "#84cc16",
+                       "#10b981", "#14b8a6", "#34d399", "#a78bfa", "#ec4899", "#fb7185",
+                       "#fdba74", "#fcd34d", "#bef264", "#6ee7b7", "#93c5fd", "#c4b5fd" 
                      ].map((color) => (
                         <button
                           key={color}
                           onClick={() => setPrimaryColor(color)}
-                          className={`h-8 w-8 rounded-full border transition-all ${
-                            primaryColor === color ? "border-white scale-125 shadow-lg" : "border-transparent hover:scale-110"
+                          className={`w-full aspect-square rounded-lg border transition-all cursor-pointer ${
+                            primaryColor === color ? "border-white scale-110 shadow-lg ring-2 ring-white/20" : "border-transparent hover:scale-105"
                           }`}
                           style={{ backgroundColor: color }}
+                          title={color}
                         />
                      ))}
-                     {/* Custom Picker */}
-                     <div className="relative h-8 w-8 rounded-full overflow-hidden border border-white/20 hover:border-white transition-all">
-                        <input 
+                </div>
+                
+                {/* Custom Color Block */}
+                <div className="p-4 rounded-xl border border-white/10 bg-white/5 space-y-3">
+                    <div className="flex justify-between text-xs text-zinc-400">
+                        <span>Precise Hex Input</span>
+                        <span className="font-mono text-primary">{primaryColor}</span>
+                    </div>
+                    <div className="h-12 w-full rounded-lg overflow-hidden relative border border-white/10">
+                         <input 
                             type="color" 
                             value={primaryColor}
                             onChange={(e) => setPrimaryColor(e.target.value)}
-                            className="absolute -top-2 -left-2 w-16 h-16 cursor-pointer p-0"
+                            className="absolute inset-0 w-full h-full cursor-pointer opacity-0"
                         />
-                     </div>
-                </div>
-            </div>
-
-            <div className="space-y-4">
-                <label className="text-xs uppercase tracking-widest text-zinc-500 font-bold">Text Color Override</label>
-                <div className="flex items-center gap-4">
-                    <div className="relative h-10 w-full bg-white/5 rounded-xl border border-white/10 flex items-center px-3 gap-3 overflow-hidden">
-                        <div className="h-6 w-6 rounded-full border border-white/20" style={{ backgroundColor: customTextColor || '#ffffff' }} />
-                        <span className="text-sm font-mono opacity-70">{customTextColor || 'Default Theme Color'}</span>
-                        <input 
-                            type="color" 
-                            value={customTextColor || '#ffffff'}
-                            onChange={(e) => setCustomTextColor(e.target.value)}
-                            className="absolute inset-0 opacity-0 cursor-pointer w-full"
-                        />
+                        <div className="absolute inset-0 pointer-events-none flex items-center justify-center font-bold text-shadow-sm text-white/50" style={{ backgroundColor: primaryColor }}>
+                            CLICK TO EDIT
+                        </div>
                     </div>
-                    {customTextColor && (
-                        <button onClick={() => setCustomTextColor("")} className="text-xs text-red-400 hover:text-red-300 underline">
-                            Reset
-                        </button>
-                    )}
                 </div>
             </div>
-        </div>
 
-        {/* Shadow / Glow Intensity */}
-        <div className="space-y-4">
-            <div className="flex justify-between">
-                <label className="text-xs uppercase tracking-widest text-zinc-500 font-bold">Neon Shadow Intensity</label>
-                <span className="text-xs font-mono text-neon-cyan">{shadowIntensity === 0 ? 'Off' : shadowIntensity === 1 ? 'Standard' : 'Maximized'}</span>
-            </div>
-            <input 
-                type="range" 
-                min="0" 
-                max="5" 
-                step="0.5"
-                value={shadowIntensity}
-                onChange={(e) => setShadowIntensity(parseFloat(e.target.value))}
-                className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-neon-cyan"
-            />
-        </div>
+            <div className="space-y-6">
+                <label className="text-xs uppercase tracking-widest text-zinc-500 font-bold">Typography & Fonts</label>
+                
+                {/* Font Cloud */}
+                <div className="flex flex-wrap gap-2">
+                    {[
+                        { name: "Inter", value: "Inter, sans-serif" },
+                        { name: "Roboto", value: "'Roboto', sans-serif" },
+                        { name: "Mono", value: "'Roboto Mono', monospace" },
+                        { name: "Orbitron", value: "'Orbitron', sans-serif" },
+                        { name: "Serif", value: "serif" },
+                        { name: "Poppins", value: "'Poppins', sans-serif" },
+                        { name: "Montserrat", value: "'Montserrat', sans-serif" },
+                        { name: "Lato", value: "'Lato', sans-serif" },
+                        { name: "Oswald", value: "'Oswald', sans-serif" },
+                        { name: "Raleway", value: "'Raleway', sans-serif" },
+                        { name: "Playfair", value: "'Playfair Display', serif" },
+                    ].map((font) => (
+                        <button
+                            key={font.name}
+                            onClick={() => setFontFamily(font.value)}
+                            className={`px-3 py-1.5 rounded-lg border text-xs transition-all cursor-pointer ${
+                                fontFamily === font.value 
+                                ? "bg-primary/20 border-primary text-primary" 
+                                : "border-base-content/10 hover:bg-base-content/5 text-base-content/70"
+                            }`}
+                            style={{ fontFamily: font.value }}
+                        >
+                            {font.name}
+                        </button>
+                    ))}
+                </div>
 
-        {/* Typography */}
-        <div className="space-y-4">
-            <label className="text-xs uppercase tracking-widest text-zinc-500 font-bold">Typography</label>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                {[
-                    { name: "Modern Sans", value: "Inter, sans-serif" },
-                    { name: "Developer Mono", value: "'Roboto Mono', monospace" },
-                    { name: "Cyber Display", value: "'Orbitron', sans-serif" },
-                    { name: "Classic Serif", value: "serif" }
-                ].map((font) => (
-                    <button
-                        key={font.name}
-                        onClick={() => setFontFamily(font.value)}
-                        className={`p-3 rounded-xl border text-sm text-left transition-all ${
-                            fontFamily === font.value 
-                            ? "bg-neon-cyan/10 border-neon-cyan text-neon-cyan" 
-                            : "border-white/5 hover:bg-white/5"
-                        }`}
-                        style={{ fontFamily: font.value }}
-                    >
-                        {font.name}
-                    </button>
-                ))}
+                {/* Custom Google Font Loader */}
+                <div className="p-4 rounded-xl bg-deep-black border border-white/10 space-y-4 shadow-inner">
+                    <label className="block text-[10px] uppercase font-bold text-zinc-500 tracking-widest">
+                        Custom Google Font
+                    </label>
+                    <div className="flex gap-2">
+                        <input 
+                            type="text" 
+                            placeholder="e.g. Pacifico" // User requested "Legit" input
+                            className="flex-1 bg-transparent border-b border-white/20 px-2 py-1 text-sm focus:border-primary focus:outline-none transition-colors font-mono"
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    setFontFamily(`'${e.target.value}', sans-serif`);
+                                }
+                            }}
+                        />
+                        <button className="text-[10px] font-bold bg-white/5 hover:bg-white/10 px-3 rounded border border-white/10 uppercase cursor-pointer">
+                            Load
+                        </button>
+                    </div>
+                    <p className="text-[9px] text-zinc-600 leading-relaxed">
+                        Type the exact name of any font from <a href="https://fonts.google.com" target="_blank" className="text-primary underline">fonts.google.com</a> and press Enter. The system will auto-inject the stylesheet.
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -147,11 +169,11 @@ export const SettingsPage = () => {
                     onClick={() => setCardStyle(style.id)}
                     className={`p-4 rounded-xl text-left border transition-all ${
                         cardStyle === style.id
-                          ? "bg-neon-cyan/10 border-neon-cyan"
-                          : "border-white/5 hover:bg-white/5"
+                          ? "bg-primary/10 border-primary"
+                          : "border-base-content/5 hover:bg-base-content/5"
                     }`}
                   >
-                     <span className={`block font-bold uppercase text-sm mb-1 ${cardStyle === style.id ? "text-neon-cyan" : "text-white"}`}>
+                     <span className={`block font-bold uppercase text-sm mb-1 ${cardStyle === style.id ? "text-primary" : "text-base-content"}`}>
                         {style.name}
                      </span>
                      <span className="text-xs text-zinc-500">{style.desc}</span>
@@ -164,7 +186,7 @@ export const SettingsPage = () => {
       {/* Interface Density / Size */}
       <section className="space-y-6">
          <div className="flex items-center gap-3 text-white border-b border-white/10 pb-4">
-          <ComputerDesktopIcon className="h-6 w-6 text-neon-purple" />
+          <ComputerDesktopIcon className="h-6 w-6 text-primary" />
           <h2 className="text-xl font-bold uppercase tracking-widest">Interface Density</h2>
         </div>
 
@@ -210,7 +232,7 @@ export const SettingsPage = () => {
         
         <div className="space-y-6">
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-               {['grid', 'aurora', 'nebula', 'cyber_rain', 'snow', 'cherry_blossoms', 'fireflies', 'matrix', 'minimal'].map((style) => (
+               {['grid', 'aurora', 'nebula', 'cyber_rain', 'fireflies', 'matrix', 'minimal'].map((style) => (
                   <button
                     key={style}
                     onClick={() => setBgStyle(style)}

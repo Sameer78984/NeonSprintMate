@@ -126,7 +126,7 @@ export const WelcomePage = () => {
                             <button 
                                 key={m}
                                 onClick={() => setMode(m)}
-                                className={`p-4 rounded-xl border-2 transition-all duration-300 flex items-center justify-center gap-3 ${mode === m ? "border-primary bg-primary/10 shadow-[0_0_15px_rgba(var(--p),0.2)]" : "border-base-content/10 hover:border-primary/50"}`}
+                                className={`p-4 rounded-xl border-2 transition-all duration-300 flex items-center justify-center gap-3 cursor-pointer ${mode === m ? "border-primary bg-primary/10 shadow-[0_0_15px_rgba(var(--p),0.2)]" : "border-base-content/10 hover:border-primary/50"}`}
                             >
                                 {m === 'light' ? <SunIcon className="w-6 h-6" /> : <MoonIcon className="w-6 h-6" />}
                                 <span className="font-medium capitalize">{m} Mode</span>
@@ -141,13 +141,13 @@ export const WelcomePage = () => {
                     <div className="flex flex-wrap gap-3">
                         {[
                         "#06b6d4", "#d946ef", "#f43f5e", "#84cc16", 
-                        "#fbbf24", "#f97316", "#3b82f6", "#ffffff",
+                        "#fbbf24", "#f97316", "#3b82f6", 
                         "#dc2626", "#10b981", "#8b5cf6", "#0ea5e9"
                         ].map((color) => (
                         <button
                             key={color}
                             onClick={() => setPrimaryColor(color)}
-                            className={`w-10 h-10 rounded-full border-2 transition-all ${
+                            className={`w-10 h-10 rounded-full border-2 transition-all cursor-pointer ${
                             primaryColor === color ? "border-base-content scale-110 shadow-lg" : "border-transparent hover:scale-105"
                             }`}
                             style={{ backgroundColor: color }}
@@ -212,7 +212,7 @@ export const WelcomePage = () => {
                             <button
                                 key={font.name}
                                 onClick={() => setFontFamily(font.value)}
-                                className={`p-3 rounded-lg border text-sm text-left transition-all ${
+                                className={`p-3 rounded-lg border text-sm text-left transition-all cursor-pointer ${
                                     fontFamily === font.value 
                                     ? "bg-primary/10 border-primary text-primary" 
                                     : "border-base-content/10 hover:bg-base-200"
@@ -240,7 +240,7 @@ export const WelcomePage = () => {
                             <button
                                 key={style.id}
                                 onClick={() => setCardStyle(style.id)}
-                                className={`p-3 rounded-lg text-sm transition-all border ${
+                                className={`p-3 rounded-lg text-sm transition-all border cursor-pointer ${
                                     cardStyle === style.id
                                     ? "bg-primary/10 border-primary text-primary shadow-[0_0_10px_rgba(var(--p),0.2)]"
                                     : "border-base-content/5 bg-base-200/30 hover:bg-base-200"
@@ -302,7 +302,7 @@ export const WelcomePage = () => {
                            <button
                              key={style}
                              onClick={() => setBgStyle(style)}
-                             className={`p-3 rounded-lg border text-xs capitalize transition-all ${
+                             className={`p-3 rounded-lg border text-xs capitalize transition-all cursor-pointer ${
                                  bgStyle === style 
                                  ? "bg-primary/10 border-primary text-primary font-bold" 
                                  : "border-base-content/10 bg-base-200/50 hover:border-primary/40"

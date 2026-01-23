@@ -99,7 +99,7 @@ export const ModalHeader = ({ icon: Icon, title, onClose, color = "cyan" }) => {
       </h3>
       <button
         onClick={onClose}
-        className="text-zinc-600 hover:text-white transition-colors"
+        className="text-zinc-600 hover:text-white transition-colors cursor-pointer"
       >
         <XMarkIcon className="h-6 w-6" />
       </button>
