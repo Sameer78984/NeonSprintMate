@@ -3,7 +3,7 @@ import connectPgSimple from "connect-pg-simple";
 import knex from "./db.js";
 
 const PostgresStore = connectPgSimple(session);
-const isProd = process.env.NODE_ENV === "production";
+const isProd = process.env.NODE_ENV !== "development";
 const forceDbSession = process.env.USE_DB_SESSION === "true";
 
 const getSessionStore = () => {
@@ -33,8 +33,8 @@ export const sessionConfig = session({
   saveUninitialized: false,
   cookie: {
     httpOnly: true, // Required: Protects against XSS
-    secure: isProd, // Required: HTTPS only in production
+    secure: isProd, // true in Prod (HTTPS), false in Dev (HTTP)
     maxAge: 24 * 60 * 60 * 1000,
-    sameSite: "none",
+    sameSite: isProd ? "none" : "lax", // 'None' for Prod (cross-site), 'Lax' for Dev (localhost)
   },
 });
