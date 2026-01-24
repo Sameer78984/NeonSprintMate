@@ -19,6 +19,10 @@ export const createTaskSchema = [
     .optional({ nullable: true })
     .isInt()
     .withMessage("User ID must be an integer"),
+  body("due_date")
+    .optional({ nullable: true })
+    .isISO8601()
+    .withMessage("Due date must be a valid date"),
 ];
 
 // New: Validates query parameters for fetching tasks
