@@ -59,7 +59,7 @@ The NeonSprintMate frontend is a **feature-based, modular React application** bu
   - Responsive sidebar navigation
   - Mobile-friendly slide-over menu
   - User profile section
-  - Real-time status updates
+  - Instant status updates
 
 - **Task Management**
   - Interactive task board

@@ -31,6 +31,7 @@ export const EditTaskModal = ({ isOpen, onClose, task }) => {
     description: "",
     status: "todo",
     assigned_to: "",
+    due_date: "",
   };
 
   const { formData, setFormData, handleSubmit, loading, members } =
@@ -44,6 +45,7 @@ export const EditTaskModal = ({ isOpen, onClose, task }) => {
         description: task.description || "",
         status: task.status || "todo",
         assigned_to: task.assigned_to || "",
+        due_date: task.due_date ? new Date(task.due_date).toISOString().split('T')[0] : "",
       });
     }
   }, [task, isOpen, setFormData]);
@@ -112,6 +114,14 @@ export const EditTaskModal = ({ isOpen, onClose, task }) => {
               }
               icon={UserIcon}
             />
+            <div className="md:col-span-2">
+                 <Input
+                    type="date"
+                    label="Due Date"
+                    value={formData.due_date}
+                    onChange={(e) => setFormData({ ...formData, due_date: e.target.value })}
+                 />
+            </div>
           </div>
         </div>
 
