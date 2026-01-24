@@ -59,6 +59,14 @@ export const TaskCard = ({ task, onClick }) => {
             <span className="text-[9px] font-mono font-bold">PRIORITY</span>
           </div>
         )}
+        {task.due_date && (
+            <div className={`flex items-center gap-2 font-mono text-[9px] uppercase ${
+                new Date(task.due_date) < new Date() && task.status !== 'done' ? 'text-neon-red animate-pulse' : 'text-base-content/50'
+            }`}>
+               <ClockIcon className="h-4 w-4" /> 
+               {new Date(task.due_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+            </div>
+        )}
       </div>
     </motion.div>
   );

@@ -19,12 +19,27 @@ export const useTeamStore = create(
           const teamsList = res.data.data;
           set({ teams: teamsList, loading: false });
 
-          // Auto-select first team if none selected
-          if (teamsList.length > 0 && !get().currentTeam) {
-            const firstTeam = teamsList[0];
-            set({ currentTeam: firstTeam });
-            useTaskStore.getState().fetchTasks(firstTeam.id);
-            get().fetchMembers();
+          // Validate persisted team against fetched list
+          const currentTeam = get().currentTeam;
+          const isCurrentTeamValid = currentTeam && teamsList.find(t => t.id === currentTeam.id);
+
+          if (!isCurrentTeamValid) {
+            if (teamsList.length > 0) {
+              // Switch to first available team
+              const firstTeam = teamsList[0];
+              set({ currentTeam: firstTeam });
+              useTaskStore.getState().fetchTasks(firstTeam.id);
+              get().fetchMembers();
+            } else {
+              // No teams available
+              set({ currentTeam: null });
+              useTaskStore.getState().clearTasks();
+            }
+          } else {
+            // Determine if we need to refresh data for the valid current team
+            // (Optional, but good practice to ensure freshness)
+             useTaskStore.getState().fetchTasks(currentTeam.id);
+             get().fetchMembers();
           }
         } catch (error) {
           set({ error: "Failed to sync neural units", loading: false });

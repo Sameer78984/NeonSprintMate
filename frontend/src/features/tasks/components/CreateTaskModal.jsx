@@ -22,6 +22,7 @@ export const CreateTaskModal = ({ isOpen, onClose }) => {
     description: "",
     status: "todo",
     assigned_to: "",
+    due_date: "",
   };
 
   const { formData, setFormData, handleSubmit, loading, members } =
@@ -70,6 +71,16 @@ export const CreateTaskModal = ({ isOpen, onClose }) => {
             }
             icon={UserIcon}
           />
+
+          <div className="pt-2">
+             <Input
+                type="date"
+                label="Due Date"
+                value={formData.due_date}
+                onChange={(e) => setFormData({ ...formData, due_date: e.target.value })}
+                className="w-full"
+             />
+          </div>
 
           <div className="pt-6 flex gap-4">
             <Button
