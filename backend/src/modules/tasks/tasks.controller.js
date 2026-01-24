@@ -14,8 +14,8 @@ export const getAllTasks = async (req, res, next) => {
 
     const tasks = await knex("tasks")
       .where({ team_id })
-      // ADDED "description" HERE
-      .select("id", "title", "description", "status", "priority", "assigned_to", "created_at") 
+      // ADDED "description" and "due_date" HERE
+      .select("id", "title", "description", "status", "priority", "assigned_to", "due_date", "created_at") 
       .orderBy("created_at", "desc");
       
     res.status(200).json({ data: tasks });
@@ -27,7 +27,7 @@ export const getAllTasks = async (req, res, next) => {
 // 2. Create Task
 export const createTask = async (req, res, next) => {
   try {
-    const { title, description, team_id, assigned_to, status, priority } =
+    const { title, description, team_id, assigned_to, status, priority, due_date } =
       req.body;
 
     const isMember = await knex("membership")
@@ -43,6 +43,7 @@ export const createTask = async (req, res, next) => {
         assigned_to: assigned_to || null,
         status: status || "todo",
         priority: priority || "medium",
+        due_date,
         created_by: req.user.id,
       })
       .returning("*");
@@ -60,7 +61,7 @@ export const updateTask = async (req, res, next) => {
   try {
     const { id } = req.params;
     // Map userId from the assignment route if it exists
-    const { title, description, status, priority, assigned_to, userId } =
+    const { title, description, status, priority, assigned_to, userId, due_date } =
       req.body;
     const finalAssignee = assigned_to || userId;
 
@@ -82,6 +83,7 @@ export const updateTask = async (req, res, next) => {
         status,
         priority,
         assigned_to: finalAssignee,
+        due_date,
       })
       .returning("*");
 

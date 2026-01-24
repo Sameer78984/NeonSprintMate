@@ -4,7 +4,7 @@
 
 ### 🚀 **Full-Stack Team Task Management System**
 
-*A high-performance, production-ready productivity orchestrator built with modern web technologies*
+_A high-performance, production-ready productivity orchestrator built with modern web technologies_
 
 [![React](https://img.shields.io/badge/React-19.2.0-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://react.dev/)
 [![Node.js](https://img.shields.io/badge/Node.js-20+-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
@@ -53,6 +53,7 @@
 ## ✨ Features
 
 ### 🔐 **Authentication & Security**
+
 - Secure user registration and login
 - Passport.js session-based authentication
 - PostgreSQL session storage with memory fallback
@@ -62,6 +63,7 @@
 - Arcjet WAF protection
 
 ### 👥 **Team Management**
+
 - Create and manage teams
 - Invite members via email
 - Role-based permissions (Admin/Member)
@@ -69,6 +71,7 @@
 - Auto-assignment of team creator as admin
 
 ### 📋 **Task Management**
+
 - Create, update, and delete tasks
 - Assign tasks to team members
 - Status tracking (Todo, In Progress, Done)
@@ -78,15 +81,17 @@
 - Role-based task deletion (creators/admins only)
 
 ### 🎨 **User Interface**
+
 - Modern neon-themed design
 - Fully responsive (mobile, tablet, desktop)
 - Smooth animations with Framer Motion
-- Real-time toast notifications
+- Interactive toast notifications
 - Modal-based task creation/editing
-- Interactive dashboard with live updates
+- Interactive dashboard with dynamic updates
 - Theme customization (Light/Dark mode + Color accents)
 
 ### 🎇 **Visuals & UX**
+
 - **Dynamic Theming** - 5+ Color themes (Cyan, Purple, Pink, Lime, Orange)
 - **Interactive Backgrounds** - Cyber Rain, Snow, Aurora, and more
 - **Micro-Interactions** - "Shake-on-error" inputs, hover glows
@@ -94,6 +99,7 @@
 - **Glassmorphism** - Modern glass UI across the application
 
 ### 🚀 **Developer Experience**
+
 - Hot module replacement (HMR)
 - TypeScript-ready structure
 - Comprehensive error handling
@@ -109,35 +115,35 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                        CLIENT LAYER                          │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
-│  │   React 19   │  │  Zustand     │  │  React Router│      │
-│  │   + Vite     │  │  State Mgmt  │  │  Navigation  │      │
-│  └──────────────┘  └──────────────┘  └──────────────┘      │
+│                        CLIENT LAYER                         │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
+│  │   React 19   │  │  Zustand     │  │  React Router│       │
+│  │   + Vite     │  │  State Mgmt  │  │  Navigation  │       │
+│  └──────────────┘  └──────────────┘  └──────────────┘       │
 └─────────────────────────────────────────────────────────────┘
                             ↕ HTTPS
 ┌─────────────────────────────────────────────────────────────┐
 │                      API GATEWAY LAYER                      │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
-│  │   Express    │  │   Passport   │  │   Arcjet     │      │
-│  │   REST API   │  │   Sessions   │  │   WAF        │      │
-│  └──────────────┘  └──────────────┘  └──────────────┘      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
+│  │   Express    │  │   Passport   │  │   Arcjet     │       │
+│  │   REST API   │  │   Sessions   │  │   WAF        │       │
+│  └──────────────┘  └──────────────┘  └──────────────┘       │
 └─────────────────────────────────────────────────────────────┘
                             ↕
 ┌─────────────────────────────────────────────────────────────┐
 │                      BUSINESS LOGIC LAYER                   │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
-│  │    Auth      │  │    Teams     │  │    Tasks     │      │
-│  │  Controller  │  │  Controller  │  │  Controller  │      │
-│  └──────────────┘  └──────────────┘  └──────────────┘      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
+│  │    Auth      │  │    Teams     │  │    Tasks     │       │
+│  │  Controller  │  │  Controller  │  │  Controller  │       │
+│  └──────────────┘  └──────────────┘  └──────────────┘       │
 └─────────────────────────────────────────────────────────────┘
                             ↕
 ┌─────────────────────────────────────────────────────────────┐
 │                      DATA LAYER                             │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
-│  │   Knex.js    │  │  PostgreSQL  │  │  Sessions    │      │
-│  │   ORM        │  │  (Neon)      │  │  Store       │      │
-│  └──────────────┘  └──────────────┘  └──────────────┘      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
+│  │   Knex.js    │  │  PostgreSQL  │  │  Sessions    │       │
+│  │   ORM        │  │  (Neon)      │  │  Store       │       │
+│  └──────────────┘  └──────────────┘  └──────────────┘       │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -152,8 +158,8 @@
 │ email    │◄─────┤ created_by│◄────┤ team_id  │
 │ password │      │ desc     │      │ assigned │
 │ name     │      └──────────┘      │ status   │
-└────┬─────┘            │            │ priority │
-     │                  │            │ due_date │
+└────┬─────┘            │           │ priority │
+     │                  │           │ due_date │
      │            ┌─────▼─────┐     └──────────┘
      └───────────►│ Membership│
                   ├───────────┤
@@ -169,28 +175,30 @@
 ## 🛠️ Tech Stack
 
 ### **Frontend**
-| Technology | Version | Purpose |
-|:----------|:--------|:--------|
-| **React** | 19.2.0 | UI Framework |
-| **Vite** | 7.2.4 | Build Tool & Dev Server |
-| **Tailwind CSS** | 4.1.18 | Utility-First CSS |
-| **Framer Motion** | 12.27.3 | Animation Library |
-| **Zustand** | 5.0.10 | State Management |
-| **React Router** | 7.12.0 | Client-Side Routing |
-| **Axios** | 1.13.2 | HTTP Client |
-| **DaisyUI** | 5.5.14 | Component Library |
+
+| Technology        | Version | Purpose                 |
+| :---------------- | :------ | :---------------------- |
+| **React**         | 19.2.0  | UI Framework            |
+| **Vite**          | 7.2.4   | Build Tool & Dev Server |
+| **Tailwind CSS**  | 4.1.18  | Utility-First CSS       |
+| **Framer Motion** | 12.27.3 | Animation Library       |
+| **Zustand**       | 5.0.10  | State Management        |
+| **React Router**  | 7.12.0  | Client-Side Routing     |
+| **Axios**         | 1.13.2  | HTTP Client             |
+| **DaisyUI**       | 5.5.14  | Component Library       |
 
 ### **Backend**
-| Technology | Version | Purpose |
-|:----------|:--------|:--------|
-| **Node.js** | 20+ | Runtime Environment |
-| **Express** | 5.2.1 | Web Framework |
-| **PostgreSQL** | 16 | Relational Database |
-| **Knex.js** | 3.1.0 | SQL Query Builder |
-| **Passport.js** | 0.7.0 | Authentication |
-| **Express-Validator** | 7.3.1 | Input Validation |
-| **Bcrypt.js** | 3.0.3 | Password Hashing |
-| **Arcjet** | 1.0.0-beta.17 | Web Application Firewall |
+
+| Technology            | Version       | Purpose                  |
+| :-------------------- | :------------ | :----------------------- |
+| **Node.js**           | 20+           | Runtime Environment      |
+| **Express**           | 5.2.1         | Web Framework            |
+| **PostgreSQL**        | 16            | Relational Database      |
+| **Knex.js**           | 3.1.0         | SQL Query Builder        |
+| **Passport.js**       | 0.7.0         | Authentication           |
+| **Express-Validator** | 7.3.1         | Input Validation         |
+| **Bcrypt.js**         | 3.0.3         | Password Hashing         |
+| **Arcjet**            | 1.0.0-beta.17 | Web Application Firewall |
 
 ---
 
@@ -245,35 +253,38 @@ NeonSprintMate/
 ### **Installation**
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/yourusername/NeonSprintMate.git
    cd NeonSprintMate
    ```
 
 2. **Backend Setup**
+
    ```bash
    cd backend
    npm install
-   
+
    # Create .env file
    cp .env.example .env
    # Edit .env with your database credentials
-   
+
    # Run migrations
    npx knex migrate:latest
-   
+
    # Start development server
    npm run dev
    ```
 
 3. **Frontend Setup**
+
    ```bash
    cd frontend
    npm install
-   
+
    # Create .env file
    echo "VITE_API_URL=http://localhost:5000/api" > .env
-   
+
    # Start development server
    npm run dev
    ```
@@ -285,6 +296,7 @@ NeonSprintMate/
 ### **Environment Variables**
 
 #### **Backend (.env)**
+
 ```env
 PORT=5000
 NODE_ENV=development
@@ -301,6 +313,7 @@ USE_DB_SESSION=true
 ```
 
 #### **Frontend (.env)**
+
 ```env
 VITE_API_URL=http://localhost:5000/api
 ```
@@ -318,6 +331,7 @@ VITE_API_URL=http://localhost:5000/api
 ### **API Documentation**
 
 #### **Authentication Endpoints**
+
 ```
 POST   /api/auth/register    - Register new user
 POST   /api/auth/login       - User login
@@ -326,6 +340,7 @@ GET    /api/auth/me          - Get current user
 ```
 
 #### **Team Endpoints**
+
 ```
 GET    /api/teams            - Get user's teams
 POST   /api/teams            - Create team
@@ -336,6 +351,7 @@ POST   /api/teams/:id/members - Add member (admin only)
 ```
 
 #### **Task Endpoints**
+
 ```
 GET    /api/tasks?team_id=X  - Get tasks for team
 POST   /api/tasks            - Create task
@@ -365,6 +381,7 @@ PATCH  /api/tasks/:id/assign - Assign task
 ## 🎯 Roadmap
 
 ### **✅ Completed**
+
 - [x] Full authentication system
 - [x] Team management with RBAC
 - [x] Task CRUD operations
@@ -374,16 +391,16 @@ PATCH  /api/tasks/:id/assign - Assign task
 - [x] Email-based member invites
 
 ### **🚧 In Progress**
-- [ ] Real-time notifications
-- [ ] Task comments system
-- [ ] File attachments
-- [ ] Advanced analytics dashboard
+*   [ ] Integration tests
+*   [ ] Performance optimization
 
 ### **📋 Planned**
-- [ ] Mobile applications (React Native)
-- [ ] WebSocket integration
-- [ ] Advanced reporting
-- [ ] Integration with external tools
+*   [ ] Real-time notifications (WebSockets)
+*   [ ] Task comments system
+*   [ ] File attachments
+*   [ ] Advanced analytics dashboard
+*   [ ] Mobile applications (React Native)
+*   [ ] Integration with external tools
 
 ---
 
@@ -411,6 +428,7 @@ Contributions are welcome! Please follow these steps:
 **Copyright (c) 2026 Sameer - All Rights Reserved**
 
 This software is **Source Available** for educational and reference purposes only.
+
 - ❌ **Commercial Use:** STRICTLY FORBIDDEN
 - ❌ **Modification:** STRICTLY FORBIDDEN
 - ❌ **Distribution:** STRICTLY FORBIDDEN

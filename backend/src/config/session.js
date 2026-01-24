@@ -3,6 +3,7 @@ import connectPgSimple from "connect-pg-simple";
 import knex from "./db.js";
 
 const PostgresStore = connectPgSimple(session);
+const isProd = process.env.NODE_ENV !== "development";
 const forceDbSession = process.env.USE_DB_SESSION === "true";
 
 const getSessionStore = () => {
