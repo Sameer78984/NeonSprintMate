@@ -19,9 +19,16 @@ export const register = async (req, res) => {
     })
     .returning(["id", "username", "email", "name", "created_at"]);
 
-  return res.status(201).json({
-    message: "Account created successfully",
-    user: newUser,
+  // Auto-login the user after registration
+  req.logIn(newUser, (err) => {
+    if (err) {
+      return res.status(500).json({ message: "Registration successful, but auto-login failed" });
+    }
+    
+    return res.status(201).json({
+      message: "Account created successfully",
+      user: newUser,
+    });
   });
 };
 
