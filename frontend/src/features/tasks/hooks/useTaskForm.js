@@ -49,6 +49,8 @@ export const useTaskForm = (initialFormData, isOpen, onSuccess) => {
     } else {
       addToast(res.error, "error");
     }
+    
+    return res; // [FIX] Return result so components can handle UI errors
   };
 
   return {

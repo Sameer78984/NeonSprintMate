@@ -1,10 +1,11 @@
+import { useState } from "react"; // [NEW]
 import { Modal, ModalHeader } from "../../../components/Modal";
 import { NeonSelect } from "../../../components/NeonSelect";
 import { Input } from "../../../components/Input";
 import { Button } from "../../../components/Button";
 import { useTaskForm } from "../hooks/useTaskForm";
 import { mapMembersToOptions } from "../utils/constants";
-import { SparklesIcon, UserIcon } from "@heroicons/react/24/outline";
+import { SparklesIcon, UserIcon, ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
 /**
  * CreateTaskModal Component
@@ -17,6 +18,7 @@ import { SparklesIcon, UserIcon } from "@heroicons/react/24/outline";
  * @returns {JSX.Element} Create task modal component
  */
 export const CreateTaskModal = ({ isOpen, onClose }) => {
+  const [error, setError] = useState(null); // [NEW] Local error state
   const initialFormData = {
     title: "",
     description: "",
@@ -42,7 +44,7 @@ export const CreateTaskModal = ({ isOpen, onClose }) => {
       zIndex={200}
       accentColor="mixed"
     >
-      <div className="p-10">
+        <div className="p-10">
         <ModalHeader
           icon={SparklesIcon}
           title="Create Task"
@@ -50,7 +52,19 @@ export const CreateTaskModal = ({ isOpen, onClose }) => {
           color="cyan"
         />
 
-        <form onSubmit={(e) => handleSubmit(e, null)} className="space-y-8">
+        <form onSubmit={async (e) => {
+             setError(null);
+             const res = await handleSubmit(e, null);
+             if (!res?.success) setError(res?.error || "Failed to create task");
+        }} className="space-y-8">
+          
+          {error && (
+            <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm flex items-center gap-3 animate-pulse">
+                <ExclamationCircleIcon className="h-5 w-5 flex-shrink-0" />
+                <span>{error}</span>
+            </div>
+          )}
+
           <Input
             label="Task Title"
             placeholder="Enter task title..."
@@ -62,7 +76,7 @@ export const CreateTaskModal = ({ isOpen, onClose }) => {
           />
 
           <NeonSelect
-            label="Assign Member"
+            label="Assign Member (Optional)"
             placeholder="Assign to..."
             options={memberOptions}
             value={formData.assigned_to}
@@ -75,7 +89,8 @@ export const CreateTaskModal = ({ isOpen, onClose }) => {
           <div className="pt-2">
              <Input
                 type="date"
-                label="Due Date"
+                label="Due Date (Optional)"
+                min={new Date().toISOString().split('T')[0]}
                 value={formData.due_date}
                 onChange={(e) => setFormData({ ...formData, due_date: e.target.value })}
                 className="w-full"

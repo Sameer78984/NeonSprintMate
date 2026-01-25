@@ -9,9 +9,10 @@ import {
   SwatchIcon,
   ComputerDesktopIcon,
   PaintBrushIcon,
-  AdjustmentsHorizontalIcon,
   CubeIcon
 } from "@heroicons/react/24/outline";
+import { UnifiedThemeControls } from "../../../components/UnifiedThemeControls";
+import { PerformanceSettings } from "../../settings/components/PerformanceSettings";
 import { useThemeStore } from "../../../stores/useThemeStore";
 
 export const WelcomePage = () => {
@@ -27,13 +28,6 @@ export const WelcomePage = () => {
     cardStyle, setCardStyle,
     shadowIntensity, setShadowIntensity,
     fontFamily, setFontFamily,
-
-    // Background
-    bgStyle, setBgStyle,
-    bgAnimationSpeed, setBgAnimationSpeed,
-    enableParticles, setEnableParticles,
-    rainSpeed, setRainSpeed, rainAmount, setRainAmount,
-    snowSpeed, setSnowSpeed, snowAmount, setSnowAmount,
 
     setHasSeenWelcome 
   } = useThemeStore();
@@ -252,6 +246,12 @@ export const WelcomePage = () => {
                     </div>
                 </section>
 
+                {/* Performance */}
+                 <section className="space-y-4">
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-base-content/50">Experience & Performance</h3>
+                    <PerformanceSettings compact={false} />
+                </section>
+
                 {/* Density & Shadows */}
                 <div className="grid sm:grid-cols-2 gap-8">
                     <div className="space-y-4">
@@ -294,86 +294,7 @@ export const WelcomePage = () => {
                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 className="space-y-8 max-w-2xl mx-auto"
               >
-                  {/* Background Style */}
-                  <section className="space-y-4">
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-base-content/50">Core Atmosphere</h3>
-                    <div className="grid grid-cols-3 gap-3">
-                        {['grid', 'aurora', 'nebula', 'cyber_rain', 'snow', 'cherry_blossoms', 'fireflies', 'matrix', 'minimal'].map((style) => (
-                           <button
-                             key={style}
-                             onClick={() => setBgStyle(style)}
-                             className={`p-3 rounded-lg border text-xs capitalize transition-all cursor-pointer ${
-                                 bgStyle === style 
-                                 ? "bg-primary/10 border-primary text-primary font-bold" 
-                                 : "border-base-content/10 bg-base-200/50 hover:border-primary/40"
-                             }`}
-                           >
-                              {style.replace("_", " ")}
-                           </button>
-                        ))}
-                    </div>
-                 </section>
-
-                 {/* Shared Controls */}
-                 <div className="grid sm:grid-cols-2 gap-6">
-                     <div className="space-y-4">
-                        <div className="flex justify-between">
-                             <h3 className="text-sm font-bold uppercase tracking-widest text-base-content/50">Animation Speed</h3>
-                             <span className="text-xs font-mono text-primary">{bgAnimationSpeed}x</span>
-                        </div>
-                        <input 
-                            type="range" min="0.1" max="5" step="0.1"
-                            value={bgAnimationSpeed}
-                            onChange={(e) => setBgAnimationSpeed(parseFloat(e.target.value))}
-                            className="range range-accent range-xs"
-                        />
-                    </div>
-                     <div className="flex items-center justify-between p-4 rounded-xl border border-base-content/10 bg-base-200/50">
-                        <div>
-                            <span className="block font-bold text-sm">Particles</span>
-                            <span className="text-xs opacity-60">Interactive elements</span>
-                        </div>
-                        <input 
-                            type="checkbox" 
-                            className="toggle toggle-primary"
-                            checked={enableParticles}
-                            onChange={(e) => setEnableParticles(e.target.checked)}
-                        />
-                     </div>
-                 </div>
-
-                 {/* Contextual Controls */}
-                 {bgStyle === 'cyber_rain' && (
-                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-4 rounded-xl bg-primary/5 border border-primary/10 space-y-4">
-                         <h4 className="text-xs font-bold text-primary uppercase">Rain Settings</h4>
-                         <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <label className="text-xs px-1 opacity-70">Drop Speed</label>
-                                <input type="range" min="0.5" max="5" step="0.5" value={rainSpeed} onChange={(e) => setRainSpeed(Number(e.target.value))} className="range range-xs range-primary mt-1" />
-                            </div>
-                             <div>
-                                <label className="text-xs px-1 opacity-70">Density</label>
-                                <input type="range" min="10" max="100" step="10" value={rainAmount} onChange={(e) => setRainAmount(Number(e.target.value))} className="range range-xs range-primary mt-1" />
-                            </div>
-                         </div>
-                     </motion.div>
-                 )}
-                 {bgStyle === 'snow' && (
-                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-4 rounded-xl bg-base-100/50 border border-base-content/10 space-y-4">
-                         <h4 className="text-xs font-bold text-primary uppercase">Snow Settings</h4>
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <label className="text-xs px-1 opacity-70">Fall Speed</label>
-                                <input type="range" min="0.5" max="3" step="0.5" value={snowSpeed} onChange={(e) => setSnowSpeed(Number(e.target.value))} className="range range-xs range-info mt-1" />
-                            </div>
-                             <div>
-                                <label className="text-xs px-1 opacity-70">Flurries</label>
-                                <input type="range" min="20" max="200" step="10" value={snowAmount} onChange={(e) => setSnowAmount(Number(e.target.value))} className="range range-xs range-info mt-1" />
-                            </div>
-                         </div>
-                     </motion.div>
-                 )}
-
+                 <UnifiedThemeControls />
               </motion.div>
             )}
 

@@ -46,6 +46,11 @@ export const useTaskStore = create(
             payload.assigned_to = Number(payload.assigned_to);
           }
 
+          // [FIX] clean up due_date to prevent 400 Bad Request
+          if (!payload.due_date) {
+             delete payload.due_date;
+          }
+
           const res = await axios.post("/tasks", payload);
 
           set((state) => ({
@@ -82,6 +87,10 @@ export const useTaskStore = create(
             payload.assigned_to = null;
           } else if (payload.assigned_to) {
             payload.assigned_to = Number(payload.assigned_to);
+          }
+
+          if (payload.due_date === "") {
+            payload.due_date = null;
           }
 
           const res = await axios.put(`/tasks/${taskId}`, payload);

@@ -20,19 +20,14 @@ export const LandingHero = ({ isAuthenticated }) => {
       animate="visible"
       className="text-center max-w-5xl"
     >
-      <motion.div
-        variants={itemVariants}
-        className="inline-block px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 text-primary text-[9px] md:text-[10px] font-bold mb-6 md:mb-8 tracking-[0.3em] md:tracking-[0.4em] uppercase neon-glow-cyan"
-      >
-        Unified Collaboration Platform
-      </motion.div>
+
 
       <motion.h1
         variants={itemVariants}
-        className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter mb-6 md:mb-8 leading-[0.9] md:leading-[0.85] drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]"
+        className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter mb-6 md:mb-8 leading-[0.9] md:leading-[0.85] drop-shadow-lg"
       >
         MAXIMIZE <br />
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan via-blue-500 to-neon-purple drop-shadow-[0_0_30px_rgba(34,211,238,0.5)]">
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan via-blue-500 to-neon-purple drop-shadow-[0_0_15px_rgba(34,211,238,0.3)]">
           TEAM VELOCITY
         </span>
       </motion.h1>

@@ -1,24 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, Suspense, lazy } from "react";
 import { Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { useAuthStore } from "./stores/useAuthStore";
 import { useToastStore } from "./stores/useToastStore";
 import { useThemeStore } from "./stores/useThemeStore";
-
-// Components
-import { LandingPage } from "./features/landing/pages/LandingPage";
-import { LoginPage } from "./features/auth/pages/LoginPage";
-import { RegisterPage } from "./features/auth/pages/RegisterPage";
-import { DashboardLayout } from "./features/dashboard/components/DashboardLayout";
-import { TaskBoard } from "./features/tasks/components/TaskBoard";
-import { TeamSettings } from "./features/teams/components/TeamSettings";
-import { ProfilePage } from "./features/profile/pages/ProfilePage";
-import { SettingsPage } from "./features/settings/pages/SettingsPage";
-import { Toast } from "./components/Toast";
 import { NeonGlobalLoader } from "./components/NeonGlobalLoader";
 import { ProtectedRoute } from "./features/auth/components/ProtectedRoute";
 import { GlobalBackground } from "./components/GlobalBackground";
-import { WelcomePage } from "./features/welcome/pages/WelcomePage";
+import { Toast } from "./components/Toast";
+
+// Lazy Loaded Components
+const LandingPage = lazy(() => import("./features/landing/pages/LandingPage").then(module => ({ default: module.LandingPage })));
+const LoginPage = lazy(() => import("./features/auth/pages/LoginPage").then(module => ({ default: module.LoginPage })));
+const RegisterPage = lazy(() => import("./features/auth/pages/RegisterPage").then(module => ({ default: module.RegisterPage })));
+const DashboardLayout = lazy(() => import("./features/dashboard/components/DashboardLayout").then(module => ({ default: module.DashboardLayout })));
+const TaskBoard = lazy(() => import("./features/tasks/components/TaskBoard").then(module => ({ default: module.TaskBoard })));
+const TeamSettings = lazy(() => import("./features/teams/components/TeamSettings").then(module => ({ default: module.TeamSettings })));
+const ProfilePage = lazy(() => import("./features/profile/pages/ProfilePage").then(module => ({ default: module.ProfilePage })));
+const SettingsPage = lazy(() => import("./features/settings/pages/SettingsPage").then(module => ({ default: module.SettingsPage })));
+const WelcomePage = lazy(() => import("./features/welcome/pages/WelcomePage").then(module => ({ default: module.WelcomePage })));
 
 /**
  * Main App Component
@@ -125,7 +125,23 @@ export function App() {
         link.href = `https://fonts.googleapis.com/css2?family=${fontName.replace(/ /g, "+")}:wght@300;400;500;700;900&display=swap`;
     }
     
-  }, [mode, density, primaryColor, cardStyle, shadowIntensity, fontFamily, customTextColor, textShadow, textShadowColor]);
+    // Global Neon Mode
+    if (useThemeStore.getState().enableGlobalNeon) {
+        root.classList.add('global-neon');
+        const neonColor = useThemeStore.getState().globalNeonColor || primaryColor;
+        root.style.setProperty("--global-neon-color", neonColor);
+    } else {
+        root.classList.remove('global-neon');
+    }
+
+    root.setAttribute("data-site-style", useThemeStore.getState().siteStyle);
+
+    // Performance Mode Classes
+    const perfMode = useThemeStore.getState().performanceMode;
+    root.classList.remove('perf-low', 'perf-balanced', 'perf-high');
+    root.classList.add(`perf-${perfMode}`);
+
+  }, [mode, density, primaryColor, cardStyle, shadowIntensity, fontFamily, customTextColor, textShadow, textShadowColor, useThemeStore.getState().enableGlobalNeon, useThemeStore.getState().globalNeonColor, useThemeStore.getState().siteStyle, useThemeStore.getState().performanceMode]);
 
 
   if (useAuthStore((state) => state.isCheckingAuth)) {
@@ -135,40 +151,42 @@ export function App() {
   return (
     <>
       <GlobalBackground />
-      <Routes>
-        <Route path="/welcome" element={<WelcomePage />} />
-        <Route path="/" element={<LandingPage />} />
-        <Route 
-          path="/login" 
-          element={
-            <PublicOnlyRoute>
-              <LoginPage />
-            </PublicOnlyRoute>
-          } 
-        />
-        <Route 
-          path="/register" 
-          element={
-            <PublicOnlyRoute>
-              <RegisterPage />
-            </PublicOnlyRoute>
-          } 
-        />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <DashboardLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<TaskBoard />} />
-          <Route path="teams" element={<TeamSettings />} />
-          <Route path="profile" element={<ProfilePage />} />
-          <Route path="settings" element={<SettingsPage />} />
-        </Route>
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <Suspense fallback={<NeonGlobalLoader />}>
+        <Routes>
+            <Route path="/welcome" element={<WelcomePage />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route 
+            path="/login" 
+            element={
+                <PublicOnlyRoute>
+                <LoginPage />
+                </PublicOnlyRoute>
+            } 
+            />
+            <Route 
+            path="/register" 
+            element={
+                <PublicOnlyRoute>
+                <RegisterPage />
+                </PublicOnlyRoute>
+            } 
+            />
+            <Route
+            path="/dashboard"
+            element={
+                <ProtectedRoute>
+                <DashboardLayout />
+                </ProtectedRoute>
+            }
+            >
+            <Route index element={<TaskBoard />} />
+            <Route path="teams" element={<TeamSettings />} />
+            <Route path="profile" element={<ProfilePage />} />
+            <Route path="settings" element={<SettingsPage />} />
+            </Route>
+            <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Suspense>
 
       {/* Global Toast Portal: Top-Center */}
       <div className="fixed top-6 left-1/2 -translate-x-1/2 z-100 flex flex-col items-center gap-4 pointer-events-none">

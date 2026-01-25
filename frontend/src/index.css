@@ -292,3 +292,138 @@ select:focus {
 }
 
 /* Exception for Outline Buttons if needed, but text-base-content handles it */
+
+/* GLOBAL NEON MODE - SMART TARGETING */
+/* Instead of targeting everything (*), we target semantic components */
+
+/* 1. Main Containers & Panels */
+.global-neon .glass-panel,
+.global-neon aside,
+.global-neon .modal-box,
+.global-neon .card {
+  border-color: var(--global-neon-color) !important;
+  box-shadow: 0 0 5px -2px var(--global-neon-color);
+  /* Removed !important to allow hover overrides */
+}
+
+/* --- PERFORMANCE MODE OPTIMIZATIONS --- */
+.perf-low * {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  animation-duration: 0s !important;
+  transition-duration: 0s !important;
+}
+
+.perf-low .glass-panel,
+.perf-low .card,
+.perf-low .modal-box {
+  background-color: var(--bg-primary);
+  /* Fallback for glass */
+  opacity: 0.95;
+  border: 1px solid var(--glass-border);
+}
+
+.perf-low .animate-pulse,
+.perf-low .animate-bounce,
+.perf-low .animate-spin {
+  animation: none !important;
+}
+
+/* BALANCED MODE */
+.perf-balanced .glass-panel {
+  backdrop-filter: blur(8px);
+  /* Cap blur radius */
+}
+
+/* CUSTOM KANBAN SCROLLBAR */
+.kanban-scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) rgba(0, 0, 0, 0.1);
+}
+
+.kanban-scroll-container::-webkit-scrollbar {
+  height: 6px;
+  /* Horizontal Height */
+  width: 6px;
+  /* Vertical Width */
+}
+
+.kanban-scroll-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+.kanban-scroll-container::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+  border-radius: 4px;
+  opacity: 0.5;
+}
+
+.kanban-scroll-container::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-secondary);
+}
+
+.global-neon input,
+.global-neon select,
+.global-neon textarea,
+.global-neon button:not(.btn-ghost):not(.no-neon) {
+  border-color: var(--global-neon-color) !important;
+  box-shadow: 0 0 5px -1px var(--global-neon-color) !important;
+}
+
+/* 3. Specific Visual Elements */
+.global-neon hr,
+.global-neon .divider {
+  border-color: var(--global-neon-color) !important;
+  opacity: 0.5;
+}
+
+/* 4. Exclusions / Safety */
+.global-neon .global-neon-exclude,
+.global-neon p,
+.global-neon span,
+.global-neon h1,
+.global-neon h2,
+.global-neon h3,
+.global-neon h4 {
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Hover States for Interactivity */
+.global-neon button:hover,
+.global-neon input:focus {
+  box-shadow: 0 0 15px var(--global-neon-color) !important;
+}
+
+/* Interactive Icons Neon Hover */
+.global-neon button:hover svg,
+.global-neon a:hover svg,
+.global-neon [role="button"]:hover svg,
+.global-neon .cursor-pointer:hover svg {
+  filter: drop-shadow(0 0 5px var(--global-neon-color));
+  transition: filter 0.2s ease-in-out;
+  color: var(--global-neon-color) !important;
+}
+
+/* SITE STYLES (Sidebar, Header, etc - NOT Cards) */
+
+/* Minimal Site Style */
+[data-site-style="minimal"] aside,
+[data-site-style="minimal"] header,
+[data-site-style="minimal"] .glass-panel:not([data-card-style]) {
+  background: transparent !important;
+  border: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Solid Site Style */
+[data-site-style="solid"] aside,
+[data-site-style="solid"] header,
+[data-site-style="solid"] .glass-panel:not([data-card-style]) {
+  background: #09090b !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: none !important;
+}

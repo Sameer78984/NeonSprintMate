@@ -118,6 +118,7 @@ export const EditTaskModal = ({ isOpen, onClose, task }) => {
                  <Input
                     type="date"
                     label="Due Date"
+                    min={new Date().toISOString().split('T')[0]}
                     value={formData.due_date}
                     onChange={(e) => setFormData({ ...formData, due_date: e.target.value })}
                  />

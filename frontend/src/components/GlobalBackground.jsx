@@ -3,22 +3,26 @@ import { useThemeStore } from "../stores/useThemeStore";
 
 export const GlobalBackground = () => {
   const { 
-    bgStyle, 
+    bgScene,
+    bgEffect,
     bgAnimationSpeed, 
     enableParticles, 
     primaryColor,
     rainAmount,
     rainSpeed,
+    rainCollision,
+    rainThickness, // New prop
     snowAmount,
-
     snowSpeed,
-    mode 
+    mode,
+    performanceMode // New prop
   } = useThemeStore();
   const canvasRef = useRef(null);
 
-  // Particles System
+  // --- CANVAS SYSTEM (Effects) ---
   useEffect(() => {
-    if (!enableParticles) return;
+    // Determine if we need canvas
+    if (!['particles', 'rain_real'].includes(bgEffect) && !enableParticles) return;
     
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -26,7 +30,6 @@ export const GlobalBackground = () => {
     const ctx = canvas.getContext("2d");
     let animationFrameId;
     
-    // Resize
     const handleResize = () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -34,7 +37,22 @@ export const GlobalBackground = () => {
     window.addEventListener("resize", handleResize);
     handleResize();
 
-    // Particle Class
+    // PERFORMANCE TUNING
+    let particleCount = 60;
+    let rainMultiplier = 1;
+    let thicknessMultiplier = 1;
+    
+    if (performanceMode === 'low') {
+        particleCount = 20; 
+        rainMultiplier = 0.3; // 30% drops
+        thicknessMultiplier = 1.5; // Thicker to compensate visibility
+    } else if (performanceMode === 'balanced') {
+        particleCount = 40;
+        rainMultiplier = 0.7;
+        thicknessMultiplier = 1.0;
+    }
+
+    // 1. Particle Class
     class Particle {
         constructor() {
             this.x = Math.random() * canvas.width;
@@ -61,14 +79,93 @@ export const GlobalBackground = () => {
         }
     }
 
-    const particlesArray = Array.from({ length: 50 }, () => new Particle());
+    // 2. Real Rain Class (Enhanced Visibility)
+    class RainDrop {
+        constructor() {
+            this.reset();
+            this.y = Math.random() * canvas.height; 
+        }
+        reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = -20;
+            this.size = (Math.random() * 0.5 + 0.5) * thicknessMultiplier; // Performance Adjusted
+            this.velocity = Math.random() * 5 + 15; 
+            this.length = Math.random() * 20 + 20; 
+            this.opacity = Math.random() * 0.4 + 0.3; 
+            this.splashed = false;
+        }
+        update() {
+             this.y += this.velocity * (rainSpeed || 1);
+             if (this.y > canvas.height) {
+                 if (rainCollision && performanceMode !== 'low' && !this.splashed) { // No splash in low mode
+                     this.splashed = true;
+                     for (let i = 0; i < 4; i++) splashes.push(new Splash(this.x, canvas.height));
+                 }
+                 this.reset();
+             }
+        }
+        draw() {
+            ctx.strokeStyle = mode === 'light' ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.6)';
+            ctx.lineWidth = this.size * (rainThickness || 1); 
+            ctx.globalAlpha = this.opacity;
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y);
+            ctx.lineTo(this.x, this.y + this.length);
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+        }
+    }
+
+    // 3. Splash Class
+    class Splash {
+         constructor(x, y) {
+             this.x = x;
+             this.y = y;
+             this.vx = (Math.random() - 0.5) * 6;
+             this.vy = -(Math.random() * 4 + 2);
+             this.life = 1.0;
+         }
+         update() {
+             this.x += this.vx;
+             this.y += this.vy;
+             this.vy += 0.3; 
+             this.life -= 0.05;
+         }
+         draw() {
+             ctx.fillStyle = mode === 'light' ? `rgba(50,50,50,${this.life})` : `rgba(200,200,255,${this.life})`;
+             ctx.beginPath();
+             ctx.arc(this.x, this.y, 1.5, 0, Math.PI * 2);
+             ctx.fill();
+         }
+    }
+
+    // Init Arrays
+    const particlesArray = (bgEffect === 'particles' || enableParticles) 
+        ? Array.from({ length: particleCount }, () => new Particle()) 
+        : [];
+    
+    const rainDrops = [];
+    const splashes = [];
+    if (bgEffect === 'rain_real') {
+         const dropCount = Math.min(rainAmount * 5 * rainMultiplier, 400); // Scaled by Perf Mode
+         for (let i = 0; i < dropCount; i++) rainDrops.push(new RainDrop());
+    }
 
     const animate = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particlesArray.forEach(p => {
-            p.update();
-            p.draw();
-        });
+        
+        particlesArray.forEach(p => { p.update(); p.draw(); });
+
+        if (bgEffect === 'rain_real') {
+             rainDrops.forEach(drop => { drop.update(); drop.draw(); });
+             for (let i = splashes.length - 1; i >= 0; i--) {
+                 let s = splashes[i];
+                 s.update();
+                 s.draw();
+                 if (s.life <= 0) splashes.splice(i, 1);
+             }
+        }
+
         animationFrameId = requestAnimationFrame(animate);
     };
     animate();
@@ -77,40 +174,17 @@ export const GlobalBackground = () => {
         window.removeEventListener("resize", handleResize);
         cancelAnimationFrame(animationFrameId);
     };
-  }, [enableParticles, bgAnimationSpeed, primaryColor]);
+  }, [bgEffect, enableParticles, bgAnimationSpeed, primaryColor, rainAmount, rainSpeed, rainCollision, rainThickness, mode, performanceMode]);
 
-  // Styles CSS
-  const getBackgroundLayer = () => {
-    switch(bgStyle) {
-        case "grid":
-            return (
-                <div className={`absolute inset-0 bg-[url('/grid-pattern.svg')] bg-center opacity-20 [mask-image:linear-gradient(to_bottom,transparent,black,transparent)] animate-grid-move ${mode === 'light' ? 'text-black' : 'text-white'}`} 
-                     style={{ animationDuration: `${40 / bgAnimationSpeed}s` }} />
-            );
-        case "aurora":
-             return (
-                 <div className="absolute inset-0 overflow-hidden">
-                     <div className="absolute -top-1/2 -left-1/2 w-[200%] h-[200%] bg-gradient-to-br from-neon-purple/20 via-transparent to-neon-cyan/20 animate-pulse-slow" 
-                          style={{ animationDuration: `${10 / bgAnimationSpeed}s` }} />
-                     <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-neon-pink/10 to-transparent mix-blend-screen" />
-                 </div>
-             );
-        case "nebula":
-             return (
-                 <div className="absolute inset-0 overflow-hidden">
-                     <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-purple/20 rounded-full blur-[120px] animate-float"
-                           style={{ animationDuration: `${15 / bgAnimationSpeed}s` }} />
-                     <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neon-cyan/20 rounded-full blur-[120px] animate-float" 
-                           style={{ animationDuration: `${20 / bgAnimationSpeed}s`, animationDelay: '2s' }} />
-                 </div>
-             );
-        case "cyber_rain":
-             return (
-                 <div className="absolute inset-0 overflow-hidden opacity-30">
+
+  // --- CSS ONLY EFFECTS (Cyber Rain, Snow, etc) ---
+  const getEffectLayer = () => {
+      switch(bgEffect) {
+          case 'rain_cyber':
+              return (
+                  <div className="absolute inset-0 overflow-hidden opacity-40 pointer-events-none">
                      {[...Array(Number(rainAmount))].map((_, i) => (
-                         <div 
-                             key={i}
-                             className="absolute top-[-100px] w-[1px] h-[100px] bg-gradient-to-b from-transparent to-neon-cyan"
+                         <div key={i} className="absolute top-[-100px] w-[2px] h-[100px] bg-gradient-to-b from-transparent to-neon-cyan"
                              style={{
                                  left: `${Math.random() * 100}%`,
                                  animation: `fall ${Math.random() * 2 + (5 / rainSpeed)}s linear infinite`,
@@ -118,154 +192,101 @@ export const GlobalBackground = () => {
                              }}
                          />
                      ))}
-                     <style>{`
-                        @keyframes fall {
-                            to { transform: translateY(110vh); }
-                        }
-                     `}</style>
-                 </div>
-             );
-        case "snow":
-            return (
+                     <style>{`@keyframes fall { to { transform: translateY(110vh); } }`}</style>
+                  </div>
+              );
+          case 'snow':
+             return (
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    {[...Array(Number(snowAmount))].map((_, i) => {
-                        const size = Math.random() * 3 + 2;
-                        const left = Math.random() * 100;
-                        const duration = Math.random() * 5 + (10 / snowSpeed);
-                        const swayDuration = Math.random() * 3 + 2;
-                        const delay = Math.random() * 5;
-                        
-                        return (
-                            <div
-                                key={i}
-                                className="absolute rounded-full opacity-80"
-                                style={{
-                                    backgroundColor: mode === 'light' ? '#94a3b8' : 'white', // Slate-400 for light mode
-                                    width: `${size}px`,
-                                    height: `${size}px`,
-                                    left: `${left}%`,
-                                    top: `-10px`,
-                                    animation: `snowFall ${duration}s linear infinite, snowSway ${swayDuration}s ease-in-out infinite alternate`,
-                                    animationDelay: `${delay}s`
-                                }}
-                            />
-                        );
-                    })}
-                    <style>{`
-                        @keyframes snowFall {
-                            to { transform: translateY(110vh); }
-                        }
-                        @keyframes snowSway {
-                            from { transform: translateX(0); }
-                            to { transform: translateX(20px); }
-                        }
-                    `}</style>
-                </div>
-            );
-        case "cherry_blossoms":
-            return (
-                <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    {[...Array(30)].map((_, i) => {
-                        const left = Math.random() * 100;
-                        const fallDuration = Math.random() * 8 + (15 / bgAnimationSpeed);
-                        const rotateDuration = Math.random() * 4 + 2;
-                        const delay = Math.random() * 5;
-                        
-                        return (
-                            <div
-                                key={i}
-                                className="absolute"
-                                style={{
-                                    left: `${left}%`,
-                                    top: `-20px`,
-                                    animation: `cherryFall ${fallDuration}s linear infinite, cherryRotate ${rotateDuration}s linear infinite`,
-                                    animationDelay: `${delay}s`
-                                }}
-                            >
-                                <svg width="12" height="12" viewBox="0 0 12 12" className="opacity-90">
-                                    <path d="M6 0 L7 4 L9 2 L7 6 L12 6 L7 7 L9 10 L6 7 L3 10 L5 7 L0 6 L5 6 L3 2 L5 4 Z" fill={mode === 'light' ? '#be185d' : '#f472b6'} />
-                                </svg>
-                            </div>
-                        );
-                    })}
-                    <style>{`
-                        @keyframes cherryFall {
-                            to { transform: translateY(110vh); }
-                        }
-                        @keyframes cherryRotate {
-                            from { transform: rotate(0deg); }
-                            to { transform: rotate(360deg); }
-                        }
-                    `}</style>
-                </div>
-            );
-
-        case "fireflies":
-            return (
-                <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    {[...Array(20)].map((_, i) => (
-                        <div
-                            key={i}
-                            className="absolute w-2 h-2 bg-yellow-300 rounded-full blur-[2px]"
+                    {[...Array(Number(snowAmount))].map((_, i) => (
+                        <div key={i} className="absolute rounded-full opacity-80 bg-white"
                             style={{
+                                width: `${Math.random() * 3 + 2}px`,
+                                height: `${Math.random() * 3 + 2}px`,
                                 left: `${Math.random() * 100}%`,
-                                top: `${Math.random() * 100}%`,
-                                animation: `firefly ${Math.random() * 3 + (5 / bgAnimationSpeed)}s ease-in-out infinite alternate, glow ${Math.random() * 2 + 1}s ease-in-out infinite`,
-                                animationDelay: `${Math.random() * 3}s`
+                                top: `-10px`,
+                                animation: `snowFall ${Math.random() * 5 + (10 / snowSpeed)}s linear infinite`,
+                                animationDelay: `${Math.random() * 5}s`
                             }}
                         />
                     ))}
-                    <style>{`
-                        @keyframes firefly {
-                            0% { transform: translate(0, 0); }
-                            100% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px); }
-                        }
-                        @keyframes glow {
-                            0%, 100% { opacity: 0.2; box-shadow: 0 0 3px #fef08a; }
-                            50% { opacity: 0.8; box-shadow: 0 0 15px #fef08a; }
-                        }
-                    `}</style>
+                    <style>{`@keyframes snowFall { to { transform: translateY(110vh); } }`}</style>
                 </div>
             );
-        case "matrix":
+          case 'fireflies':
             return (
-                <div className="absolute inset-0 overflow-hidden opacity-20">
-                    {[...Array(15)].map((_, i) => (
-                        <div
-                            key={i}
-                            className="absolute top-[-100px] w-[2px] font-mono text-neon-green text-xs whitespace-nowrap"
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    {[...Array(25)].map((_, i) => (
+                        <div key={i} className="absolute w-2 h-2 bg-yellow-300 rounded-full blur-[2px]"
                             style={{
                                 left: `${Math.random() * 100}%`,
-                                animation: `matrixFall ${Math.random() * 3 + (8 / bgAnimationSpeed)}s linear infinite`,
-                                animationDelay: `${Math.random() * 5}s`
+                                top: `${Math.random() * 100}%`,
+                                animation: `firefly 20s infinite alternate`,
                             }}
-                        >
-                            {Array.from({ length: 20 }, () => 
-                                String.fromCharCode(0x30A0 + Math.random() * 96)
-                            ).join('')}
-                        </div>
+                        />
                     ))}
-                    <style>{`
-                        @keyframes matrixFall {
-                            to { transform: translateY(110vh); }
-                        }
-                    `}</style>
+                    <style>{`@keyframes firefly { 0% { transform: translate(0,0); } 100% { transform: translate(100px, 100px); } }`}</style>
                 </div>
             );
-        default: return null;
+           case 'matrix':
+               return (
+                  <div className="absolute inset-0 overflow-hidden opacity-20 pointer-events-none">
+                      {[...Array(20)].map((_, i) => (
+                          <div key={i} className="absolute top-[-200px] text-neon-green font-mono text-xs writing-vertical"
+                              style={{
+                                  left: `${Math.random() * 100}%`,
+                                  animation: `matrix ${Math.random() * 5 + 5}s linear infinite`,
+                              }}
+                          >
+                             {"0101010110"}
+                          </div>
+                      ))}
+                      <style>{`@keyframes matrix { to { transform: translateY(110vh); } }`}</style>
+                  </div>
+               );
+          case 'fog':
+                return (
+                    <div className="absolute inset-0 pointer-events-none opacity-40">
+                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse-slow blur-3xl" />
+                    </div>
+                );
+          default: return null;
+      }
+  };
+
+
+  // --- BACKGROUND SCENES ---
+  const getSceneLayer = () => {
+    switch(bgScene) {
+        case "grid":
+            return <div className={`absolute inset-0 bg-[url('/grid-pattern.svg')] bg-center opacity-20 animate-grid-move ${mode === 'light' ? 'text-black' : 'text-white'}`} style={{ animationDuration: `${40 / bgAnimationSpeed}s` }} />;
+        case "aurora":
+             return (
+                 <div className="absolute inset-0 overflow-hidden">
+                     <div className="absolute -top-[50%] -left-[50%] w-[200%] h-[200%] bg-gradient-to-br from-primary/30 to-purple-900/20 animate-spin-slow opacity-50 blur-3xl" style={{ animationDuration: '60s' }} />
+                 </div>
+             );
+        case "galaxy":
+             return <div className="absolute inset-0 bg-black"><div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-50" /></div>;
+        case "ocean":
+             return <div className="absolute inset-0 bg-gradient-to-b from-blue-900 to-black opacity-80" />;
+        case "sunset":
+             return <div className="absolute inset-0 bg-gradient-to-b from-orange-900/40 via-purple-900/40 to-black" />;
+        case "greenery":
+             return <div className="absolute inset-0 bg-gradient-to-b from-green-900/20 to-black" />;
+        case "minimal":
+        default:
+             return null; // Just base color
     }
   };
 
   return (
     <div className="fixed inset-0 -z-50 bg-bg-primary overflow-hidden pointer-events-none">
-        {/* Base Layer */}
-        {getBackgroundLayer()}
-        
-        {/* Particles Layer */}
-        {enableParticles && <canvas ref={canvasRef} className="absolute inset-0" />}
-        
-        {/* Vignette */}
-        <div className="absolute inset-0 bg-radial-gradient from-transparent to-black/80" />
+        {getSceneLayer()}
+        {getEffectLayer()}
+        {/* Canvas for heavy effects */}
+        <canvas ref={canvasRef} className="absolute inset-0" />
+        <div className="absolute inset-0 bg-radial-gradient from-transparent to-black/60" />
     </div>
   );
 };
