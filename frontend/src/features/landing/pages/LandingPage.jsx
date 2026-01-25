@@ -28,7 +28,6 @@ export const LandingPage = () => {
 
   return (
     <div className="h-full bg-transparent text-base-content selection:bg-neon-cyan/30 overflow-x-hidden relative font-sans">
-      <LandingStatusBar />
       <LandingHeader isAuthenticated={isAuthenticated} />
 
       <main className="container mx-auto px-6 relative z-10 flex flex-col items-center pt-32 md:pt-40 pb-32">

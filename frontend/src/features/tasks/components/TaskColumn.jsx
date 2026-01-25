@@ -40,7 +40,7 @@ export const TaskColumn = ({ id, title, tasks, onTaskClick }) => {
   };
 
   return (
-    <div className="flex flex-col h-full min-w-[300px] w-full bg-base-100/50 rounded-2xl border border-base-content/5 p-4">
+    <div className="flex flex-col h-full min-w-[260px] w-full bg-base-100/50 rounded-2xl border border-base-content/5 p-4">
       {/* Column Header */}
       <div
         className={`flex items-center justify-between p-4 mb-4 rounded-xl border-l-4 ${getStatusColor(
@@ -58,7 +58,7 @@ export const TaskColumn = ({ id, title, tasks, onTaskClick }) => {
       {/* Droppable Area */}
       <div
         ref={setNodeRef}
-        className="flex-1 space-y-4 overflow-y-auto custom-scrollbar min-h-[150px]"
+        className="flex-1 space-y-4 overflow-y-auto overflow-x-hidden custom-scrollbar min-h-[150px] px-2 py-2 -mx-2"
       >
         <SortableContext
           items={tasks.map((t) => t.id)}

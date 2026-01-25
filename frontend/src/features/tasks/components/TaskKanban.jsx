@@ -90,25 +90,32 @@ export const TaskKanban = ({ tasks, loading, onTaskClick, onDragEnd }) => {
         },
       }}
     >
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full md:overflow-hidden">
-        <TaskColumn
-          id="todo"
-          title="Queue / Todo"
-          tasks={columns.todo}
-          onTaskClick={onTaskClick}
-        />
-        <TaskColumn
-          id="in_progress"
-          title="In Progress"
-          tasks={columns.in_progress}
-          onTaskClick={onTaskClick}
-        />
-        <TaskColumn
-          id="done"
-          title="Completed"
-          tasks={columns.done}
-          onTaskClick={onTaskClick}
-        />
+      {/* Responsive Container: Stack on mobile, Horizontal Scroll on tablet, Grid on Desktop */}
+      <div className="kanban-scroll-container flex flex-col md:flex-row md:overflow-x-auto lg:grid lg:grid-cols-3 gap-4 md:gap-6 h-full pb-4 md:pb-2 snap-x snap-mandatory scroll-smooth px-1">
+        <div className="flex-shrink-0 w-full md:w-[300px] md:min-w-[260px] lg:w-auto snap-center lg:snap-align-none">
+            <TaskColumn
+            id="todo"
+            title="Queue / Todo"
+            tasks={columns.todo}
+            onTaskClick={onTaskClick}
+            />
+        </div>
+        <div className="flex-shrink-0 w-full md:w-[300px] md:min-w-[260px] lg:w-auto snap-center lg:snap-align-none">
+            <TaskColumn
+            id="in_progress"
+            title="In Progress"
+            tasks={columns.in_progress}
+            onTaskClick={onTaskClick}
+            />
+        </div>
+        <div className="flex-shrink-0 w-full md:w-[300px] md:min-w-[260px] lg:w-auto snap-center lg:snap-align-none">
+            <TaskColumn
+            id="done"
+            title="Completed"
+            tasks={columns.done}
+            onTaskClick={onTaskClick}
+            />
+        </div>
       </div>
 
       <DragOverlay dropAnimation={dropAnimation}>

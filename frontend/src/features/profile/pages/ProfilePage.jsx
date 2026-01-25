@@ -9,7 +9,7 @@ export const ProfilePage = () => {
   return (
     <div className="space-y-10">
       <header>
-        <h1 className="text-4xl font-black tracking-tighter uppercase italic text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-500 mb-2">
+        <h1 className="text-4xl font-black tracking-tighter uppercase italic text-transparent bg-clip-text bg-gradient-to-r from-base-content to-zinc-500 mb-2">
           Agent Profile
         </h1>
         <p className="text-zinc-500 font-light">
@@ -30,7 +30,7 @@ export const ProfilePage = () => {
           
           <div className="space-y-4 flex-1">
             <div>
-              <h2 className="text-2xl font-bold text-white mb-1">{user?.name}</h2>
+              <h2 className="text-2xl font-bold text-base-content mb-1">{user?.name}</h2>
               <p className="text-neon-cyan text-xs font-mono uppercase tracking-widest border border-neon-cyan/20 bg-neon-cyan/5 px-2 py-1 rounded-md inline-block">
                 Active Member
               </p>

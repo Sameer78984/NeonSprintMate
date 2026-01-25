@@ -5,7 +5,9 @@ import { DashboardSidebar } from "./DashboardSidebar";
 import { DashboardHeader } from "./DashboardHeader";
 import { DashboardUserSection } from "./DashboardUserSection";
 import { DashboardMobileHeader } from "./DashboardMobileHeader";
+
 import { DashboardMobileMenu } from "./DashboardMobileMenu";
+import { WelcomeModal } from "./WelcomeModal";
 
 /**
  * DashboardLayout Component
@@ -55,6 +57,10 @@ export const DashboardLayout = () => {
           </div>
         </div>
       </main>
+
+      
+      {/* Onboarding */}
+      <WelcomeModal />
     </div>
   );
 };
