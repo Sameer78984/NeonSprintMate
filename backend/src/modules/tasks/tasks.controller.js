@@ -35,6 +35,16 @@ export const createTask = async (req, res, next) => {
       .first();
     if (!isMember) return res.status(403).json({ error: "Unauthorized" });
 
+    // Validate assignee membership
+    if (assigned_to) {
+      const isAssigneeMember = await knex("membership")
+        .where({ team_id, user_id: assigned_to })
+        .first();
+      if (!isAssigneeMember) {
+        return res.status(400).json({ error: "Assignee is not a member of this team" });
+      }
+    }
+
     const [newTask] = await knex("tasks")
       .insert({
         title,
@@ -74,6 +84,16 @@ export const updateTask = async (req, res, next) => {
 
     if (!isMember)
       return res.status(403).json({ error: "Unauthorized access" });
+
+    // Validate new assignee membership
+    if (finalAssignee) {
+      const isAssigneeMember = await knex("membership")
+        .where({ team_id: task.team_id, user_id: finalAssignee })
+        .first();
+      if (!isAssigneeMember) {
+        return res.status(400).json({ error: "Assignee is not a member of this team" });
+      }
+    }
 
     const [updated] = await knex("tasks")
       .where({ id })
