@@ -21,7 +21,6 @@ export const useThemeStore = create(
       // Feature Flags (Frontend enhancements)
       showPomodoro: false,
       showStats: false,
-      showStats: false,
       showNotes: false,
       
       // Performance Optimization
