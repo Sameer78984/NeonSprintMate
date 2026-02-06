@@ -709,6 +709,7 @@ expire          TIMESTAMP NOT NULL
 
 ### **Recommended Platforms**
 
+- **Vercel** - Frontend
 - **Render** - Easy PostgreSQL + Node.js deployment
 - **Railway** - Full-stack deployment
 - **Heroku** - Traditional PaaS
