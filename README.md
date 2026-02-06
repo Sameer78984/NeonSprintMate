@@ -389,18 +389,6 @@ PATCH  /api/tasks/:id/assign - Assign task
 - [x] Due date reminders
 - [x] Email-based member invites
 
-### **🚧 In Progress**
-*   [ ] Integration tests
-*   [ ] Performance optimization
-
-### **📋 Planned**
-*   [ ] Real-time notifications (WebSockets)
-*   [ ] Task comments system
-*   [ ] File attachments
-*   [ ] Advanced analytics dashboard
-*   [ ] Mobile applications (React Native)
-*   [ ] Integration with external tools
-
 ---
 
 ## 🤝 Contributing
